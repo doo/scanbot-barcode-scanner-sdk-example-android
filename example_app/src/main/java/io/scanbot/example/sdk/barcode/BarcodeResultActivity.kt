@@ -1,5 +1,6 @@
 package io.scanbot.example.sdk.barcode
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import io.scanbot.barcodescanner.model.BarCodeScannerDocumentFormat
@@ -31,83 +32,19 @@ class BarcodeResultActivity : AppCompatActivity() {
                     it.image.setImageBitmap(item.image)
                     it.barcodeFormat.text = item.barcodeFormat.name
                     it.docFormat.text = item.barcodeDocumentFormat?.documentFormat
-                    it.recognisedData.text = printParsedFormat(item)
+                    it.setOnClickListener {
+                        val intent = Intent(this, DetailedItemDataActivity::class.java)
+                        intent.putExtra(DetailedItemDataActivity.BARCODE_ITEM, item)
+                        startActivity(intent)
+                    }
                 }
-            }.forEach { recognisedItems.addView(it) }
+            }.forEach {
+
+                recognisedItems.addView(it)
+            }
 
         }
 
     }
 
-    private fun printParsedFormat(item: BarcodeItem): String {
-        val barcodeDocumentFormat = item.barcodeDocumentFormat
-            ?: return "" // for not supported by current barcode detector implementation
-
-        val barcodesResult = StringBuilder()
-        when (barcodeDocumentFormat) {
-            is BoardingPassDocument -> {
-                barcodesResult.append("\n")
-                    .append("Boarding Pass Document").append("\n")
-                    .append(barcodeDocumentFormat.name).append("\n")
-                for (leg in barcodeDocumentFormat.legs) {
-                    for (field in leg.fields) {
-                        barcodesResult.append(field.type.name).append(": ").append(field.value)
-                            .append("\n")
-                    }
-                }
-
-            }
-            is DEMedicalPlanDocument -> {
-                barcodesResult.append("\n").append("DE Medical Plan Document").append("\n")
-
-                barcodesResult.append("Doctor Fields:").append("\n")
-                barcodeDocumentFormat.doctor.fields.forEach { field ->
-                    barcodesResult.append(field.type.name).append(": ").append(field.value)
-                        .append("\n")
-                }
-
-                barcodesResult.append("Patient Fields:").append("\n")
-                barcodeDocumentFormat.patient.fields.forEach { field ->
-                    barcodesResult.append(field.type.name).append(": ").append(field.value)
-                        .append("\n")
-                }
-
-                barcodesResult.append("Medicine Fields:").append("\n")
-                barcodeDocumentFormat.subheadings
-                    .asSequence()
-                    .flatMap { it.medicines.asSequence() }
-                    .flatMap { it.fields.asSequence() }
-                    .forEach {
-                        barcodesResult.append(it.type.name).append(": ").append(it.value)
-                            .append("\n")
-                    }
-
-            }
-            is DisabilityCertificateDocument -> {
-                barcodesResult.append("\n").append("Disability Certificate Document").append("\n")
-
-                barcodeDocumentFormat.fields.forEach {
-                    barcodesResult.append(it.type.name).append(": ").append(it.value).append("\n")
-                }
-            }
-            is SEPADocument -> {
-                barcodesResult.append("\n").append("Sepa Document").append("\n")
-
-                barcodeDocumentFormat.fields.forEach {
-                    barcodesResult.append(it.type.name).append(": ").append(it.value).append("\n")
-                }
-            }
-
-            is VCardDocument -> {
-                barcodesResult.append("\n").append("Vcard Document").append("\n")
-
-                barcodeDocumentFormat.fields.forEach {
-                    barcodesResult.append(it.type.name).append(": ").append(it.rawText).append("\n")
-                }
-            }
-
-        }
-
-        return barcodesResult.toString()
-    }
 }

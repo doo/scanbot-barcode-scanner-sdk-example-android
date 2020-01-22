@@ -9,12 +9,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import io.scanbot.barcodescanner.model.DEMedicalPlan.DEMedicalPlanDocument
-import io.scanbot.barcodescanner.model.boardingPass.BoardingPassDocument
 import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
 import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
-import io.scanbot.sdk.barcode.entity.BarcodeItem
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.FrameHandlerResult
@@ -27,8 +24,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
     private var cameraView: ScanbotCameraView? = null
     private var resultView: ImageView? = null
 
-    internal var flashEnabled = false
-    private var toast: Toast? = null
+    private var flashEnabled = false
     private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
 
 
@@ -55,27 +51,27 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
             ScanbotBarcodeScannerSDK(this).barcodeDetector()
         )
 
-        barcodeDetectorFrameHandler!!.setDetectionInterval(1000)
-        barcodeDetectorFrameHandler!!.addResultHandler(this)
-        barcodeDetectorFrameHandler!!.saveCameraPreviewFrame(true)
+        barcodeDetectorFrameHandler?.setDetectionInterval(1000)
+        barcodeDetectorFrameHandler?.addResultHandler(this)
+        barcodeDetectorFrameHandler?.saveCameraPreviewFrame(true)
 
         val barcodeAutoSnappingController =
             BarcodeAutoSnappingController.attach(cameraView!!, barcodeDetectorFrameHandler!!)
         barcodeAutoSnappingController.setSensitivity(1f)
-        cameraView!!.addPictureCallback(this)
+        cameraView?.addPictureCallback(this)
 
-        val scanbotSDK = ScanbotBarcodeScannerSDK(this)
+        ScanbotBarcodeScannerSDK(this)
 
     }
 
     override fun onResume() {
         super.onResume()
-        cameraView!!.onResume()
+        cameraView?.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        cameraView!!.onPause()
+        cameraView?.onPause()
     }
 
 
@@ -96,10 +92,10 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         val resultBitmap =
             Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
 
-        resultView!!.post {
-            resultView!!.setImageBitmap(resultBitmap)
-            cameraView!!.continuousFocus()
-            cameraView!!.startPreview()
+        resultView?.post {
+            resultView?.setImageBitmap(resultBitmap)
+            cameraView?.continuousFocus()
+            cameraView?.startPreview()
         }
     }
 

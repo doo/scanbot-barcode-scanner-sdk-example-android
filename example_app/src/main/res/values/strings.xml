@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Scanbot Barcode Standalone SdkExample</string>
     <string name="title_activity_barcode_result">BarcodeResultActivity</string>
+    <string name="title_activity_detailed_item_data">DetailedItemDataActivity</string>
 </resources>
