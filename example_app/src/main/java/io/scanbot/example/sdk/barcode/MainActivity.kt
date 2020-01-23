@@ -2,16 +2,21 @@ package io.scanbot.sdk.sdk_integration_barcode_scanner_sdk
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import io.scanbot.example.sdk.barcode.*
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
+import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui.view.barcode.BaseBarcodeScannerActivity
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeImageGenerationType
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
@@ -90,6 +95,17 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE)
         }
 
+        findViewById<View>(R.id.rtu_ui_import).setOnClickListener {
+            // select an image from photo library and run document detection on it:
+            val imageIntent = Intent()
+            imageIntent.type = "image/*"
+            imageIntent.action = Intent.ACTION_GET_CONTENT
+            imageIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, false)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+            }
+            startActivityForResult(Intent.createChooser(imageIntent, getString(R.string.share_title)), IMPORT_IMAGE_REQUEST_CODE)
+        }
         findViewById<View>(R.id.settings).setOnClickListener {
             val intent = Intent(this@MainActivity, BarcodeTypesActivity::class.java)
             startActivity(intent)
@@ -112,6 +128,40 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, BarcodeResultActivity::class.java)
                     startActivity(intent)
                 }
+        } else if (requestCode == IMPORT_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val sdk = ScanbotBarcodeScannerSDK(this)
+            if (!sdk.licenseInfo.isValid) {
+                showLicenseDialog()
+            } else {
+                processGalleryResult(data!!)?.let { bitmap ->
+                    val result = sdk.barcodeDetector().detectFromBitmap(bitmap, 0)
+
+                    BarcodeResultRepository.barcodeResultBundle = result?.let { BarcodeResultBundle(it, null, null) }
+
+                    startActivity(Intent(this, BarcodeResultActivity::class.java))
+                }
+            }
         }
     }
+
+
+    private fun showLicenseDialog() {
+        if (supportFragmentManager.findFragmentByTag(ErrorFragment.NAME) == null) {
+            val dialogFragment = ErrorFragment.newInstance()
+            dialogFragment.show(supportFragmentManager, ErrorFragment.NAME)
+        }
+    }
+
+    private fun processGalleryResult(data: Intent): Bitmap? {
+        val imageUri = data.data
+        var bitmap: Bitmap? = null
+        if (imageUri != null) {
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            } catch (e: IOException) {
+            }
+        }
+        return bitmap
+    }
+
 }

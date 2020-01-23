@@ -2,4 +2,11 @@
     <string name="app_name">Scanbot Barcode Standalone SdkExample</string>
     <string name="title_activity_barcode_result">BarcodeResultActivity</string>
     <string name="title_activity_detailed_item_data">DetailedItemDataActivity</string>
+    <string name="share_title">Select Image</string>
+    <string name="the_demo_expired">The demo app will terminate because of the missing license key. Get your free 30-day license today!</string>
+    <string name="demo_expired">Demo Expired</string>
+    <string name="choose_browser">Choose Browser</string>
+
+    <string name="get_license">Get license</string>
+    <string name="cancel_dialog_button">Cancel</string>
 </resources>
