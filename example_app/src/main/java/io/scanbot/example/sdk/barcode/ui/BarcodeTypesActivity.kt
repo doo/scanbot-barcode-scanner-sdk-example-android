@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.scanbot.example.sdk.barcode.ui.adapter.BarcodeTypesAdapter
 
 class BarcodeTypesActivity : AppCompatActivity() {
 

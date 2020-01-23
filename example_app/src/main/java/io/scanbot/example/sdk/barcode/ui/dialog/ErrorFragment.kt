@@ -1,4 +1,4 @@
-package io.scanbot.example.sdk.barcode
+package io.scanbot.example.sdk.barcode.ui.dialog
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
+import io.scanbot.example.sdk.barcode.R
 
 
 class ErrorFragment : androidx.fragment.app.DialogFragment() {

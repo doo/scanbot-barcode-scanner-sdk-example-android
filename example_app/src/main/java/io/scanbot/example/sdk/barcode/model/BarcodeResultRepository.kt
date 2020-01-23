@@ -1,4 +1,4 @@
-package io.scanbot.example.sdk.barcode
+package io.scanbot.example.sdk.barcode.model
 
 import io.scanbot.sdk.barcode.entity.BarcodeItem
 

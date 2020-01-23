@@ -10,6 +10,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.*
+import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
+import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
+import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
+import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult

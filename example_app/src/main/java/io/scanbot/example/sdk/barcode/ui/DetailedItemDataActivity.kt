@@ -7,6 +7,7 @@ import io.scanbot.barcodescanner.model.DisabilityCertificate.DisabilityCertifica
 import io.scanbot.barcodescanner.model.SEPA.SEPADocument
 import io.scanbot.barcodescanner.model.VCard.VCardDocument
 import io.scanbot.barcodescanner.model.boardingPass.BoardingPassDocument
+import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.sdk.barcode.entity.BarcodeItem
 import kotlinx.android.synthetic.main.activity_detailed_item_data.*
 import kotlinx.android.synthetic.main.activity_detailed_item_data.view.*
