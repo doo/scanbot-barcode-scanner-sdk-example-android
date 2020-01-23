@@ -1,6 +1,8 @@
 package io.scanbot.example.sdk.barcode
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -8,6 +10,8 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
@@ -66,6 +70,10 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
     override fun onResume() {
         super.onResume()
         cameraView?.onResume()
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // Use onActivityResult to handle permission rejection
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CODE)
+        }
     }
 
     override fun onPause() {
@@ -112,7 +120,10 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
                 ).show()
             }
         }
-        return false;
+        return false
     }
 
+    companion object {
+        private const val REQUEST_PERMISSION_CODE = 200
+    }
 }

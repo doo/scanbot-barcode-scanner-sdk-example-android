@@ -17,12 +17,13 @@ class BarcodeResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_result)
         setSupportActionBar(toolbar)
+
         showSnapImageIfExists(
             BarcodeResultRepository.barcodeResultBundle?.previewPath
                 ?: BarcodeResultRepository.barcodeResultBundle?.imagePath
         )
-        showLatestBarcodeResult(BarcodeResultRepository.barcodeResultBundle?.barcodeScanningResult)
 
+        showLatestBarcodeResult(BarcodeResultRepository.barcodeResultBundle?.barcodeScanningResult)
     }
 
     private fun showSnapImageIfExists(imagePath: String?) {
