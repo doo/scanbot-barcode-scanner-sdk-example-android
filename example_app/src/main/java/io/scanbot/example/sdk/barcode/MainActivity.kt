@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import io.scanbot.example.sdk.barcode.BarcodeTypesActivity
-import io.scanbot.example.sdk.barcode.QRScanCameraViewActivity
-import io.scanbot.example.sdk.barcode.R
+import io.scanbot.example.sdk.barcode.*
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui.view.barcode.BaseBarcodeScannerActivity
@@ -52,53 +50,26 @@ class MainActivity : AppCompatActivity() {
             */
 
             barcodeCameraConfiguration.setBarcodeImageGenerationType(BarcodeImageGenerationType.VIDEO_FRAME)
-            val intent = BarcodeScannerActivity.newIntent(this@MainActivity, barcodeCameraConfiguration)
+            val intent =
+                BarcodeScannerActivity.newIntent(this@MainActivity, barcodeCameraConfiguration)
             startActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE)
         }
 
         findViewById<View>(R.id.settings).setOnClickListener {
-            val intent =  Intent(this@MainActivity,BarcodeTypesActivity::class.java)
+            val intent = Intent(this@MainActivity, BarcodeTypesActivity::class.java)
             startActivity(intent)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == BARCODE_DEFAULT_UI_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val barcodeData = data!!.getParcelableExtra<BarcodeScanningResult>(BaseBarcodeScannerActivity.SCANNED_BARCODE_EXTRA)
-            val imagePath = data!!.getStringExtra(BaseBarcodeScannerActivity.SCANNED_BARCODE_IMAGE_PATH_EXTRA)
-            val previewPath = data!!.getStringExtra(BaseBarcodeScannerActivity.SCANNED_BARCODE_PREVIEW_FRAME_PATH_EXTRA)
-
-            val barcodesTextResult = StringBuilder()
-            barcodeData?.let {
-                for (item in barcodeData.barcodeItems) {
-                    barcodesTextResult.append(item.barcodeFormat.name + "\n" + item.text)
-                            .append("\n")
-                            .append("-------------------")
-                            .append("\n")
+            data?.getParcelableExtra<BarcodeScanningResult>(BaseBarcodeScannerActivity.SCANNED_BARCODE_EXTRA)
+                ?.let {
+                    BarcodeResultRepository.barcodeScanningResult = it
+                    val intent = Intent(this, BarcodeResultActivity::class.java)
+                    startActivity(intent)
                 }
-            }
-
-            imagePath?.let {
-                barcodesTextResult.append("\n")
-                        .append("----CAPTURED IMAGE----")
-                        .append("\n")
-                        .append(it)
-                        .append("\n")
-                        .append("-------------------")
-            }
-
-            previewPath?.let {
-                barcodesTextResult.append("\n")
-                        .append("----VIDEO FRAME----")
-                        .append("\n")
-                        .append(it)
-                        .append("\n")
-                        .append("-------------------")
-            }
-            Toast.makeText(this@MainActivity,
-                    barcodesTextResult.toString(), Toast.LENGTH_LONG).show()
         }
     }
 }

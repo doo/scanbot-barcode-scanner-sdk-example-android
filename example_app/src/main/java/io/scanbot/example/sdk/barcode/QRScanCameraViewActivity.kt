@@ -34,8 +34,6 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_camera_view)
 
-        supportActionBar!!.hide()
-
         cameraView = findViewById(R.id.camera)
         resultView = findViewById(R.id.result)
 
@@ -60,7 +58,8 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         barcodeAutoSnappingController.setSensitivity(1f)
         cameraView?.addPictureCallback(this)
 
-        ScanbotBarcodeScannerSDK(this)
+        ScanbotBarcodeScannerSDK(this).barcodeDetector()
+            .setBarcodeFormatsFilter(BarcodeTypeRepository.selectedTypes.toList())
 
     }
 
@@ -76,11 +75,12 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
 
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
-        val detectedBarcodes = result.value
-        BarcodeResultRepository.barcodeScanningResult = detectedBarcodes
-        val intent = Intent(this, BarcodeResultActivity::class.java)
-        startActivity(intent)
-        finish()
+        result.value?.let {
+            BarcodeResultRepository.barcodeScanningResult = it
+            val intent = Intent(this, BarcodeResultActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
 
