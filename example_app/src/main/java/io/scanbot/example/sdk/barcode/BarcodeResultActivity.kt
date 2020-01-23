@@ -3,16 +3,12 @@ package io.scanbot.example.sdk.barcode
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import io.scanbot.barcodescanner.model.BarCodeScannerDocumentFormat
-import io.scanbot.barcodescanner.model.DEMedicalPlan.DEMedicalPlanDocument
-import io.scanbot.barcodescanner.model.DisabilityCertificate.DisabilityCertificateDocument
-import io.scanbot.barcodescanner.model.SEPA.SEPADocument
-import io.scanbot.barcodescanner.model.VCard.VCardDocument
-import io.scanbot.barcodescanner.model.boardingPass.BoardingPassDocument
-import io.scanbot.sdk.barcode.entity.BarcodeItem
+import com.squareup.picasso.Picasso
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import kotlinx.android.synthetic.main.activity_barcode_result.*
 import kotlinx.android.synthetic.main.barcode_item.view.*
+import kotlinx.android.synthetic.main.snap_image_item.view.*
+import java.io.File
 
 class BarcodeResultActivity : AppCompatActivity() {
 
@@ -20,9 +16,26 @@ class BarcodeResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_result)
         setSupportActionBar(toolbar)
-        showLatestBarcodeResult(BarcodeResultRepository.barcodeScanningResult)
+        showSnapImageIfExists(
+            BarcodeResultRepository.barcodeResultBundle?.previewPath
+                ?: BarcodeResultRepository.barcodeResultBundle?.imagePath
+        )
+        showLatestBarcodeResult(BarcodeResultRepository.barcodeResultBundle?.barcodeScanningResult)
+
     }
 
+    private fun showSnapImageIfExists(imagePath: String?) {
+        imagePath?.let { imagePath ->
+            recognisedItems.addView(
+                layoutInflater.inflate(
+                    R.layout.snap_image_item,
+                    recognisedItems,
+                    false
+                )?.also {
+                    Picasso.with(this).load(File(imagePath)).into(it.snapImage)
+                })
+        }
+    }
 
     private fun showLatestBarcodeResult(detectedBarcodes: BarcodeScanningResult?) {
 
@@ -39,7 +52,6 @@ class BarcodeResultActivity : AppCompatActivity() {
                     }
                 }
             }.forEach {
-
                 recognisedItems.addView(it)
             }
 

@@ -76,7 +76,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
         result.value?.let {
-            BarcodeResultRepository.barcodeScanningResult = it
+            BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(it)
             val intent = Intent(this, BarcodeResultActivity::class.java)
             startActivity(intent)
             finish()
