@@ -134,7 +134,9 @@ class MainActivity : AppCompatActivity() {
                 showLicenseDialog()
             } else {
                 processGalleryResult(data!!)?.let { bitmap ->
-                    val result = sdk.barcodeDetector().detectFromBitmap(bitmap, 0)
+                    val barcodeDetector = sdk.barcodeDetector()
+                    barcodeDetector.setBarcodeFormatsFilter(BarcodeTypeRepository.selectedTypes.toList())
+                    val result = barcodeDetector.detectFromBitmap(bitmap, 0)
 
                     BarcodeResultRepository.barcodeResultBundle = result?.let { BarcodeResultBundle(it, null, null) }
 
