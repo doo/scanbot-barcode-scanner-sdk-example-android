@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.*
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
@@ -16,6 +17,7 @@ import io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui.view.barcode.BaseBarcodeScannerActivity
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeImageGenerationType
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +28,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        if (ScanbotBarcodeScannerSDK(this).licenseInfo.isValid) {
+            warning_view.isVisible = false;
+        }
         findViewById<View>(R.id.qr_demo).setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
             startActivity(intent)
@@ -104,7 +108,12 @@ class MainActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
             }
-            startActivityForResult(Intent.createChooser(imageIntent, getString(R.string.share_title)), IMPORT_IMAGE_REQUEST_CODE)
+            startActivityForResult(
+                Intent.createChooser(
+                    imageIntent,
+                    getString(R.string.share_title)
+                ), IMPORT_IMAGE_REQUEST_CODE
+            )
         }
         findViewById<View>(R.id.settings).setOnClickListener {
             val intent = Intent(this@MainActivity, BarcodeTypesActivity::class.java)

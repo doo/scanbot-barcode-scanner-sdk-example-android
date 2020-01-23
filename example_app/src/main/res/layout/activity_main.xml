@@ -23,21 +23,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="32dp"
                 android:fontFamily="sans-serif-medium"
                 android:paddingLeft="16dp"
                 android:text="@string/scanbot_sdk_demo"
                 android:textColor="#ffffff"
+                android:layout_marginBottom="32dp"
                 android:textSize="34sp"
                 android:textStyle="normal" />
+
+            <LinearLayout
+                android:id="@+id/warning_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/warning_shape"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/no_license_found_the_app_will_terminate_after_one_minute"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/qr_demo"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="16dp"
                 android:text="Classic Component"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+
                 android:textColor="@color/textColorPrimary" />
 
             <FrameLayout
@@ -50,7 +80,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="16dp"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="RTU UI"
                 android:textColor="@color/textColorPrimary" />
 
@@ -64,7 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="16dp"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="RTU UI - with barcode image"
                 android:textColor="@color/textColorPrimary" />
 
@@ -78,7 +110,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="16dp"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="Pick image from library"
                 android:textColor="@color/textColorPrimary" />
 
@@ -92,7 +125,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="16dp"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:text="Set accepted barcodes"
                 android:textColor="@color/textColorPrimary" />
 
