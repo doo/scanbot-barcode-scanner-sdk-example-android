@@ -17,11 +17,11 @@
         <activity
             android:name=".DetailedItemDataActivity"
             android:label="@string/title_activity_detailed_item_data"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".BarcodeResultActivity"
             android:label="@string/title_activity_barcode_result"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity android:name="io.scanbot.sdk.sdk_integration_barcode_scanner_sdk.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
