@@ -1,16 +1,11 @@
 package io.scanbot.example.sdk.barcode
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
-import java.util.ArrayList
 
 class BarcodeTypesActivity : AppCompatActivity() {
 

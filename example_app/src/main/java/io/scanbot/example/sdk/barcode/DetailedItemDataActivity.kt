@@ -1,6 +1,5 @@
 package io.scanbot.example.sdk.barcode
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import io.scanbot.barcodescanner.model.DEMedicalPlan.DEMedicalPlanDocument
@@ -18,24 +17,20 @@ class DetailedItemDataActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailed_item_data)
         setSupportActionBar(toolbar)
-        intent.getParcelableExtra<BarcodeItem>(BARCODE_ITEM)?.let { item ->
+
+        BarcodeResultRepository.selectedBarcodeItem?.let { item ->
             container?.also {
                 it.image.setImageBitmap(item.image)
                 it.barcodeFormat.text = item.barcodeFormat.name
                 it.docFormat.text = item.barcodeDocumentFormat?.documentFormat
                 it.description.text = printParsedFormat(item)
-                it.setOnClickListener {
-                    val intent = Intent(this, DetailedItemDataActivity::class.java)
-                    intent.putExtra(BARCODE_ITEM, item)
-                    startActivity(intent)
-                }
             }
         }
     }
 
     private fun printParsedFormat(item: BarcodeItem): String {
         val barcodeDocumentFormat = item.barcodeDocumentFormat
-            ?: return "" // for not supported by current barcode detector implementation
+            ?: return item.text // for not supported by current barcode detector implementation
 
         val barcodesResult = StringBuilder()
         when (barcodeDocumentFormat) {
@@ -73,7 +68,8 @@ class DetailedItemDataActivity : AppCompatActivity() {
                     .asSequence()
                     .flatMap {
                         barcodesResult.append("\n")
-                        it.medicines.asSequence() }
+                        it.medicines.asSequence()
+                    }
                     .flatMap { it.fields.asSequence() }
                     .forEach {
                         barcodesResult.append(it.type.name).append(": ").append(it.value)

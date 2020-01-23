@@ -1,6 +1,5 @@
 package io.scanbot.example.sdk.barcode
 
-import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +7,6 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.scanbot.example.sdk.barcode.BarcodeTypesAdapter.BarcodeTypesViewHolder
-
-import java.util.ArrayList
-
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
 
 class BarcodeTypesAdapter() :

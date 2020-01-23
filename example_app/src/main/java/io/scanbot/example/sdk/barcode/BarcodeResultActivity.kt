@@ -2,6 +2,7 @@ package io.scanbot.example.sdk.barcode
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
@@ -45,9 +46,11 @@ class BarcodeResultActivity : AppCompatActivity() {
                     it.image.setImageBitmap(item.image)
                     it.barcodeFormat.text = item.barcodeFormat.name
                     it.docFormat.text = item.barcodeDocumentFormat?.documentFormat
+                    it.docFormat.visibility = if (item.barcodeDocumentFormat != null) View.VISIBLE else View.GONE
+                    it.docText.text = item.text
                     it.setOnClickListener {
                         val intent = Intent(this, DetailedItemDataActivity::class.java)
-                        intent.putExtra(DetailedItemDataActivity.BARCODE_ITEM, item)
+                        BarcodeResultRepository.selectedBarcodeItem = item
                         startActivity(intent)
                     }
                 }
