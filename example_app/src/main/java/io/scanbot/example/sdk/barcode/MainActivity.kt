@@ -10,6 +10,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.*
+import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
@@ -28,9 +29,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (ScanbotBarcodeScannerSDK(this).licenseInfo.isValid) {
-            warning_view.isVisible = false;
-        }
+
+        warning_view.isVisible = ScanbotBarcodeScannerSDK(this).licenseInfo.status == Status.StatusTrial
+
         findViewById<View>(R.id.qr_demo).setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
             startActivity(intent)
@@ -147,7 +148,8 @@ class MainActivity : AppCompatActivity() {
                     barcodeDetector.setBarcodeFormatsFilter(BarcodeTypeRepository.selectedTypes.toList())
                     val result = barcodeDetector.detectFromBitmap(bitmap, 0)
 
-                    BarcodeResultRepository.barcodeResultBundle = result?.let { BarcodeResultBundle(it, null, null) }
+                    BarcodeResultRepository.barcodeResultBundle =
+                        result?.let { BarcodeResultBundle(it, null, null) }
 
                     startActivity(Intent(this, BarcodeResultActivity::class.java))
                 }
