@@ -39,6 +39,7 @@
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
+                android:fontFamily="sans-serif-black"
                 android:text="Classic Component" />
 
             <FrameLayout
@@ -50,6 +51,7 @@
                 android:id="@+id/rtu_ui"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:fontFamily="sans-serif-black"
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:text="RTU UI" />
@@ -63,6 +65,7 @@
                 android:id="@+id/rtu_ui_image"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:fontFamily="sans-serif-black"
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:text="RTU UI - with barcode image" />
@@ -76,6 +79,7 @@
                 android:id="@+id/rtu_ui_import"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:fontFamily="sans-serif-black"
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:text="Pick image from library" />
@@ -89,6 +93,7 @@
                 android:id="@+id/settings"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:fontFamily="sans-serif-black"
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:text="Set accepted barcodes" />
