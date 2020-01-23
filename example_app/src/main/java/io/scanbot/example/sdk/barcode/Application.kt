@@ -1,4 +1,4 @@
-package io.scanbot.sdk.sdk_integration_barcode_scanner_sdk
+package io.scanbot.example.sdk.barcode
 
 import android.app.Application
 import io.scanbot.sap.IScanbotSDKLicenseErrorHandler
