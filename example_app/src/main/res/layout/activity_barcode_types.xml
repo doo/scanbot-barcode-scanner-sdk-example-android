@@ -17,10 +17,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="Barcode formats"
-            android:background="?attr/colorPrimary"
             android:theme="@style/Scanbot.Demo.ActionBar"
             app:layout_constraintTop_toTopOf="@+id/appBarLayout"
+            app:title="Barcode formats"
             tools:layout_editor_absoluteX="16dp" />
     </com.google.android.material.appbar.AppBarLayout>
 
