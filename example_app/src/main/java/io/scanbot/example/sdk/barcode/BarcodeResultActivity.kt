@@ -44,7 +44,9 @@ class BarcodeResultActivity : AppCompatActivity() {
         detectedBarcodes?.let {
             detectedBarcodes.barcodeItems.asSequence().map { item ->
                 layoutInflater.inflate(R.layout.barcode_item, recognisedItems, false)?.also {
-                    it.image.setImageBitmap(item.image)
+                    item.image?.let { bitmap ->
+                        it.image.setImageBitmap(bitmap)
+                    }
                     it.barcodeFormat.text = item.barcodeFormat.name
                     it.docFormat.text = item.barcodeDocumentFormat?.documentFormat
                     it.docFormat.visibility = if (item.barcodeDocumentFormat != null) View.VISIBLE else View.GONE
