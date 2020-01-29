@@ -26,9 +26,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
-
-    private val BARCODE_DEFAULT_UI_REQUEST_CODE = 910
-    private val IMPORT_IMAGE_REQUEST_CODE = 911
+    companion object {
+        private const val BARCODE_DEFAULT_UI_REQUEST_CODE = 910
+        private const val IMPORT_IMAGE_REQUEST_CODE = 911
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,28 +49,8 @@ class MainActivity : AppCompatActivity() {
                     BarcodeTypeRepository.selectedTypes
                 )
             })
-            /*
-            barcodeCameraConfiguration.setTopBarBackgroundColor(Color.parseColor("#00FFFF"))
-            barcodeCameraConfiguration.setTopBarButtonsColor(Color.parseColor("#FF0000"))
-
-            barcodeCameraConfiguration.setCancelButtonTitle("Cancel")
-            barcodeCameraConfiguration.setFinderTextHint("Capture the barcode here")
-
-            barcodeCameraConfiguration.setCameraOverlayColor(Color.parseColor("#80F0F000"))
-            barcodeCameraConfiguration.setFinderLineColor(Color.parseColor("#00F0F0"))
-            barcodeCameraConfiguration.setFinderHeight(800)
-            barcodeCameraConfiguration.setFinderWidth(800)
-            barcodeCameraConfiguration.setFinderLineWidth(10)
-            barcodeCameraConfiguration.setFinderTextHintColor(Color.parseColor("#000000"))
-            barcodeCameraConfiguration.setEnableCameraExplanationText("Please, provide the permission!")
-            barcodeCameraConfiguration.setEnableCameraButtonTitle("Provide")
-
-            barcodeCameraConfiguration.setBarcodeFormatsFilter(arrayListOf(BarcodeFormat.ALL_FORMATS))
-            barcodeCameraConfiguration.setFlashEnabled(false)
-            */
             barcodeCameraConfiguration.setBarcodeImageGenerationType(BarcodeImageGenerationType.NONE)
-            val intent =
-                BarcodeScannerActivity.newIntent(this@MainActivity, barcodeCameraConfiguration)
+            val intent = BarcodeScannerActivity.newIntent(this@MainActivity, barcodeCameraConfiguration)
             startActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE)
         }
         findViewById<View>(R.id.rtu_ui_image).setOnClickListener {
@@ -79,25 +60,6 @@ class MainActivity : AppCompatActivity() {
                     BarcodeTypeRepository.selectedTypes
                 )
             })
-            /*
-                barcodeCameraConfiguration.setTopBarBackgroundColor(Color.parseColor("#00FFFF"))
-                barcodeCameraConfiguration.setTopBarButtonsColor(Color.parseColor("#FF0000"))
-
-                barcodeCameraConfiguration.setCancelButtonTitle("Cancel")
-                barcodeCameraConfiguration.setFinderTextHint("Capture the barcode here")
-                barcodeCameraConfiguration.setCameraOverlayColor(Color.parseColor("#80F0F000"))
-                barcodeCameraConfiguration.setFinderLineColor(Color.parseColor("#00F0F0"))
-                barcodeCameraConfiguration.setFinderHeight(800)
-                barcodeCameraConfiguration.setFinderWidth(800)
-                barcodeCameraConfiguration.setFinderLineWidth(10)
-                barcodeCameraConfiguration.setFinderTextHintColor(Color.parseColor("#000000"))
-                barcodeCameraConfiguration.setEnableCameraExplanationText("Please, provide the permission!")
-                barcodeCameraConfiguration.setEnableCameraButtonTitle("Provide")
-
-                barcodeCameraConfiguration.setBarcodeFormatsFilter(arrayListOf(BarcodeFormat.ALL_FORMATS))
-                barcodeCameraConfiguration.setFlashEnabled(false)
-                */
-
             barcodeCameraConfiguration.setBarcodeImageGenerationType(BarcodeImageGenerationType.VIDEO_FRAME)
             val intent =
                 BarcodeScannerActivity.newIntent(this@MainActivity, barcodeCameraConfiguration)
