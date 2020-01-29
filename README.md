@@ -27,12 +27,12 @@ You as the customer will need to take care of uploading the scans / data to your
 
 ## Release History and Changelog
 
-👉 See [[Release History And Changelog]]
+👉 See [Release History And Changelog](https://github.com/doo/scanbot-barcode-scanner-sdk-example-android/wiki/Release-History-and-Changelog)
 
 
 ## Getting Started
 
-👉 [[Getting started]]
+👉 [Getting started](https://github.com/doo/scanbot-barcode-scanner-sdk-example-android/wiki/Getting-started)
 
 ## Get in Touch
 If you need further information or are interested in licensing Scanbot Barcode Scanner SDK please reach out to our sales experts via sdk@scanbot.io.
