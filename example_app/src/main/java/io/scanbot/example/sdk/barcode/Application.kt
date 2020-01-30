@@ -32,7 +32,6 @@ class ExampleApplication : Application() {
                 }
             })
             //.sdkFilesDirectory(this, getExternalFilesDir(null)!!)
-            .prepareBarcodeScannerBlobs(true)
             .initialize(this)
 
         LoggerProvider.getLogger().d("ExampleApplication", "Scanbot Barcode Scanner SDK was initialized")
