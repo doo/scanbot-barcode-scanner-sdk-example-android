@@ -1,2 +1,2 @@
 include ':example_app'
-rootProject.name='Standalone Barcode Sdk Example'
+rootProject.name='Scanbot Barcode SDK Example'
