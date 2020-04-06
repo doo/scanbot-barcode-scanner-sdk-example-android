@@ -1,6 +1,6 @@
 # Scanbot Barcode Scanner SDK Example App for Android
 
-This example app shows how to integrate the [Scanbot Barcode Scanner SDK](https://scanbot.io/sdk) for Android.
+This example app shows how to integrate the [Scanbot Barcode Scanner SDK](https://scanbot.io) for Android.
 
 
 ## What is Scanbot Barcode Scanner SDK?
@@ -14,7 +14,7 @@ for scanning and parsing 1D and 2D barcodes from your mobile device's camera or 
 - 1D codes: Code 39, Code 93, Code 128, Codabar, UPC-E, ITF, EAN-8, EAN-13, UPC-A
 - 2D codes: QR-Code, Aztec, PDF-417, Data Matrix
 
-💡 Also check out our blog post [Types of barcodes](https://scanbot.io/blog/types-of-barcodes-and-their-usage/).
+💡 Also check out our blog post [Types of barcodes](https://scanbot.io/blog/types-of-barcodes-and-their-usage).
 
 
 ### Supported Data Parsers:
@@ -38,4 +38,4 @@ The Scanbot Barcode Scanner SDK will run without a license for one minute per se
 After the trial period is over all SDK functions as well as the UI components will stop working.
 You have to restart the app to get another trial period.
 
-To get an unrestricted "no-strings-attached" 30 day trial license, please submit the [Trial License Form](https://scanbot.io/sdk/trial.html) on our website.
+To get an unrestricted "no-strings-attached" 30 day trial license, please submit the [Trial License Form](https://scanbot.io/en/sdk/demo/trial) on our website.
