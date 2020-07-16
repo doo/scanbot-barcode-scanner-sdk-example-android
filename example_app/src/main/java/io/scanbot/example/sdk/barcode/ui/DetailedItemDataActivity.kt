@@ -23,49 +23,50 @@ class DetailedItemDataActivity : AppCompatActivity() {
             container?.also {
                 it.image.setImageBitmap(item.image)
                 it.barcodeFormat.text = item.barcodeFormat.name
-                it.docFormat.text = item.barcodeDocumentFormat?.documentFormat
+                it.docFormat.text = item.formattedResult?.documentFormat
                 it.description.text = printParsedFormat(item)
             }
         }
     }
 
     private fun printParsedFormat(item: BarcodeItem): String {
-        val barcodeDocumentFormat = item.barcodeDocumentFormat
+        val formattedResult = item.formattedResult
             ?: return item.text // for not supported by current barcode detector implementation
 
         val barcodesResult = StringBuilder()
-        when (barcodeDocumentFormat) {
+        when (formattedResult) {
             is BoardingPassDocument -> {
                 barcodesResult.append("\n")
                     .append("Boarding Pass Document").append("\n")
-                    .append(barcodeDocumentFormat.name).append("\n")
-                for (leg in barcodeDocumentFormat.legs) {
-                    for (field in leg.fields) {
-                        barcodesResult.append(field.type.name).append(": ").append(field.value)
-                            .append("\n")
+                    .append(formattedResult.name).append("\n")
+                formattedResult.legs?.let {
+                    for (leg in it) {
+                        for (field in leg.fields) {
+                            barcodesResult.append(field.type?.name).append(": ").append(field.value)
+                                .append("\n")
+                        }
                     }
                 }
-
             }
             is DEMedicalPlanDocument -> {
                 barcodesResult.append("\n").append("DE Medical Plan Document").append("\n")
 
                 barcodesResult.append("Doctor Fields:").append("\n")
-                barcodeDocumentFormat.doctor.fields.forEach { field ->
-                    barcodesResult.append(field.type.name).append(": ").append(field.value)
+                formattedResult.doctor?.fields?.forEach { field ->
+                    barcodesResult.append(field.type?.name).append(": ").append(field.value)
                         .append("\n")
                 }
                 barcodesResult.append("\n")
 
                 barcodesResult.append("Patient Fields:").append("\n")
-                barcodeDocumentFormat.patient.fields.forEach { field ->
-                    barcodesResult.append(field.type.name).append(": ").append(field.value)
+                formattedResult.patient?.fields?.forEach { field ->
+                    barcodesResult.append(field.type?.name).append(": ").append(field.value)
                         .append("\n")
                 }
                 barcodesResult.append("\n")
 
                 barcodesResult.append("Medicine Fields:").append("\n")
-                barcodeDocumentFormat.subheadings
+                formattedResult.subheadings
                     .asSequence()
                     .flatMap {
                         barcodesResult.append("\n")
@@ -73,21 +74,21 @@ class DetailedItemDataActivity : AppCompatActivity() {
                     }
                     .flatMap { it.fields.asSequence() }
                     .forEach {
-                        barcodesResult.append(it.type.name).append(": ").append(it.value)
+                        barcodesResult.append(it.type?.name).append(": ").append(it.value)
                             .append("\n")
                     }
             }
             is DisabilityCertificateDocument -> {
                 barcodesResult.append("\n").append("Disability Certificate Document").append("\n")
 
-                barcodeDocumentFormat.fields.forEach {
-                    barcodesResult.append(it.type.name).append(": ").append(it.value).append("\n")
+                formattedResult.fields.forEach {
+                    barcodesResult.append(it.type?.name).append(": ").append(it.value).append("\n")
                 }
             }
             is SEPADocument -> {
                 barcodesResult.append("\n").append("Sepa Document").append("\n")
 
-                barcodeDocumentFormat.fields.forEach {
+                formattedResult.fields.forEach {
                     barcodesResult.append(it.type.name).append(": ").append(it.value).append("\n")
                 }
             }
@@ -95,7 +96,7 @@ class DetailedItemDataActivity : AppCompatActivity() {
             is VCardDocument -> {
                 barcodesResult.append("\n").append("Vcard Document").append("\n")
 
-                barcodeDocumentFormat.fields.forEach {
+                formattedResult.fields.forEach {
                     barcodesResult.append(it.type.name).append(": ").append(it.rawText).append("\n")
                 }
             }
