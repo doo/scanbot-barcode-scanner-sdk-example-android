@@ -21,9 +21,10 @@ import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
 import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
+import io.scanbot.sdk.camera.CameraOpenCallback
 import io.scanbot.sdk.camera.FrameHandlerResult
-import net.doo.snap.camera.PictureCallback
-import net.doo.snap.camera.ScanbotCameraView
+import io.scanbot.sdk.camera.PictureCallback
+import io.scanbot.sdk.camera.ScanbotCameraView
 
 class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler,
     PictureCallback {
@@ -44,12 +45,14 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         cameraView = findViewById(R.id.camera)
         resultView = findViewById(R.id.result)
 
-        cameraView!!.setCameraOpenCallback {
-            cameraView!!.postDelayed({
-                cameraView!!.useFlash(flashEnabled)
-                cameraView!!.continuousFocus()
-            }, 300)
-        }
+        cameraView!!.setCameraOpenCallback(object : CameraOpenCallback {
+            override fun onCameraOpened() {
+                cameraView!!.postDelayed({
+                    cameraView!!.useFlash(flashEnabled)
+                    cameraView!!.continuousFocus()
+                }, 300)
+            }
+        })
 
         barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.attach(
             cameraView!!,
