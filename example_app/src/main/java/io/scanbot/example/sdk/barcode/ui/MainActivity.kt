@@ -21,7 +21,6 @@ import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.batch.BatchBarcodeScannerActivity
-import io.scanbot.sdk.ui.view.barcode.BaseBarcodeScannerActivity
 import io.scanbot.sdk.ui.view.barcode.batch.configuration.BatchBarcodeScannerConfiguration
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeImageGenerationType
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration
