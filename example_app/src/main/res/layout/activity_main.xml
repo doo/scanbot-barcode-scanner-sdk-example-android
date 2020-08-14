@@ -70,7 +70,7 @@
 
                 android:textColor="@color/textColorPrimary" />
 
-            <FrameLayout
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#50000000" />
@@ -85,7 +85,7 @@
                 android:text="RTU UI"
                 android:textColor="@color/textColorPrimary" />
 
-            <FrameLayout
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#50000000" />
@@ -100,7 +100,22 @@
                 android:text="RTU UI - with barcode image"
                 android:textColor="@color/textColorPrimary" />
 
-            <FrameLayout
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+            <TextView
+                android:id="@+id/rtu_ui_import_batch_mode"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:text="RTU UI - multiple QR-/Barcodes"
+                android:textColor="@color/textColorPrimary" />
+
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#50000000" />
@@ -115,7 +130,7 @@
                 android:text="Pick image from library"
                 android:textColor="@color/textColorPrimary" />
 
-            <FrameLayout
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#50000000" />
@@ -130,7 +145,7 @@
                 android:text="Set accepted barcodes"
                 android:textColor="@color/textColorPrimary" />
 
-            <FrameLayout
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#50000000" />
