@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.*
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
@@ -19,9 +20,12 @@ import io.scanbot.sdk.barcode.entity.BarcodeFormat
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity
+import io.scanbot.sdk.ui.barcode_scanner.view.barcode.batch.BatchBarcodeScannerActivity
 import io.scanbot.sdk.ui.view.barcode.BaseBarcodeScannerActivity
+import io.scanbot.sdk.ui.view.barcode.batch.configuration.BatchBarcodeScannerConfiguration
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeImageGenerationType
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration
+import io.scanbot.sdk.ui.view.base.configuration.CameraOrientationMode
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
@@ -82,6 +86,26 @@ class MainActivity : AppCompatActivity() {
                 ), IMPORT_IMAGE_REQUEST_CODE
             )
         }
+
+
+        findViewById<View>(R.id.rtu_ui_import_batch_mode).setOnClickListener {
+            val barcodeCameraConfiguration = BatchBarcodeScannerConfiguration()
+
+            barcodeCameraConfiguration.setTopBarButtonsColor(ContextCompat.getColor(this, android.R.color.white))
+            barcodeCameraConfiguration.setTopBarBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+            barcodeCameraConfiguration.setFinderTextHint("Please align the QR-/Barcode in the frame above to scan it.")
+
+            barcodeCameraConfiguration.setDetailsBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
+            barcodeCameraConfiguration.setDetailsActionColor(ContextCompat.getColor(this, android.R.color.white))
+            barcodeCameraConfiguration.setDetailsBackgroundColor(ContextCompat.getColor(this, R.color.sheetColor))
+            barcodeCameraConfiguration.setDetailsPrimaryColor(ContextCompat.getColor(this, android.R.color.white))
+            barcodeCameraConfiguration.setBarcodesCountTextColor(ContextCompat.getColor(this, android.R.color.white))
+            barcodeCameraConfiguration.setOrientationLockMode(CameraOrientationMode.PORTRAIT)
+
+            val intent = BatchBarcodeScannerActivity.newIntent(this@MainActivity, barcodeCameraConfiguration)
+            startActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE)
+        }
+
         findViewById<View>(R.id.settings).setOnClickListener {
             val intent = Intent(this@MainActivity, BarcodeTypesActivity::class.java)
             startActivity(intent)
