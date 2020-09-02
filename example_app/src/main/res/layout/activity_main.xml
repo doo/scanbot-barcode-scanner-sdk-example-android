@@ -112,7 +112,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
-                android:text="RTU UI - multiple QR-/Barcodes"
+                android:text="RTU UI - batch barcode scanning"
                 android:textColor="@color/textColorPrimary" />
 
             <View
