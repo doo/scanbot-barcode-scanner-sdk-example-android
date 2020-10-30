@@ -26,8 +26,7 @@ import io.scanbot.sdk.camera.FrameHandlerResult
 import io.scanbot.sdk.camera.PictureCallback
 import io.scanbot.sdk.camera.ScanbotCameraView
 
-class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler,
-    PictureCallback {
+class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
 
     private var cameraView: ScanbotCameraView? = null
     private var resultView: ImageView? = null
@@ -66,7 +65,11 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         val barcodeAutoSnappingController =
             BarcodeAutoSnappingController.attach(cameraView!!, barcodeDetectorFrameHandler!!)
         barcodeAutoSnappingController.setSensitivity(1f)
-        cameraView?.addPictureCallback(this)
+        cameraView?.addPictureCallback(object : PictureCallback() {
+            override fun onPictureTaken(image: ByteArray, imageOrientation: Int) {
+                this@QRScanCameraViewActivity.processPictureTaken(image, imageOrientation)
+            }
+        })
 
         ScanbotBarcodeScannerSDK(this).barcodeDetector()
             .setBarcodeFormatsFilter(BarcodeTypeRepository.selectedTypes.toList())
@@ -98,7 +101,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
     }
 
 
-    override fun onPictureTaken(image: ByteArray, imageOrientation: Int) {
+    fun processPictureTaken(image: ByteArray, imageOrientation: Int) {
         val bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
 
         val matrix = Matrix()
