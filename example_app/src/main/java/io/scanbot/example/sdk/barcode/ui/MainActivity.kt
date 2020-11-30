@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        findViewById<View>(R.id.rtu_ui_import_batch_mode).setOnClickListener {
+        findViewById<View>(R.id.rtu_ui_batch_mode).setOnClickListener {
             val barcodeCameraConfiguration = BatchBarcodeScannerConfiguration()
 
             barcodeCameraConfiguration.setTopBarButtonsColor(ContextCompat.getColor(this, android.R.color.white))
