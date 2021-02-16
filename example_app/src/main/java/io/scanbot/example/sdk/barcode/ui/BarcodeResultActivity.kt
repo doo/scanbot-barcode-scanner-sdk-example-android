@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
+import io.scanbot.example.sdk.barcode.ui.DetailedItemDataActivity
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import kotlinx.android.synthetic.main.activity_barcode_result.*
 import kotlinx.android.synthetic.main.barcode_item.view.*
