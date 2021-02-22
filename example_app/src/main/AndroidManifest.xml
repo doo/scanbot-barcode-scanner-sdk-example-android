@@ -15,9 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".DetailedItemDataActivity"
+            android:name=".ui.DetailedItemDataActivity"
             android:label="@string/title_activity_detailed_item_data"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".BarcodeResultActivity"
             android:label="@string/title_activity_barcode_result"

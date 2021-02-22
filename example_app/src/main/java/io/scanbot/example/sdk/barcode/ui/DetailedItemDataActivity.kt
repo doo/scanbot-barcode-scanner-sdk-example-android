@@ -1,19 +1,22 @@
-package io.scanbot.example.sdk.barcode
+package io.scanbot.example.sdk.barcode.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import io.scanbot.barcodescanner.model.DEMedicalPlan.DEMedicalPlanDocument
 import io.scanbot.barcodescanner.model.DisabilityCertificate.DisabilityCertificateDocument
+import io.scanbot.barcodescanner.model.IDCardPDF417.IDCardPDF417Document
 import io.scanbot.barcodescanner.model.SEPA.SEPADocument
 import io.scanbot.barcodescanner.model.VCard.VCardDocument
+import io.scanbot.barcodescanner.model.aamva.AAMVADocument
 import io.scanbot.barcodescanner.model.boardingPass.BoardingPassDocument
+import io.scanbot.barcodescanner.model.swissqr.SwissQRDocument
+import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.sdk.barcode.entity.BarcodeItem
 import kotlinx.android.synthetic.main.activity_detailed_item_data.*
 import kotlinx.android.synthetic.main.activity_detailed_item_data.view.*
 
 class DetailedItemDataActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailed_item_data)
@@ -35,74 +38,93 @@ class DetailedItemDataActivity : AppCompatActivity() {
 
         val barcodesResult = StringBuilder()
         when (formattedResult) {
+            is AAMVADocument -> {
+                barcodesResult.append("\n")
+                        .append("AAMVA Document\n")
+                        .append(formattedResult.AAMVAVersionNumber).append("\n")
+                        .append(formattedResult.issuerIdentificationNumber).append("\n")
+                        .append(formattedResult.jurisdictionVersionNumber).append("\n")
+                formattedResult.subfiles.forEach { subfile ->
+                    for (field in subfile.fields) {
+                        barcodesResult.append(field.type.name).append(": ").append(field.value)
+                                .append("\n")
+                    }
+                }
+            }
             is BoardingPassDocument -> {
                 barcodesResult.append("\n")
-                    .append("Boarding Pass Document").append("\n")
-                    .append(formattedResult.name).append("\n")
-                formattedResult.legs?.let {
-                    for (leg in it) {
-                        for (field in leg.fields) {
-                            barcodesResult.append(field.type?.name).append(": ").append(field.value)
-                                .append("\n")
-                        }
+                        .append("Boarding Pass Document\n")
+                        .append("${formattedResult.name}\n")
+                formattedResult.legs?.forEach { leg ->
+                    leg.fields.forEach {
+                        barcodesResult.append("${it.type.name}:${it.value}\n")
                     }
                 }
             }
             is DEMedicalPlanDocument -> {
-                barcodesResult.append("\n").append("DE Medical Plan Document").append("\n")
+                barcodesResult.append("\nDE Medical Plan Document\n")
 
-                barcodesResult.append("Doctor Fields:").append("\n")
-                formattedResult.doctor?.fields?.forEach { field ->
-                    barcodesResult.append(field.type?.name).append(": ").append(field.value)
-                        .append("\n")
+                barcodesResult.append("Doctor Fields:\n")
+                formattedResult.doctor.fields.forEach {
+                    barcodesResult.append("${it.type.name}: ${it.value}\n")
                 }
                 barcodesResult.append("\n")
 
-                barcodesResult.append("Patient Fields:").append("\n")
-                formattedResult.patient?.fields?.forEach { field ->
-                    barcodesResult.append(field.type?.name).append(": ").append(field.value)
-                        .append("\n")
+                barcodesResult.append("Patient Fields:\n")
+                formattedResult.patient.fields.forEach {
+                    barcodesResult.append("${it.type.name}: ${it.value}\n")
                 }
                 barcodesResult.append("\n")
 
                 barcodesResult.append("Medicine Fields:").append("\n")
                 formattedResult.subheadings
-                    .asSequence()
-                    .flatMap {
-                        barcodesResult.append("\n")
-                        it.medicines.asSequence()
-                    }
-                    .flatMap { it.fields.asSequence() }
-                    .forEach {
-                        barcodesResult.append(it.type?.name).append(": ").append(it.value)
-                            .append("\n")
-                    }
+                        .asSequence()
+                        .flatMap {
+                            barcodesResult.append("\n")
+                            it.medicines.asSequence()
+                        }
+                        .flatMap { it.fields.asSequence() }
+                        .forEach {
+                            barcodesResult.append("${it.type.name}: ${it.value}\n")
+                        }
             }
             is DisabilityCertificateDocument -> {
-                barcodesResult.append("\n").append("Disability Certificate Document").append("\n")
+                barcodesResult.append("\nDisability Certificate Document\n")
 
                 formattedResult.fields.forEach {
-                    barcodesResult.append(it.type?.name).append(": ").append(it.value).append("\n")
+                    barcodesResult.append("${it.type?.name}: ${it.value}\n")
+                }
+            }
+            is IDCardPDF417Document -> {
+                barcodesResult.append("\nId Card PDF417\n")
+
+                formattedResult.fields.forEach {
+                    barcodesResult.append("${it.type?.name}: ${it.value}\n")
                 }
             }
             is SEPADocument -> {
-                barcodesResult.append("\n").append("Sepa Document").append("\n")
+                barcodesResult.append("\nSEPA Document\n")
 
                 formattedResult.fields.forEach {
-                    barcodesResult.append(it.type.name).append(": ").append(it.value).append("\n")
+                    barcodesResult.append("${it.type.name}: ${it.value}\n")
                 }
             }
+            is SwissQRDocument -> {
+                barcodesResult.append("\nSwiss QR Document\n")
+                barcodesResult.append("Version: ${formattedResult.version.name}\n")
 
+                formattedResult.fields.forEach {
+                    barcodesResult.append("${it.type.name}: ${it.value}\n")
+                }
+            }
             is VCardDocument -> {
-                barcodesResult.append("\n").append("Vcard Document").append("\n")
+                barcodesResult.append("\nVcard Document\n")
 
                 formattedResult.fields.forEach {
-                    barcodesResult.append(it.type.name).append(": ").append(it.rawText).append("\n")
+                    barcodesResult.append("${it.type.name}: ${it.rawText}\n")
                 }
             }
-
         }
-
         return barcodesResult.toString()
     }
 
