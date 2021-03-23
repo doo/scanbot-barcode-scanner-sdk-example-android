@@ -64,10 +64,8 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         barcodeDetectorFrameHandler?.addResultHandler(this)
 
         barcodeDetector.modifyConfig {
-            it.copy(
-                saveCameraPreviewFrame = true,
-                barcodeFormats = BarcodeTypeRepository.selectedTypes.toList()
-            )
+            setSaveCameraPreviewFrame(true)
+            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
         }
 
         val barcodeAutoSnappingController =
