@@ -1,6 +1,6 @@
 CWAC-Camera
 
-Version 0.6.40
+Version 0.6.41
 (https://github.com/doo/cwac-camera)
 (https://github.com/commonsguy/cwac-camera/)
 
