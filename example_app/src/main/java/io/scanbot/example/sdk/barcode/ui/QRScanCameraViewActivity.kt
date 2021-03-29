@@ -53,14 +53,20 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
             }
         })
 
+        val barcodeDetector = ScanbotBarcodeScannerSDK(this).barcodeDetector()
+
         barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.attach(
             cameraView!!,
-            ScanbotBarcodeScannerSDK(this).barcodeDetector()
+            barcodeDetector
         )
 
         barcodeDetectorFrameHandler?.setDetectionInterval(1000)
         barcodeDetectorFrameHandler?.addResultHandler(this)
-        barcodeDetectorFrameHandler?.saveCameraPreviewFrame(true)
+
+        barcodeDetector.modifyConfig {
+            setSaveCameraPreviewFrame(true)
+            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
+        }
 
         val barcodeAutoSnappingController =
             BarcodeAutoSnappingController.attach(cameraView!!, barcodeDetectorFrameHandler!!)
@@ -70,10 +76,6 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
                 this@QRScanCameraViewActivity.processPictureTaken(image, imageOrientation)
             }
         })
-
-        ScanbotBarcodeScannerSDK(this).barcodeDetector()
-            .setBarcodeFormatsFilter(BarcodeTypeRepository.selectedTypes.toList())
-
     }
 
     override fun onResume() {
