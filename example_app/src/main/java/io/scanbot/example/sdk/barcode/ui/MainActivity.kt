@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 processGalleryResult(data!!)?.let { bitmap ->
                     val barcodeDetector = sdk.barcodeDetector()
-                    barcodeDetector.modifyConfig { setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList()) }
+                    barcodeDetector.setBarcodeFormatsFilter(BarcodeTypeRepository.selectedTypes.toList())
                     val result = barcodeDetector.detectFromBitmap(bitmap, 0)
 
                     BarcodeResultRepository.barcodeResultBundle =
