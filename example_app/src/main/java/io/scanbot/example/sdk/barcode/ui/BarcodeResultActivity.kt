@@ -36,7 +36,7 @@ class BarcodeResultActivity : AppCompatActivity() {
                     recognisedItems,
                     false
                 )?.also {
-                    Picasso.with(this).load(File(imagePath)).into(it.snapImage)
+                    Picasso.get().load(File(imagePath)).into(it.snapImage)
                 })
         }
     }
