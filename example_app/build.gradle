@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0-beta02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation "io.scanbot:scanbot-barcode-scanner-sdk:$sdkVersion"
     implementation "io.scanbot:scanbot-barcode-scanner-sdk-ui:$sdkVersion"
