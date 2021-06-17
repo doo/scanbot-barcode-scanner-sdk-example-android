@@ -67,7 +67,7 @@ limitations under the License.
 
 Kotlin Standard Library
 
-Version 1.4
+Version 1.4.20
 (https://github.com/JetBrains/kotlin)
 
 Copyright 2010-2018 JetBrains s.r.o.
