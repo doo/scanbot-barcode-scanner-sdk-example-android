@@ -21,10 +21,7 @@ import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
 import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
-import io.scanbot.sdk.camera.CameraOpenCallback
-import io.scanbot.sdk.camera.FrameHandlerResult
-import io.scanbot.sdk.camera.PictureCallback
-import io.scanbot.sdk.camera.ScanbotCameraView
+import io.scanbot.sdk.camera.*
 
 class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
 
@@ -44,16 +41,14 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         cameraView = findViewById(R.id.camera)
         resultView = findViewById(R.id.result)
 
-        cameraView!!.setCameraOpenCallback(object : CameraOpenCallback {
-            override fun onCameraOpened() {
-                cameraView!!.postDelayed({
-                    cameraView!!.useFlash(flashEnabled)
-                    cameraView!!.continuousFocus()
-                }, 300)
-            }
-        })
+        cameraView!!.setCameraOpenCallback {
+            cameraView!!.postDelayed({
+                cameraView!!.useFlash(flashEnabled)
+                cameraView!!.continuousFocus()
+            }, 300)
+        }
 
-        val barcodeDetector = ScanbotBarcodeScannerSDK(this).barcodeDetector()
+        val barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
 
         barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.attach(
             cameraView!!,
@@ -72,8 +67,8 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
             BarcodeAutoSnappingController.attach(cameraView!!, barcodeDetectorFrameHandler!!)
         barcodeAutoSnappingController.setSensitivity(1f)
         cameraView?.addPictureCallback(object : PictureCallback() {
-            override fun onPictureTaken(image: ByteArray, imageOrientation: Int) {
-                this@QRScanCameraViewActivity.processPictureTaken(image, imageOrientation)
+            override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
+                processPictureTaken(image, captureInfo.imageOrientation)
             }
         })
     }
