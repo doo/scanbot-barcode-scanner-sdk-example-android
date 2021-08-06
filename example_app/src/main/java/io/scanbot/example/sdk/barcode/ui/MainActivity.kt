@@ -16,6 +16,7 @@ import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
+import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
@@ -34,9 +35,13 @@ class MainActivity : AppCompatActivity() {
         private const val IMPORT_IMAGE_REQUEST_CODE = 911
     }
 
+    private lateinit var barcodeDetector: ScanbotBarcodeDetector
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
 
         warning_view.isVisible = ScanbotBarcodeScannerSDK(this).licenseInfo.status == Status.StatusTrial
 
@@ -75,9 +80,7 @@ class MainActivity : AppCompatActivity() {
             imageIntent.type = "image/*"
             imageIntent.action = Intent.ACTION_GET_CONTENT
             imageIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, false)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
-            }
+            imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
             startActivityForResult(
                 Intent.createChooser(
                     imageIntent,
@@ -133,7 +136,6 @@ class MainActivity : AppCompatActivity() {
                 showLicenseDialog()
             } else {
                 processGalleryResult(data!!)?.let { bitmap ->
-                    val barcodeDetector = sdk.barcodeDetector()
                     barcodeDetector.modifyConfig { setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList()) }
                     val result = barcodeDetector.detectFromBitmap(bitmap, 0)
 
