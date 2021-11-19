@@ -32,7 +32,7 @@ class ExampleApplication : Application() {
                 }
             })
             // Uncomment to use new Camera X approach in Ready-To-Use UI screens (BETA)
-            // .useCameraXRtuUi(true)
+             .useCameraXRtuUi(true)
             //.sdkFilesDirectory(this, getExternalFilesDir(null)!!)
             .initialize(this)
 

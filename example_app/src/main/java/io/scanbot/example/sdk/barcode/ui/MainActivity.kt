@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -46,12 +47,16 @@ class MainActivity : AppCompatActivity() {
         warning_view.isVisible = ScanbotBarcodeScannerSDK(this).licenseInfo.status == Status.StatusTrial
 
         findViewById<View>(R.id.qr_demo).setOnClickListener {
-            val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
+//            startActivity(intent)
+            Toast.makeText(this, "Try another example to check the locked focus mode", Toast.LENGTH_SHORT).show()
         }
 
         findViewById<View>(R.id.rtu_ui).setOnClickListener {
             val barcodeCameraConfiguration = BarcodeScannerConfiguration()
+
+            barcodeCameraConfiguration.setFocusLockedToMinimal(true)
+
             barcodeCameraConfiguration.setBarcodeFormatsFilter(arrayListOf<BarcodeFormat>().also {
                 it.addAll(
                     BarcodeTypeRepository.selectedTypes
@@ -63,6 +68,9 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<View>(R.id.rtu_ui_image).setOnClickListener {
             val barcodeCameraConfiguration = BarcodeScannerConfiguration()
+
+            barcodeCameraConfiguration.setFocusLockedToMinimal(true)
+
             barcodeCameraConfiguration.setBarcodeFormatsFilter(arrayListOf<BarcodeFormat>().also {
                 it.addAll(
                     BarcodeTypeRepository.selectedTypes
@@ -103,6 +111,8 @@ class MainActivity : AppCompatActivity() {
             barcodeCameraConfiguration.setDetailsPrimaryColor(ContextCompat.getColor(this, android.R.color.white))
             barcodeCameraConfiguration.setBarcodesCountTextColor(ContextCompat.getColor(this, android.R.color.white))
             barcodeCameraConfiguration.setOrientationLockMode(CameraOrientationMode.PORTRAIT)
+
+            barcodeCameraConfiguration.setFocusLockedToMinimal(true)
 
             val intent = BatchBarcodeScannerActivity.newIntent(this@MainActivity, barcodeCameraConfiguration)
             startActivityForResult(intent, BARCODE_DEFAULT_UI_REQUEST_CODE)
