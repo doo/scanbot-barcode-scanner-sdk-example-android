@@ -24,14 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/camera" />
 
-    <TextView
-        android:id="@+id/snapped_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="snapped_message"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/flash"
         android:layout_width="wrap_content"
@@ -39,13 +31,5 @@
         android:text="Flash"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/result"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:contentDescription="snap_result"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
