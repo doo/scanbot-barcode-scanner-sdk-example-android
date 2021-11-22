@@ -81,7 +81,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
-                android:text="Classic batch Component"
+                android:text="Batch Barcode Classic Component"
                 android:textColor="@color/scanbot_sdk_textColorPrimary" />
 
             <View
