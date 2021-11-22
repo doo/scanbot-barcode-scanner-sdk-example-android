@@ -28,7 +28,7 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
 
     private lateinit var cameraView: ScanbotCameraView
     private lateinit var resultView: RecyclerView
-
+    private lateinit var flash: View
     private var flashEnabled = false
     private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
     private val resultAdapter by lazy { ResultAdapter(layoutInflater) }
@@ -39,7 +39,11 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
         setContentView(R.layout.activity_batch_qr_camera_view)
 
         cameraView = findViewById(R.id.camera)
-
+        flash = findViewById(R.id.flash)
+        flash.setOnClickListener {
+            flashEnabled = !flashEnabled
+            cameraView.useFlash(flashEnabled)
+        }
         resultView = findViewById(R.id.resultsList)
         resultView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         resultView.adapter = resultAdapter

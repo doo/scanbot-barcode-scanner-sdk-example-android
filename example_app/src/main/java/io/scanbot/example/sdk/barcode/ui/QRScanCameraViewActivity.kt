@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -25,8 +26,9 @@ import io.scanbot.sdk.camera.*
 
 class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
 
-    private var cameraView: ScanbotCameraView? = null
-    private var resultView: ImageView? = null
+    private lateinit var cameraView: ScanbotCameraView
+    private lateinit var resultView: ImageView
+    private lateinit var flash: View
 
     private var flashEnabled = false
     private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
@@ -40,18 +42,22 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
         cameraView = findViewById(R.id.camera)
         resultView = findViewById(R.id.result)
-
-        cameraView!!.setCameraOpenCallback {
-            cameraView!!.postDelayed({
-                cameraView!!.useFlash(flashEnabled)
-                cameraView!!.continuousFocus()
+        flash = findViewById(R.id.flash)
+        flash.setOnClickListener {
+            flashEnabled = !flashEnabled
+            cameraView.useFlash(flashEnabled)
+        }
+        cameraView.setCameraOpenCallback {
+            cameraView.postDelayed({
+                cameraView.useFlash(flashEnabled)
+                cameraView.continuousFocus()
             }, 300)
         }
 
         val barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
 
         barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.attach(
-            cameraView!!,
+            cameraView,
             barcodeDetector
         )
 
@@ -64,9 +70,9 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         }
 
         val barcodeAutoSnappingController =
-            BarcodeAutoSnappingController.attach(cameraView!!, barcodeDetectorFrameHandler!!)
+            BarcodeAutoSnappingController.attach(cameraView, barcodeDetectorFrameHandler!!)
         barcodeAutoSnappingController.setSensitivity(1f)
-        cameraView?.addPictureCallback(object : PictureCallback() {
+        cameraView.addPictureCallback(object : PictureCallback() {
             override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
                 processPictureTaken(image, captureInfo.imageOrientation)
             }
@@ -75,7 +81,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
     override fun onResume() {
         super.onResume()
-        cameraView?.onResume()
+        cameraView.onResume()
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // Use onActivityResult to handle permission rejection
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CODE)
@@ -84,7 +90,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
     override fun onPause() {
         super.onPause()
-        cameraView?.onPause()
+        cameraView.onPause()
     }
 
 
@@ -106,10 +112,10 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         val resultBitmap =
             Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
 
-        resultView?.post {
-            resultView?.setImageBitmap(resultBitmap)
-            cameraView?.continuousFocus()
-            cameraView?.startPreview()
+        resultView.post {
+            resultView.setImageBitmap(resultBitmap)
+            cameraView.continuousFocus()
+            cameraView.startPreview()
         }
     }
 
@@ -118,7 +124,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         if (result is FrameHandlerResult.Success) {
             handleSuccess(result)
         } else {
-            cameraView?.post {
+            cameraView.post {
                 Toast.makeText(
                     this,
                     "License has expired!",
