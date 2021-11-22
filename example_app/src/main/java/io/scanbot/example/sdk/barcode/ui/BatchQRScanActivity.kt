@@ -2,9 +2,6 @@ package io.scanbot.example.sdk.barcode
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,34 +26,35 @@ import io.scanbot.sdk.camera.ScanbotCameraView
 
 class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
 
-    private var cameraView: ScanbotCameraView? = null
-    private var resultView: RecyclerView? = null
+    private lateinit var cameraView: ScanbotCameraView
+    private lateinit var resultView: RecyclerView
 
     private var flashEnabled = false
     private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
     private val resultAdapter by lazy { ResultAdapter(layoutInflater) }
-    override fun onCreate(savedInstanceState: Bundle?) {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_batch_qr_camera_view)
 
         cameraView = findViewById(R.id.camera)
-        resultView = findViewById(R.id.resultsList)
-        resultView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        resultView?.adapter = resultAdapter
-        cameraView!!.setCameraOpenCallback {
-            cameraView!!.postDelayed({
-                cameraView!!.useFlash(flashEnabled)
-                cameraView!!.continuousFocus()
+        resultView = findViewById(R.id.resultsList)
+        resultView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        resultView.adapter = resultAdapter
+
+        cameraView.setCameraOpenCallback {
+            cameraView.postDelayed({
+                cameraView.useFlash(flashEnabled)
+                cameraView.continuousFocus()
             }, 300)
         }
 
         val barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
 
         barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.attach(
-            cameraView!!,
+            cameraView,
             barcodeDetector
         )
 
@@ -71,7 +69,7 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
 
     override fun onResume() {
         super.onResume()
-        cameraView?.onResume()
+        cameraView.onResume()
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
@@ -88,39 +86,22 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
 
     override fun onPause() {
         super.onPause()
-        cameraView?.onPause()
+        cameraView.onPause()
     }
-
 
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
         result.value?.let {
-            cameraView?.post {
+            cameraView.post {
                 resultAdapter.addBarcodeItems(it.barcodeItems)
             }
         }
     }
 
-
-    fun processPictureTaken(image: ByteArray, imageOrientation: Int) {
-        val bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-
-        val matrix = Matrix()
-        matrix.setRotate(imageOrientation.toFloat(), bitmap.width / 2f, bitmap.height / 2f)
-        val resultBitmap =
-            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
-        //use resultBitmap
-        resultView?.post {
-            cameraView?.continuousFocus()
-            cameraView?.startPreview()
-        }
-    }
-
-
     override fun handle(result: FrameHandlerResult<BarcodeScanningResult?, SdkLicenseError>): Boolean {
         if (result is FrameHandlerResult.Success) {
             handleSuccess(result)
         } else {
-            cameraView?.post {
+            cameraView.post {
                 Toast.makeText(
                     this,
                     "License has expired!",
@@ -140,7 +121,6 @@ class BarcodeViewHolder(item: View) : RecyclerView.ViewHolder(item) {
     val image: ImageView by lazy { item.findViewById(R.id.image) }
     val barcodeType: TextView by lazy { item.findViewById(R.id.barcodeFormat) }
     val text: TextView by lazy { item.findViewById(R.id.docText) }
-
 }
 
 class ResultAdapter(val layoutInflater: LayoutInflater) :
@@ -148,13 +128,15 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
     private val items: MutableList<BarcodeItem> = mutableListOf()
 
     fun addBarcodeItems(items: List<BarcodeItem>) {
-        //lets check duplicates
+        // lets check duplicates
         items.forEach { item ->
+            var insertedCount = 0
             if (!this.items.any { it.text == item.text }) {
                 this.items.add(0, item)
+                insertedCount += 1
             }
+            notifyItemRangeInserted(0, insertedCount)
         }
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BarcodeViewHolder {
