@@ -3,7 +3,6 @@ package io.scanbot.sdk.sdk_integration_barcode_scanner_sdk
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -47,6 +46,11 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.qr_demo).setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<View>(R.id.classical_batch).setOnClickListener {
+            val intent = Intent(applicationContext, BatchQRScanActivity::class.java)
             startActivity(intent)
         }
 

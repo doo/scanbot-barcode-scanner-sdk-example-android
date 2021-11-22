@@ -69,6 +69,20 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
 
                 android:textColor="@color/scanbot_sdk_textColorPrimary" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+            <TextView
+                android:id="@+id/classical_batch"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:text="Classic batch Component"
+                android:textColor="@color/scanbot_sdk_textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
