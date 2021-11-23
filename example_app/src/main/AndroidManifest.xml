@@ -27,8 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".QRScanCameraViewActivity" />
+        <activity android:name=".ui.QRScanCameraViewActivity" />
         <activity android:name=".BarcodeTypesActivity" />
+        <activity android:name=".ui.SnappedImageDetectionActivity" />
     </application>
 
 </manifest>

@@ -3,7 +3,6 @@ package io.scanbot.sdk.sdk_integration_barcode_scanner_sdk
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -14,6 +13,8 @@ import io.scanbot.example.sdk.barcode.*
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
+import io.scanbot.example.sdk.barcode.ui.QRScanCameraViewActivity
+import io.scanbot.example.sdk.barcode.ui.SnappedImageDetectionActivity
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
@@ -47,6 +48,10 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.qr_demo).setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
+            startActivity(intent)
+        }
+        findViewById<View>(R.id.classical_snapped_image).setOnClickListener {
+            val intent = Intent(applicationContext, SnappedImageDetectionActivity::class.java)
             startActivity(intent)
         }
 

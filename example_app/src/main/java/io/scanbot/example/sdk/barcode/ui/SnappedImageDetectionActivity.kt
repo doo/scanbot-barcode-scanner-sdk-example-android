@@ -3,7 +3,12 @@ package io.scanbot.example.sdk.barcode.ui
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -15,33 +20,44 @@ import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.sdk.SdkLicenseError
+import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
 import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
+import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
+import io.scanbot.sdk.barcode.entity.EngineMode
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.*
 
-class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
-    private lateinit var cameraView: ScanbotCameraView
+class SnappedImageDetectionActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
     private lateinit var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler
+    private lateinit var barcodeDetector: ScanbotBarcodeDetector
+    private lateinit var cameraView: ScanbotCameraView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_qr_camera_view)
+        setContentView(R.layout.activity_snapped_image)
 
         cameraView = findViewById(R.id.camera)
+
         cameraView.setCameraOpenCallback {
             cameraView.postDelayed({
                 cameraView.continuousFocus()
             }, 300)
         }
 
-        val barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
+        findViewById<Button>(R.id.take_picture_button).setOnClickListener {
+            cameraView.takePicture(false)
+        }
 
+        barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
         barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.attach(
             cameraView,
             barcodeDetector
         )
+
+        // Set to false if you want to disable live-detection
+        barcodeDetectorFrameHandler.isEnabled = true
 
         barcodeDetectorFrameHandler.setDetectionInterval(1000)
         barcodeDetectorFrameHandler.addResultHandler(this)
@@ -50,6 +66,12 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
             setSaveCameraPreviewFrame(true)
             setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
         }
+
+        cameraView.addPictureCallback(object : PictureCallback() {
+            override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
+                processPictureTaken(image, captureInfo.imageOrientation)
+            }
+        })
     }
 
     override fun onResume() {
@@ -66,18 +88,37 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         cameraView.onPause()
     }
 
-    private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
-        result.value?.let {
-            BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(it)
-            val intent = Intent(this, BarcodeResultActivity::class.java)
-            startActivity(intent)
-            finish()
+    private fun handleSuccess(result: BarcodeScanningResult) {
+        BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(result)
+        val intent = Intent(this, BarcodeResultActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    fun processPictureTaken(image: ByteArray, imageOrientation: Int) {
+        val bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
+
+        val w = bitmap.width
+        val h = bitmap.height
+
+        val cropped = Bitmap.createBitmap(bitmap, w / 6 , h / 6, w / 3 * 2, h / 3 * 2);
+        val result = barcodeDetector.detectFromBitmap(cropped, imageOrientation)
+
+
+        val barcodeItems = result?.barcodeItems
+        if (barcodeItems?.isNotEmpty() == true) {
+            handleSuccess(result)
+        } else {
+            cameraView.continuousFocus()
+            cameraView.startPreview()
+            Toast.makeText(this, "No barcodes found", Toast.LENGTH_SHORT).show()
         }
     }
 
+
     override fun handle(result: FrameHandlerResult<BarcodeScanningResult?, SdkLicenseError>): Boolean {
         if (result is FrameHandlerResult.Success) {
-            handleSuccess(result)
+            result.value?.let { handleSuccess(it) }
         } else {
             cameraView.post {
                 Toast.makeText(this, "License has expired!", Toast.LENGTH_LONG).show()

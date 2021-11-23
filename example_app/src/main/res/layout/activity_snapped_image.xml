@@ -16,4 +16,13 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@drawable/container_bg" />
 
+    <Button
+        android:id="@+id/take_picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="15dp"
+        android:elevation="6dp"
+        android:text="Take picture"/>
+
 </FrameLayout>
