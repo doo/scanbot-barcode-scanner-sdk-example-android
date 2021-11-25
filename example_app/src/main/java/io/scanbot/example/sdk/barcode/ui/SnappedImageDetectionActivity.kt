@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
@@ -57,7 +58,7 @@ class SnappedImageDetectionActivity : AppCompatActivity(), BarcodeDetectorFrameH
         )
 
         // Set to false if you want to disable live-detection
-        barcodeDetectorFrameHandler.isEnabled = true
+        barcodeDetectorFrameHandler.isEnabled = false
 
         barcodeDetectorFrameHandler.setDetectionInterval(1000)
         barcodeDetectorFrameHandler.addResultHandler(this)
@@ -98,12 +99,10 @@ class SnappedImageDetectionActivity : AppCompatActivity(), BarcodeDetectorFrameH
     fun processPictureTaken(image: ByteArray, imageOrientation: Int) {
         val bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
 
-        val w = bitmap.width
-        val h = bitmap.height
+        val start = System.currentTimeMillis()
+        val result = barcodeDetector.detectFromBitmap(bitmap, imageOrientation)
 
-        val cropped = Bitmap.createBitmap(bitmap, w / 6 , h / 6, w / 3 * 2, h / 3 * 2);
-        val result = barcodeDetector.detectFromBitmap(cropped, imageOrientation)
-
+        Log.e("Scanbot_example", "Timer ${System.currentTimeMillis() - start}")
 
         val barcodeItems = result?.barcodeItems
         if (barcodeItems?.isNotEmpty() == true) {

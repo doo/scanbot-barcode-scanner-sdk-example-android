@@ -9,13 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <View
-        android:id="@+id/finder_overlay"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:background="@drawable/container_bg" />
-
     <Button
         android:id="@+id/take_picture_button"
         android:layout_width="wrap_content"
