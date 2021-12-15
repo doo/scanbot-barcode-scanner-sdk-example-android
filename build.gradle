@@ -1,35 +1,31 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     ext.compileVersion = 30
     ext.targetVersion = 30
     ext.minVersion = 21
-    ext.kotlin_version = '1.4.20' // use the same version as SDK does
-    ext.sdkVersion = '3.0.7'
+    ext.kotlin_version = "1.4.20" // use the same version as SDK does
+    ext.sdkVersion = "3.0.8"
+
     repositories {
         google()
-        jcenter()
         mavenCentral()
 
-        maven { url 'https://nexus.scanbot.io/nexus/content/repositories/releases/' }
-        maven { url 'https://nexus.scanbot.io/nexus/content/repositories/snapshots/' }
+        maven { url "https://nexus.scanbot.io/nexus/content/repositories/releases/" }
+        maven { url "https://nexus.scanbot.io/nexus/content/repositories/snapshots/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath('com.android.tools.build:gradle:7.0.4')
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
 
-        maven { url 'https://nexus.scanbot.io/nexus/content/repositories/releases/' }
-        maven { url 'https://nexus.scanbot.io/nexus/content/repositories/snapshots/' }
+        maven { url "https://nexus.scanbot.io/nexus/content/repositories/releases/" }
+        maven { url "https://nexus.scanbot.io/nexus/content/repositories/snapshots/" }
     }
 }
 
