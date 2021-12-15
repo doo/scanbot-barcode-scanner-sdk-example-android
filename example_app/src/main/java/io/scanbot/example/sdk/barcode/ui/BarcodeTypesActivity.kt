@@ -27,7 +27,6 @@ class BarcodeTypesActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         typesList.layoutManager = layoutManager
 
-
             val adapter = BarcodeTypesAdapter()
             typesList.adapter = adapter
 
@@ -35,5 +34,4 @@ class BarcodeTypesActivity : AppCompatActivity() {
                 finish()
             }
         }
-
     }
