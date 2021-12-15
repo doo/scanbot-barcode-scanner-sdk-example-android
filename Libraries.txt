@@ -1,8 +1,8 @@
-Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.0.7
+Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.0.8
 
 CWAC-Camera
 
-Version 0.6.41
+Version 0.6.42
 (https://github.com/doo/cwac-camera)
 (https://github.com/commonsguy/cwac-camera/)
 
@@ -48,7 +48,7 @@ limitations under the License.
 
 Kotlin Standard Library
 
-Version 1.4.20
+Version 1.5.20
 (https://github.com/JetBrains/kotlin)
 
 Copyright 2010-2018 JetBrains s.r.o.
