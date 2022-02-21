@@ -15,6 +15,7 @@ import io.scanbot.example.sdk.barcode.*
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
+import io.scanbot.example.sdk.barcode.ui.BarcodeDocumentParserDemoActivity
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
@@ -113,6 +114,11 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.settings).setOnClickListener {
             val intent = Intent(this@MainActivity, BarcodeTypesActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<View>(R.id.classical_barcode_document_parser).setOnClickListener {
+            val intent = Intent(this@MainActivity, BarcodeDocumentParserDemoActivity::class.java)
             startActivity(intent)
         }
     }
