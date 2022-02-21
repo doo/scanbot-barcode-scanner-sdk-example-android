@@ -4,7 +4,7 @@ buildscript {
     ext.targetVersion = 30
     ext.minVersion = 21
     ext.kotlin_version = "1.4.20" // use the same version as SDK does
-    ext.sdkVersion = "3.1.1.147-SNAPSHOT"
+    ext.sdkVersion = "3.1.1.148-SNAPSHOT"
 
     repositories {
         google()
