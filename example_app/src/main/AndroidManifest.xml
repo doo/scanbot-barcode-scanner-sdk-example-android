@@ -30,6 +30,7 @@
         <activity android:name=".QRScanCameraViewActivity" />
         <activity android:name=".BarcodeTypesActivity" />
         <activity android:name=".BatchQRScanActivity" />
+        <activity android:name=".ui.BarcodeDocumentParserDemoActivity" />
     </application>
 
 </manifest>
