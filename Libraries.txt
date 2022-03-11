@@ -1,4 +1,4 @@
-Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.1.1
+Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.1.2
 
 CWAC-Camera
 
