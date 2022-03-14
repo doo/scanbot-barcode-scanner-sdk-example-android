@@ -25,7 +25,9 @@ class DetailedItemDataActivity : AppCompatActivity() {
         BarcodeResultRepository.selectedBarcodeItem?.let { item ->
             container?.also {
                 it.image.setImageBitmap(item.image)
-                it.barcodeFormat.text = item.barcodeFormat.name
+                it.docFormat.text = item.formattedResult?.let {
+                    it::class.java.simpleName
+                } ?: "Unknown document"
                 it.docFormat.text = item.formattedResult?.documentFormat
                 it.description.text = printParsedFormat(item)
             }
