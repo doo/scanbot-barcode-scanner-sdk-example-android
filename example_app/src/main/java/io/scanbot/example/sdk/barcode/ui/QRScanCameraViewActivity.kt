@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,14 +24,16 @@ import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.*
+import io.scanbot.sdk.ui.camera.ScanbotCameraXView
 
 class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
 
-    private lateinit var cameraView: ScanbotCameraView
+    private lateinit var cameraView: ScanbotCameraXView
     private lateinit var resultView: ImageView
     private lateinit var flash: View
 
     private var flashEnabled = false
+    private var cameraModule: CameraModule = CameraModule.BACK
     private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
 
 
@@ -41,12 +44,26 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         setContentView(R.layout.activity_qr_camera_view)
 
         cameraView = findViewById(R.id.camera)
+        cameraView.setCameraModule(cameraModule)
+
         resultView = findViewById(R.id.result)
+
         flash = findViewById(R.id.flash)
         flash.setOnClickListener {
             flashEnabled = !flashEnabled
             cameraView.useFlash(flashEnabled)
         }
+
+        findViewById<Button>(R.id.cam_switch).setOnClickListener {
+            cameraModule = if (cameraModule == CameraModule.BACK)
+                CameraModule.FRONT_MIRRORED
+            else
+                CameraModule.BACK
+
+            cameraView.setCameraModule(cameraModule)
+            cameraView.restartPreview()
+        }
+
         cameraView.setCameraOpenCallback {
             cameraView.postDelayed({
                 cameraView.useFlash(flashEnabled)
@@ -65,7 +82,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         barcodeDetectorFrameHandler?.addResultHandler(this)
 
         barcodeDetector.modifyConfig {
-            setSaveCameraPreviewFrame(true)
+            //setSaveCameraPreviewFrame(true)
             setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
         }
 
@@ -81,7 +98,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
     override fun onResume() {
         super.onResume()
-        cameraView.onResume()
+        cameraView.startPreview()
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // Use onActivityResult to handle permission rejection
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CODE)
@@ -90,7 +107,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
     override fun onPause() {
         super.onPause()
-        cameraView.onPause()
+        cameraView.stopPreview()
     }
 
 
