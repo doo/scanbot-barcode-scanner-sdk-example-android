@@ -28,7 +28,6 @@ class DetailedItemDataActivity : AppCompatActivity() {
                 it.docFormat.text = item.formattedResult?.let {
                     it::class.java.simpleName
                 } ?: "Unknown document"
-                it.docFormat.text = item.formattedResult?.documentFormat
                 it.description.text = printParsedFormat(item)
             }
         }
