@@ -28,7 +28,7 @@ For more details please refer to the SDK documentation.
 
 ## Documentation
 
-👉 [Scanbot Barcode Scanner SDK documentation](https://scanbotsdk.github.io/documentation/barcode-scanner-sdk/android/)
+👉 [Scanbot Barcode Scanner SDK documentation](https://docs.scanbot.io/barcode-scanner-sdk/android/introduction/)
 
 
 ## Please note
@@ -38,4 +38,4 @@ The Scanbot Barcode Scanner SDK will run without a license for one minute per se
 After the trial period has expired all SDK functions as well as the UI components will stop working.
 You have to restart the app to get another trial period.
 
-To get an unrestricted, "no-strings-attached" 30 day trial license, please submit the [Trial License Form](https://scanbot.io/en/sdk/demo/trial) on our website.
+To get a free "no-strings-attached" trial license, please submit the [Trial License Form](https://scanbot.io/trial/) on our website.
