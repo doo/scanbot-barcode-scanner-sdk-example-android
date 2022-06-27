@@ -1,6 +1,6 @@
 # Scanbot Barcode Scanner SDK Example App for Android
 
-This example app shows how to integrate the [Scanbot Barcode Scanner SDK](https://scanbot.io/developer/android-barcode-scanner/) for Android.
+This example app shows how to integrate the [Scanbot Barcode Scanner SDK for Android](https://scanbot.io/developer/android-barcode-scanner/).
 
 
 ## What is Scanbot Barcode Scanner SDK?
