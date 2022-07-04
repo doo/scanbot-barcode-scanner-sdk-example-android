@@ -14,7 +14,7 @@ for scanning and parsing 1D and 2D barcodes from your mobile device's camera or 
 - [1D codes](https://scanbot.io/products/barcode-software/1d-barcode-scanner/): [Code 39](https://scanbot.io/products/barcode-software/1d-barcode-scanner/code-39/), [Code 93](https://scanbot.io/products/barcode-software/1d-barcode-scanner/code-93/), [Code 128](https://scanbot.io/products/barcode-software/1d-barcode-scanner/code-128/), [Codabar](https://scanbot.io/products/barcode-software/1d-barcode-scanner/codabar/), [UPC-E](https://scanbot.io/products/barcode-software/1d-barcode-scanner/upc/), [ITF](https://scanbot.io/products/barcode-software/1d-barcode-scanner/itf/), [EAN-8](https://scanbot-sdk.com/products/barcode-software/1d-barcode-scanner/ean/), [EAN-13](https://scanbot-sdk.com/products/barcode-software/1d-barcode-scanner/ean/), [UPC-A](https://scanbot.io/products/barcode-software/1d-barcode-scanner/upc/)
 - [2D codes](https://scanbot.io/products/barcode-software/2d-barcode-scanner/): [QR-Code](https://scanbot.io/products/barcode-software/2d-barcode-scanner/qr-code/), [Aztec](https://scanbot.io/products/barcode-software/2d-barcode-scanner/aztec/), [PDF-417](https://scanbot.io/products/barcode-software/2d-barcode-scanner/pdf417/), [Data Matrix](https://scanbot.io/products/barcode-software/2d-barcode-scanner/data-matrix/)
 
-💡 Also check out our blog post [Types of barcodes](https://scanbot.io/blog/types-of-barcodes-and-their-usage).
+💡 Also check out our blog post [Types of barcodes](https://scanbot.io/blog/types-of-barcodes/).
 
 
 ### Supported Data Parsers:
