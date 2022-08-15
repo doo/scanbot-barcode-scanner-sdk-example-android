@@ -31,8 +31,8 @@ class ExampleApplication : Application() {
                     LoggerProvider.logger.d("ExampleApplication", "+++> Feature not available: ${feature.name}")
                 }
             })
-            // Uncomment to use new Camera X approach in Ready-To-Use UI screens (BETA)
-            // .useCameraXRtuUi(true)
+            // Uncomment to switch back to the legacy camera approach in Ready-To-Use UI screens
+            // .useCameraXRtuUi(false)
             //.sdkFilesDirectory(this, getExternalFilesDir(null)!!)
             .initialize(this)
 
