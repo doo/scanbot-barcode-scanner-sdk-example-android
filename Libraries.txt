@@ -1,4 +1,4 @@
-Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.2.2
+Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.2.3
 
 CWAC-Camera
 
@@ -48,7 +48,7 @@ limitations under the License.
 
 Kotlin Standard Library
 
-Version 1.4.20
+Version 1.6.21
 (https://github.com/JetBrains/kotlin)
 
 Copyright 2010-2018 JetBrains s.r.o.
@@ -85,7 +85,7 @@ limitations under the License.
 
 google-gson
 Version 2.8.6
-(https://github.com/google/gson/blob/gson-parent-2.8.5/LICENSE)
+(https://github.com/google/gson/blob/gson-parent-2.8.6/LICENSE)
 
 Copyright 2008 Google Inc.
 
@@ -105,7 +105,7 @@ limitations under the License.
 
 Dagger
 
-Version 2.35
+Version 2.41
 (https://github.com/google/dagger)
 
 Copyright 2012 The Dagger Authors
@@ -146,7 +146,7 @@ limitations under the License.
 
 Boost C++
 
-Version 1.75.0
+Version 1.79.0
 (https://github.com/boostorg/boost)
 
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -1848,7 +1848,3 @@ Version 1.1.0
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-
-
-
-
