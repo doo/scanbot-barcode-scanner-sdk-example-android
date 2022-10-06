@@ -135,7 +135,7 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
         // lets check duplicates
         items.forEach { item ->
             var insertedCount = 0
-            if (!this.items.any { it.text == item.text }) {
+            if (!this.items.any { it.textWithExtension == item.textWithExtension }) {
                 this.items.add(0, item)
                 insertedCount += 1
             }
@@ -149,7 +149,7 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
 
     override fun onBindViewHolder(holder: BarcodeViewHolder, position: Int) {
         val item = items.get(position)
-        holder.text.text = item.text
+        holder.text.text = item.textWithExtension
         holder.barcodeType.text = item.barcodeFormat.name
         holder.image.setImageBitmap(item.image)
     }

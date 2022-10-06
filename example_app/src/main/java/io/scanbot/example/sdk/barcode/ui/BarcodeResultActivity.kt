@@ -55,7 +55,7 @@ class BarcodeResultActivity : AppCompatActivity() {
                     } ?: "Unknown document"
                     it.docFormat.visibility =
                         if (item.formattedResult != null) View.VISIBLE else View.GONE
-                    it.docText.text = item.text
+                    it.docText.text = item.textWithExtension
                     it.setOnClickListener {
                         val intent = Intent(this, DetailedItemDataActivity::class.java)
                         BarcodeResultRepository.selectedBarcodeItem = item
