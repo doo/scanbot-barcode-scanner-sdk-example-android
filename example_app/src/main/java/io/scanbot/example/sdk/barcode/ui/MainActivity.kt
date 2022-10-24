@@ -20,10 +20,12 @@ import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
+import io.scanbot.sdk.barcode.ui.BarcodeOverlayTextFormat
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.batch.BatchBarcodeScannerActivity
 import io.scanbot.sdk.ui.registerForActivityResultOk
+import io.scanbot.sdk.ui.view.barcode.SelectionOverlayConfiguration
 import io.scanbot.sdk.ui.view.barcode.batch.configuration.BatchBarcodeScannerConfiguration
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeImageGenerationType
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration
@@ -73,6 +75,17 @@ class MainActivity : AppCompatActivity() {
                 )
             })
             barcodeCameraConfiguration.setBarcodeImageGenerationType(BarcodeImageGenerationType.VIDEO_FRAME)
+            barcodeResultLauncher.launch(barcodeCameraConfiguration)
+        }
+
+        findViewById<View>(R.id.rtu_ui_selection_overlay).setOnClickListener {
+            val barcodeCameraConfiguration = BarcodeScannerConfiguration()
+            barcodeCameraConfiguration.setSelectionOverlayConfiguration(
+                SelectionOverlayConfiguration(
+                    overlayEnabled = true,
+                    textFormat = BarcodeOverlayTextFormat.CODE_AND_TYPE // Select NONE to hide the value
+                )
+            )
             barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 

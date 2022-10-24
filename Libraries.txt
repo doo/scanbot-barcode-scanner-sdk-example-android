@@ -1,4 +1,4 @@
-Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.2.3
+Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.3.0
 
 CWAC-Camera
 
@@ -24,7 +24,7 @@ limitations under the License.
 
 Apache Commons IO
 
-Version 2.4
+Version 2.11.0
 (https://github.com/apache/commons-io)
 
 Copyright (c) The Apache Software Foundation
@@ -84,8 +84,8 @@ limitations under the License.
 
 
 google-gson
-Version 2.8.6
-(https://github.com/google/gson/blob/gson-parent-2.8.6/LICENSE)
+Version 2.9.1
+(https://github.com/google/gson/blob/gson-parent-2.8.5/LICENSE)
 
 Copyright 2008 Google Inc.
 
@@ -462,7 +462,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
 
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
