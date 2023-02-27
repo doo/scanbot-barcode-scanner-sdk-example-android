@@ -1,4 +1,4 @@
-Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.4.0
+Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 3.5.0
 
 CWAC-Camera
 
@@ -1266,7 +1266,7 @@ and users must comply to its license: https://github.com/fmtlib/fmt/blob/master/
 
 Tensorflow
 
-Version 339ccc2b03
+Version v2.10.0
 (https://github.com/tensorflow/tensorflow)
 
                                  Apache License
