@@ -16,6 +16,7 @@ import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.example.sdk.barcode.ui.BarcodeDocumentParserDemoActivity
+import io.scanbot.example.sdk.barcode.ui.BarcodeScannerViewActivity
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
@@ -48,6 +49,11 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.qr_demo).setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<View>(R.id.classical_ar_overlay_demo).setOnClickListener {
+            val intent = Intent(applicationContext, BarcodeScannerViewActivity::class.java)
             startActivity(intent)
         }
 
