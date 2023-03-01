@@ -49,7 +49,7 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
         }
 
         barcodeScannerView.apply {
-            initCamera(CameraUiSettings(false))
+            initCamera(CameraUiSettings(true))
             initDetectionBehavior(barcodeDetector,
                 { result ->
                     if (result is FrameHandlerResult.Success) {
