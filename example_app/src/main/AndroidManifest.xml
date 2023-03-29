@@ -32,6 +32,7 @@
         <activity android:name=".BatchQRScanActivity" />
         <activity android:name=".ui.BarcodeDocumentParserDemoActivity" />
         <activity android:name=".ui.BarcodeScannerViewActivity" />
+        <activity android:name=".ui.CalculateCodesActivity" />
     </application>
 
 </manifest>

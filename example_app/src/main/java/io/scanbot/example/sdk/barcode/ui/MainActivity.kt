@@ -17,6 +17,7 @@ import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.example.sdk.barcode.ui.BarcodeDocumentParserDemoActivity
 import io.scanbot.example.sdk.barcode.ui.BarcodeScannerViewActivity
+import io.scanbot.example.sdk.barcode.ui.CalculateCodesActivity
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
@@ -59,6 +60,11 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.classical_batch).setOnClickListener {
             val intent = Intent(applicationContext, BatchQRScanActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<View>(R.id.classical_calculate_codes).setOnClickListener {
+            val intent = Intent(applicationContext, CalculateCodesActivity::class.java)
             startActivity(intent)
         }
 

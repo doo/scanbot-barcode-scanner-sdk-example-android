@@ -62,7 +62,7 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
             barcodeDetector
         )
 
-        barcodeDetectorFrameHandler?.setDetectionInterval(1000)
+        barcodeDetectorFrameHandler?.setDetectionInterval(0)
         barcodeDetectorFrameHandler?.addResultHandler(this)
 
         barcodeDetector.modifyConfig {
@@ -96,7 +96,7 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
         result.value?.let {
             cameraView.post {
-                resultAdapter.addBarcodeItems(it.barcodeItems)
+                resultAdapter.processBarcodeItemsBatch(it.barcodeItems)
             }
         }
     }
@@ -127,20 +127,41 @@ class BarcodeViewHolder(item: View) : RecyclerView.ViewHolder(item) {
     val text: TextView by lazy { item.findViewById(R.id.docText) }
 }
 
-class ResultAdapter(val layoutInflater: LayoutInflater) :
+class ResultAdapter(private val layoutInflater: LayoutInflater) :
     RecyclerView.Adapter<BarcodeViewHolder>() {
-    private val items: MutableList<BarcodeItem> = mutableListOf()
+    // barcode item -> count
+    private val items: MutableMap<BarcodeItem, Int> = linkedMapOf()
+    // value -> time to live
+    private var recentBarcodesFilter: MutableMap<String, Long> = linkedMapOf()
 
-    fun addBarcodeItems(items: List<BarcodeItem>) {
-        // lets check duplicates
-        items.forEach { item ->
-            var insertedCount = 0
-            if (!this.items.any { it.textWithExtension == item.textWithExtension }) {
-                this.items.add(0, item)
-                insertedCount += 1
+    fun processBarcodeItemsBatch(items: List<BarcodeItem>) {
+        processFilteredBatch(items).forEach { item ->
+            val currentItem = this.items.keys.firstOrNull() { existing -> existing.textWithExtension == item.textWithExtension }
+            if (currentItem == null) {
+                this.items[item] = 1
+            } else {
+                val currentItemCount = this.items[currentItem]
+                currentItemCount?.let {
+                    this.items[currentItem] = currentItemCount + 1
+                }
             }
-            notifyItemRangeInserted(0, insertedCount)
         }
+        notifyDataSetChanged()
+    }
+
+    private fun processFilteredBatch(items: List<BarcodeItem>): List<BarcodeItem> {
+        recentBarcodesFilter.filter {
+            it.value < System.currentTimeMillis()
+        }.forEach {
+            recentBarcodesFilter.remove(it.key)
+        }
+        val result = items.filterNot {
+            recentBarcodesFilter.containsKey(it.textWithExtension)
+        }
+        items.forEach {
+            recentBarcodesFilter[it.textWithExtension] = System.currentTimeMillis() + 1000
+        }
+        return result
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BarcodeViewHolder {
@@ -148,8 +169,10 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
     }
 
     override fun onBindViewHolder(holder: BarcodeViewHolder, position: Int) {
-        val item = items.get(position)
-        holder.text.text = item.textWithExtension
+        val itemsAsList = items.toList().reversed()
+        val barcodeToCount = itemsAsList[position]
+        val item = barcodeToCount.first
+        holder.text.text = "(x${barcodeToCount.second}) ${item.textWithExtension}"
         holder.barcodeType.text = item.barcodeFormat.name
         holder.image.setImageBitmap(item.image)
     }
