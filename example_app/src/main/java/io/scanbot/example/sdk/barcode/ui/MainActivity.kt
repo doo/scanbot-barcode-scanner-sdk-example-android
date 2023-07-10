@@ -243,7 +243,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     processPdfGalleryResult(activityResult.data!!)?.let { file ->
                         val outputDir = File(getExternalFilesDir(null), "images/")
-                        if(!outputDir.exists()) outputDir.mkdir()
+                        if (!outputDir.exists()) outputDir.mkdir()
                         outputDir.listFiles()?.forEach { it.delete() }
 
                         val pdfImagesExtractor = sdk.createPdfImagesExtractor()
@@ -254,9 +254,11 @@ class MainActivity : AppCompatActivity() {
                         images.forEach { uri ->
                             val bitmap = BitmapFactory.decodeFile(uri.path)
                             val result = barcodeDetector.detectFromBitmap(bitmap, 0)
-
-                            BarcodeResultRepository.barcodeResultBundle =
-                                result?.let { BarcodeResultBundle(it, null, null) }
+                            // set the last detected result as the final result
+                            result?.let {
+                                BarcodeResultRepository.barcodeResultBundle =
+                                    BarcodeResultBundle(it, null, null)
+                            }
                         }
 
 
