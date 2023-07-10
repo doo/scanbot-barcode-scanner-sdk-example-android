@@ -1,4 +1,4 @@
-package io.scanbot.sdk.sdk_integration_barcode_scanner_sdk
+package io.scanbot.example.sdk.barcode.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -15,8 +15,6 @@ import io.scanbot.example.sdk.barcode.*
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
-import io.scanbot.example.sdk.barcode.ui.BarcodeDocumentParserDemoActivity
-import io.scanbot.example.sdk.barcode.ui.BarcodeScannerViewActivity
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
@@ -32,7 +30,6 @@ import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeImageGenerationType
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui.view.base.configuration.CameraOrientationMode
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_qr_camera_view.*
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +51,11 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.classical_ar_overlay_demo).setOnClickListener {
             val intent = Intent(applicationContext, BarcodeScannerViewActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<View>(R.id.classical_scan_count_demo).setOnClickListener {
+            val intent = Intent(applicationContext, BarcodeScanAndCountViewActivity::class.java)
             startActivity(intent)
         }
 
