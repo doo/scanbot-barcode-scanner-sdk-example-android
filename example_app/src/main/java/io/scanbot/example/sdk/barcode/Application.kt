@@ -5,6 +5,7 @@ import io.scanbot.sap.IScanbotSDKLicenseErrorHandler
 import io.scanbot.sap.SdkFeature
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDKInitializer
+import io.scanbot.sdk.pdf.PdfImagesExtractor
 import io.scanbot.sdk.util.log.LoggerProvider
 
 class ExampleApplication : Application() {
@@ -31,6 +32,7 @@ class ExampleApplication : Application() {
                     LoggerProvider.logger.d("ExampleApplication", "+++> Feature not available: ${feature.name}")
                 }
             })
+            .pdfImagesExtractorType(PdfImagesExtractor.Type.PDFIUM) // select PDFium or default android pdf library to extract barcode image
             // Uncomment to switch back to the legacy camera approach in Ready-To-Use UI screens
             // .useCameraXRtuUi(false)
             //.sdkFilesDirectory(this, getExternalFilesDir(null)!!)

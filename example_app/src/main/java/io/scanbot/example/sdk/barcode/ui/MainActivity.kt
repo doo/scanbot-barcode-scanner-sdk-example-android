@@ -3,6 +3,7 @@ package io.scanbot.example.sdk.barcode.ui
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -30,6 +31,7 @@ import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeImageGenerationType
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui.view.base.configuration.CameraOrientationMode
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -42,7 +44,8 @@ class MainActivity : AppCompatActivity() {
 
         barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
 
-        warning_view.isVisible = ScanbotBarcodeScannerSDK(this).licenseInfo.status == Status.StatusTrial
+        warning_view.isVisible =
+            ScanbotBarcodeScannerSDK(this).licenseInfo.status == Status.StatusTrial
 
         findViewById<View>(R.id.qr_demo).setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
@@ -108,18 +111,64 @@ class MainActivity : AppCompatActivity() {
             importImageResultLauncher.launch(wrappedIntent)
         }
 
+        findViewById<View>(R.id.rtu_ui_import_pdf).setOnClickListener {
+            // select an image from photo library and run document detection on it:
+            val imageIntent = Intent()
+            imageIntent.type = "application/pdf"
+            imageIntent.action = Intent.ACTION_GET_CONTENT
+            imageIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, false)
+            imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+            val wrappedIntent = Intent.createChooser(imageIntent, getString(R.string.share_title))
+            importPdfResultLauncher.launch(wrappedIntent)
+        }
+
         findViewById<View>(R.id.rtu_ui_batch_mode).setOnClickListener {
             val barcodeCameraConfiguration = BatchBarcodeScannerConfiguration()
 
-            barcodeCameraConfiguration.setTopBarButtonsColor(ContextCompat.getColor(this, android.R.color.white))
-            barcodeCameraConfiguration.setTopBarBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+            barcodeCameraConfiguration.setTopBarButtonsColor(
+                ContextCompat.getColor(
+                    this,
+                    android.R.color.white
+                )
+            )
+            barcodeCameraConfiguration.setTopBarBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorPrimaryDark
+                )
+            )
             barcodeCameraConfiguration.setFinderTextHint("Please align the QR-/Barcode in the frame above to scan it.")
 
-            barcodeCameraConfiguration.setDetailsBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
-            barcodeCameraConfiguration.setDetailsActionColor(ContextCompat.getColor(this, android.R.color.white))
-            barcodeCameraConfiguration.setDetailsBackgroundColor(ContextCompat.getColor(this, R.color.sheetColor))
-            barcodeCameraConfiguration.setDetailsPrimaryColor(ContextCompat.getColor(this, android.R.color.white))
-            barcodeCameraConfiguration.setBarcodesCountTextColor(ContextCompat.getColor(this, android.R.color.white))
+            barcodeCameraConfiguration.setDetailsBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    android.R.color.white
+                )
+            )
+            barcodeCameraConfiguration.setDetailsActionColor(
+                ContextCompat.getColor(
+                    this,
+                    android.R.color.white
+                )
+            )
+            barcodeCameraConfiguration.setDetailsBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.sheetColor
+                )
+            )
+            barcodeCameraConfiguration.setDetailsPrimaryColor(
+                ContextCompat.getColor(
+                    this,
+                    android.R.color.white
+                )
+            )
+            barcodeCameraConfiguration.setBarcodesCountTextColor(
+                ContextCompat.getColor(
+                    this,
+                    android.R.color.white
+                )
+            )
             barcodeCameraConfiguration.setOrientationLockMode(CameraOrientationMode.PORTRAIT)
             barcodeCameraConfiguration.setBarcodeFormatsFilter(arrayListOf<BarcodeFormat>().also {
                 it.addAll(
@@ -172,12 +221,44 @@ class MainActivity : AppCompatActivity() {
                 if (!sdk.licenseInfo.isValid) {
                     showLicenseDialog()
                 } else {
-                    processGalleryResult(activityResult.data!!)?.let { bitmap ->
+                    processImageGalleryResult(activityResult.data!!)?.let { bitmap ->
                         barcodeDetector.modifyConfig { setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList()) }
                         val result = barcodeDetector.detectFromBitmap(bitmap, 0)
 
                         BarcodeResultRepository.barcodeResultBundle =
                             result?.let { BarcodeResultBundle(it, null, null) }
+
+                        startActivity(Intent(this, BarcodeResultActivity::class.java))
+                    }
+                }
+            }
+        }
+
+    private val importPdfResultLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == Activity.RESULT_OK) {
+                val sdk = ScanbotBarcodeScannerSDK(this)
+                if (!sdk.licenseInfo.isValid) {
+                    showLicenseDialog()
+                } else {
+                    processPdfGalleryResult(activityResult.data!!)?.let { file ->
+                        val outputDir = File(getExternalFilesDir(null), "images/")
+                        if(!outputDir.exists()) outputDir.mkdir()
+                        outputDir.listFiles()?.forEach { it.delete() }
+
+                        val pdfImagesExtractor = sdk.createPdfImagesExtractor()
+                        val images =
+                            pdfImagesExtractor.imageUrlsFromPdf(file, outputDir, prefix = "image")
+
+                        barcodeDetector.modifyConfig { setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList()) }
+                        images.forEach { uri ->
+                            val bitmap = BitmapFactory.decodeFile(uri.path)
+                            val result = barcodeDetector.detectFromBitmap(bitmap, 0)
+
+                            BarcodeResultRepository.barcodeResultBundle =
+                                result?.let { BarcodeResultBundle(it, null, null) }
+                        }
+
 
                         startActivity(Intent(this, BarcodeResultActivity::class.java))
                     }
@@ -192,7 +273,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun processGalleryResult(data: Intent): Bitmap? {
+    private fun processImageGalleryResult(data: Intent): Bitmap? {
         val imageUri = data.data
         var bitmap: Bitmap? = null
         if (imageUri != null) {
@@ -202,5 +283,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return bitmap
+    }
+
+    private fun processPdfGalleryResult(data: Intent): File? {
+        val uri = data.data
+        if (uri != null) {
+            try {
+                return contentResolver.openInputStream(uri).use { inputStream ->
+                    val file = File.createTempFile("temp", ".pdf")
+                    file.outputStream().use { outputStream ->
+                        inputStream?.copyTo(outputStream)
+                    }
+                    file
+                }
+            } catch (e: IOException) {
+            }
+        }
+        return null
     }
 }
