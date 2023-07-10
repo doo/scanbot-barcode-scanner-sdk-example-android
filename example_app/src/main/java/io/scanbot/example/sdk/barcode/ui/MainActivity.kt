@@ -20,6 +20,7 @@ import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
+import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode.ui.BarcodeOverlayTextFormat
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity
@@ -251,14 +252,14 @@ class MainActivity : AppCompatActivity() {
                             pdfImagesExtractor.imageUrlsFromPdf(file, outputDir, prefix = "image")
 
                         barcodeDetector.modifyConfig { setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList()) }
-                        images.forEach { uri ->
+                        images.map { uri ->
                             val bitmap = BitmapFactory.decodeFile(uri.path)
                             val result = barcodeDetector.detectFromBitmap(bitmap, 0)
                             // set the last detected result as the final result
-                            result?.let {
-                                BarcodeResultRepository.barcodeResultBundle =
-                                    BarcodeResultBundle(it, null, null)
-                            }
+                            result?.barcodeItems ?: emptyList()
+                        }.let {
+                            BarcodeResultRepository.barcodeResultBundle =
+                                BarcodeResultBundle(BarcodeScanningResult(it.flatten()), null, null)
                         }
 
 
