@@ -2,6 +2,7 @@ package io.scanbot.example.sdk.barcode.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -84,13 +85,32 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
             barcodeDetectionInterval = 0
             autoSnappingEnabled = false
         }
-        barcodeScannerView.selectionOverlayController.setBarcodeItemViewFactory(object : BarcodePolygonsView.BarcodeItemViewFactory {
+        barcodeScannerView.selectionOverlayController.setBarcodeAppearanceDelegate(object :
+            BarcodePolygonsView.BarcodeAppearanceDelegate {
+            override fun getPolygonStyle(
+                defaultStyle: BarcodePolygonsView.BarcodePolygonStyle,
+                barcodeItem: BarcodeItem
+            ): BarcodePolygonsView.BarcodePolygonStyle {
+                return defaultStyle.copy(strokeColor = Color.CYAN)
+            }
+
+            override fun getTextViewStyle(
+                defaultStyle: BarcodePolygonsView.BarcodeTextViewStyle,
+                barcodeItem: BarcodeItem
+            ): BarcodePolygonsView.BarcodeTextViewStyle {
+                return defaultStyle.copy(textColor = Color.BLACK)
+            }
+
+        })
+        barcodeScannerView.selectionOverlayController.setBarcodeItemViewFactory(object :
+            BarcodePolygonsView.BarcodeItemViewFactory {
             override fun createView(): View {
                 val inflater = LayoutInflater.from(this@BarcodeScannerViewActivity)
                 return inflater.inflate(R.layout.custom_view_for_ar, barcodeScannerView, false)
             }
         })
-        barcodeScannerView.selectionOverlayController.setBarcodeItemViewBinder(object : BarcodePolygonsView.BarcodeItemViewBinder {
+        barcodeScannerView.selectionOverlayController.setBarcodeItemViewBinder(object :
+            BarcodePolygonsView.BarcodeItemViewBinder {
             override fun bindView(view: View, barcodeItem: BarcodeItem, shouldHighlight: Boolean) {
                 val textWithExtension = barcodeItem.textWithExtension
                 val progressView = view.findViewById<ProgressBar>(R.id.custom_ar_view_progress)
@@ -111,9 +131,17 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         barcodeScannerView.viewController.onResume()
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             // Use onActivityResult to handle permission rejection
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CODE)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_PERMISSION_CODE
+            )
         }
     }
 
