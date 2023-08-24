@@ -2,6 +2,7 @@ package io.scanbot.example.sdk.barcode.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.PointF
 import android.graphics.RectF
 import android.os.Bundle
@@ -98,7 +99,6 @@ class BarcodeScanAndCountViewActivity : AppCompatActivity() {
         }
 
         // Setting the Selection Overlay (AR)
-        scanCountView.counterOverlayController.setPolygonPolygonEnabled(true)
         scanCountView.counterOverlayController.setBarcodeItemViewFactory(object :
             BarcodePolygonsStaticView.BarcodeItemViewFactory {
             override fun createView(): View {
@@ -116,7 +116,16 @@ class BarcodeScanAndCountViewActivity : AppCompatActivity() {
                 valueTextView.maxLines = 2
             }
         })
+        scanCountView.counterOverlayController.setBarcodeAppearanceDelegate(object :
+            BarcodePolygonsStaticView.BarcodeAppearanceDelegate {
+            override fun getPolygonStyle(
+                defaultStyle: BarcodePolygonsStaticView.BarcodePolygonStyle,
+                barcodeItem: BarcodeItem
+            ): BarcodePolygonsStaticView.BarcodePolygonStyle {
+                return defaultStyle.copy(drawPolygon = true, useFill = true, fillColor = Color.RED)
+            }
 
+        })
         scanCountView.counterOverlayController.setBarcodeItemViewPositionHandler(object :
             BarcodePolygonsStaticView.BarcodeItemViewPositionHandler {
 
