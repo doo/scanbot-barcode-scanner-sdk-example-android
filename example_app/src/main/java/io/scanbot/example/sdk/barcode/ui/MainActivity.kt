@@ -177,10 +177,7 @@ class MainActivity : AppCompatActivity() {
                 )
             })
 
-            val rtuInput = BatchBarcodeScannerActivity.InputParams(
-                barcodeCameraConfiguration
-            )
-            batchBarcodeResultLauncher.launch(rtuInput)
+            batchBarcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
         findViewById<View>(R.id.settings).setOnClickListener {
@@ -206,7 +203,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-    private val batchBarcodeResultLauncher: ActivityResultLauncher<BatchBarcodeScannerActivity.InputParams> =
+    private val batchBarcodeResultLauncher: ActivityResultLauncher<BatchBarcodeScannerConfiguration> =
         registerForActivityResultOk(BatchBarcodeScannerActivity.ResultContract()) { resultEntity ->
             BarcodeResultRepository.barcodeResultBundle =
                 BarcodeResultBundle(resultEntity.result!!)
