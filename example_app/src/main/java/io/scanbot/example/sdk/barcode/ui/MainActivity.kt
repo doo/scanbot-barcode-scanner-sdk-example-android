@@ -21,6 +21,7 @@ import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
+import io.scanbot.sdk.barcode.entity.Gs1Handling
 import io.scanbot.sdk.barcode.ui.BarcodeOverlayTextFormat
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity
@@ -29,6 +30,7 @@ import io.scanbot.sdk.ui.registerForActivityResultOk
 import io.scanbot.sdk.ui.view.barcode.SelectionOverlayConfiguration
 import io.scanbot.sdk.ui.view.barcode.batch.configuration.BatchBarcodeScannerConfiguration
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeImageGenerationType
+import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerAdditionalConfiguration
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui.view.base.configuration.CameraOrientationMode
 import kotlinx.android.synthetic.main.activity_main.*
@@ -75,6 +77,11 @@ class MainActivity : AppCompatActivity() {
                     BarcodeTypeRepository.selectedTypes
                 )
             })
+            barcodeCameraConfiguration.setAdditionalDetectionParameters(
+                BarcodeScannerAdditionalConfiguration(
+                    gs1HandlingMode = Gs1Handling.DECODE
+                )
+            )
             barcodeCameraConfiguration.setBarcodeImageGenerationType(BarcodeImageGenerationType.NONE)
             barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
