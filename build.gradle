@@ -1,32 +1,13 @@
 
 buildscript {
-    ext.compileVersion = 31
-    ext.targetVersion = 30
-    ext.minVersion = 21
-    ext.kotlin_version = "1.6.21" // use the same version as SDK does
-    ext.sdkVersion = "4.2.0"
-
-    repositories {
-        google()
-        mavenCentral()
-
-        maven { url "https://nexus.scanbot.io/nexus/content/repositories/releases/" }
-        maven { url "https://nexus.scanbot.io/nexus/content/repositories/snapshots/" }
-    }
-    dependencies {
-        classpath('com.android.tools.build:gradle:7.0.4')
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-    }
+    ext.kotlin_version = "1.8.10" // use the same version as SDK does
+    ext.sdkVersion = "5.0.0.332-SNAPSHOT"
+    ext.sdkBundleVersion = "4.2.0" // merge with SDK version when 5.0 bundle starts existing
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-
-        maven { url "https://nexus.scanbot.io/nexus/content/repositories/releases/" }
-        maven { url "https://nexus.scanbot.io/nexus/content/repositories/snapshots/" }
-    }
+plugins {
+    id "com.android.application" version "7.4.2" apply false
+    id "org.jetbrains.kotlin.android" version "$kotlin_version" apply false
 }
 
 task clean(type: Delete) {

@@ -1,2 +1,23 @@
-include ':example_app'
-rootProject.name='Scanbot Barcode SDK Example'
+
+pluginManagement {
+   repositories {
+      google()
+      gradlePluginPortal()
+   }
+}
+
+dependencyResolutionManagement {
+   repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+
+   repositories {
+      mavenLocal() // TODO: remove
+      google()
+      mavenCentral()
+
+      maven { url "https://nexus.scanbot.io/nexus/content/repositories/releases/" }
+      maven { url "https://nexus.scanbot.io/nexus/content/repositories/snapshots/" }
+   }
+}
+
+include(":example_app")
+rootProject.name = "Scanbot Barcode SDK Example"

@@ -1,26 +1,24 @@
 
-apply plugin: "com.android.application"
-apply plugin: "kotlin-android"
-apply plugin: "kotlin-android-extensions"
+plugins {
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+}
 
 android {
-    compileSdkVersion compileVersion
+    compileSdk = 34
 
     defaultConfig {
-        applicationId "io.scanbot.example.sdk.barcode.android"
-        targetSdkVersion targetVersion
-        minSdkVersion minVersion
-        multiDexEnabled true
+        applicationId = "io.scanbot.example.sdk.barcode.android"
+        targetSdk = 30
+        minSdk = 21
 
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode = 1
+        versionName = "1.0"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
@@ -28,14 +26,12 @@ android {
         jvmTarget = JavaVersion.VERSION_11
     }
 
-    dexOptions {
-        javaMaxHeapSize "4g"
-        keepRuntimeAnnotatedClasses false
+    buildFeatures {
+        viewBinding = true
     }
 }
 
 dependencies {
-    implementation(fileTree(dir: "libs", include: ["*.jar"]))
     implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("com.squareup.picasso:picasso:2.71828")
 
@@ -44,7 +40,8 @@ dependencies {
 
     implementation("io.scanbot:scanbot-barcode-scanner-sdk:$sdkVersion")
     implementation("io.scanbot:scanbot-barcode-scanner-sdk-ui:$sdkVersion")
-    implementation("io.scanbot:barcode-sdk-pdfium:$sdkVersion")
+    implementation("io.scanbot:rtu-ui-v2-barcode:$sdkVersion")
+    implementation("io.scanbot:barcode-sdk-pdfium:$sdkBundleVersion") // switch to sdkVersion when possible
 
     implementation("com.google.android.material:material:1.4.0")
 }
