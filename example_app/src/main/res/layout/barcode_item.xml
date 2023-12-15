@@ -11,10 +11,7 @@
         android:id="@+id/image"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="8dp"
         android:minWidth="100dp"
         android:minHeight="100dp"
         android:src="@drawable/ic_broken_image_white_24dp"
@@ -26,11 +23,7 @@
         android:id="@+id/barcodeFormat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_margin="8dp"
         android:fontFamily="sans-serif-black"
         android:textStyle="bold"
         android:typeface="normal"
@@ -43,10 +36,7 @@
         android:id="@+id/docFormat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_margin="8dp"
         android:fontFamily="sans-serif-black"
         android:textStyle="bold"
         android:typeface="normal"
@@ -56,16 +46,11 @@
         app:layout_constraintTop_toBottomOf="@+id/barcodeFormat"
         tools:text="document type" />
 
-
     <TextView
         android:id="@+id/docText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_margin="8dp"
         android:singleLine="true"
         android:typeface="normal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,5 +58,4 @@
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toBottomOf="@+id/docFormat"
         tools:text="document type" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

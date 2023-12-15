@@ -6,34 +6,36 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.*
+import io.scanbot.example.sdk.barcode.databinding.ActivityMainBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
+import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultBundle
+import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultRepository
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
-import io.scanbot.sdk.barcode.entity.Gs1Handling
 import io.scanbot.sdk.barcode.ui.BarcodeOverlayTextFormat
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
-import io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui.barcode_scanner.view.barcode.batch.BatchBarcodeScannerActivity
-import io.scanbot.sdk.ui.registerForActivityResultOk
+import io.scanbot.sdk.ui.registerForActivityResultOk as registerForActivityResultOkV1
+import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
 import io.scanbot.sdk.ui.view.barcode.SelectionOverlayConfiguration
 import io.scanbot.sdk.ui.view.barcode.batch.configuration.BatchBarcodeScannerConfiguration
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeImageGenerationType
 import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerAdditionalConfiguration
-import io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui.view.base.configuration.CameraOrientationMode
-import kotlinx.android.synthetic.main.activity_main.*
+import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
+import io.scanbot.sdk.ui_v2.barcode.common.mappers.toV2
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
 import java.io.File
 import java.io.IOException
 
@@ -43,35 +45,36 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
 
-        warning_view.isVisible =
+        binding.warningView.isVisible =
             ScanbotBarcodeScannerSDK(this).licenseInfo.status == Status.StatusTrial
 
-        findViewById<View>(R.id.qr_demo).setOnClickListener {
+        binding.qrDemo.setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
             startActivity(intent)
         }
 
-        findViewById<View>(R.id.classical_ar_overlay_demo).setOnClickListener {
+        binding.classicalArOverlayDemo.setOnClickListener {
             val intent = Intent(applicationContext, BarcodeScannerViewActivity::class.java)
             startActivity(intent)
         }
 
-        findViewById<View>(R.id.classical_scan_count_demo).setOnClickListener {
+        binding.classicalScanCountDemo.setOnClickListener {
             val intent = Intent(applicationContext, BarcodeScanAndCountViewActivity::class.java)
             startActivity(intent)
         }
 
-        findViewById<View>(R.id.classical_batch).setOnClickListener {
+        binding.classicalBatch.setOnClickListener {
             val intent = Intent(applicationContext, BatchQRScanActivity::class.java)
             startActivity(intent)
         }
 
-        findViewById<View>(R.id.rtu_ui).setOnClickListener {
-            val barcodeCameraConfiguration = BarcodeScannerConfiguration()
+        binding.rtuUi.setOnClickListener {
+            val barcodeCameraConfiguration = io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration()
             barcodeCameraConfiguration.setBarcodeFormatsFilter(arrayListOf<BarcodeFormat>().also {
                 it.addAll(
                     BarcodeTypeRepository.selectedTypes
@@ -79,15 +82,25 @@ class MainActivity : AppCompatActivity() {
             })
             barcodeCameraConfiguration.setAdditionalDetectionParameters(
                 BarcodeScannerAdditionalConfiguration(
-                    gs1HandlingMode = Gs1Handling.DECODE
+                    gs1HandlingMode = io.scanbot.sdk.barcode.entity.Gs1Handling.DECODE
                 )
             )
             barcodeCameraConfiguration.setBarcodeImageGenerationType(BarcodeImageGenerationType.NONE)
             barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
-        findViewById<View>(R.id.rtu_ui_image).setOnClickListener {
-            val barcodeCameraConfiguration = BarcodeScannerConfiguration()
+        binding.rtuUiV2.setOnClickListener {
+            val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
+                recognizerConfiguration.apply {
+                    this.barcodeFormats = BarcodeTypeRepository.selectedTypes.map { it.toV2() }
+                    this.gs1Handling = io.scanbot.sdk.ui_v2.barcode.configuration.Gs1Handling.DECODE
+                }
+            }
+            barcodeV2ResultLauncher.launch(barcodeCameraConfiguration)
+        }
+
+        binding.rtuUiImage.setOnClickListener {
+            val barcodeCameraConfiguration = io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration()
             barcodeCameraConfiguration.setBarcodeFormatsFilter(arrayListOf<BarcodeFormat>().also {
                 it.addAll(
                     BarcodeTypeRepository.selectedTypes
@@ -97,8 +110,8 @@ class MainActivity : AppCompatActivity() {
             barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
-        findViewById<View>(R.id.rtu_ui_selection_overlay).setOnClickListener {
-            val barcodeCameraConfiguration = BarcodeScannerConfiguration()
+        binding.rtuUiSelectionOverlay.setOnClickListener {
+            val barcodeCameraConfiguration = io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration()
             barcodeCameraConfiguration.setSelectionOverlayConfiguration(
                 SelectionOverlayConfiguration(
                     overlayEnabled = true,
@@ -108,7 +121,7 @@ class MainActivity : AppCompatActivity() {
             barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
-        findViewById<View>(R.id.rtu_ui_import).setOnClickListener {
+        binding.rtuUiImport.setOnClickListener {
             // select an image from photo library and run document detection on it:
             val imageIntent = Intent()
             imageIntent.type = "image/*"
@@ -119,7 +132,7 @@ class MainActivity : AppCompatActivity() {
             importImageResultLauncher.launch(wrappedIntent)
         }
 
-        findViewById<View>(R.id.rtu_ui_import_pdf).setOnClickListener {
+        binding.rtuUiImportPdf.setOnClickListener {
             // select an image from photo library and run document detection on it:
             val imageIntent = Intent()
             imageIntent.type = "application/pdf"
@@ -130,7 +143,7 @@ class MainActivity : AppCompatActivity() {
             importPdfResultLauncher.launch(wrappedIntent)
         }
 
-        findViewById<View>(R.id.rtu_ui_batch_mode).setOnClickListener {
+        binding.rtuUiBatchMode.setOnClickListener {
             val barcodeCameraConfiguration = BatchBarcodeScannerConfiguration()
 
             barcodeCameraConfiguration.setTopBarButtonsColor(
@@ -187,19 +200,19 @@ class MainActivity : AppCompatActivity() {
             batchBarcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
-        findViewById<View>(R.id.settings).setOnClickListener {
+        binding.settings.setOnClickListener {
             val intent = Intent(this@MainActivity, BarcodeTypesActivity::class.java)
             startActivity(intent)
         }
 
-        findViewById<View>(R.id.classical_barcode_document_parser).setOnClickListener {
+        binding.classicalBarcodeDocumentParser.setOnClickListener {
             val intent = Intent(this@MainActivity, BarcodeDocumentParserDemoActivity::class.java)
             startActivity(intent)
         }
     }
 
-    private val barcodeResultLauncher: ActivityResultLauncher<BarcodeScannerConfiguration> =
-        registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+    private val barcodeResultLauncher: ActivityResultLauncher<io.scanbot.sdk.ui.view.barcode.configuration.BarcodeScannerConfiguration> =
+        registerForActivityResultOkV1(io.scanbot.sdk.ui.barcode_scanner.view.barcode.BarcodeScannerActivity.ResultContract()) { resultEntity ->
             val imagePath = resultEntity.barcodeImagePath
             val previewPath = resultEntity.barcodePreviewFramePath
 
@@ -210,8 +223,20 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    private val barcodeV2ResultLauncher: ActivityResultLauncher<BarcodeScannerConfiguration> =
+        registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+            val imagePath = resultEntity.barcodeImagePath
+            val previewPath = resultEntity.barcodePreviewFramePath
+
+            BarcodeV2ResultRepository.barcodeResultBundle =
+                BarcodeV2ResultBundle(resultEntity.result!!, imagePath, previewPath)
+
+            val intent = Intent(this, BarcodeV2ResultActivity::class.java)
+            startActivity(intent)
+        }
+
     private val batchBarcodeResultLauncher: ActivityResultLauncher<BatchBarcodeScannerConfiguration> =
-        registerForActivityResultOk(BatchBarcodeScannerActivity.ResultContract()) { resultEntity ->
+        registerForActivityResultOkV1(BatchBarcodeScannerActivity.ResultContract()) { resultEntity ->
             BarcodeResultRepository.barcodeResultBundle =
                 BarcodeResultBundle(resultEntity.result!!)
 

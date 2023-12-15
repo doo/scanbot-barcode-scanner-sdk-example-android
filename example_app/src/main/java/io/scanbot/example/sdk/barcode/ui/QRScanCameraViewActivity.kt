@@ -1,4 +1,4 @@
-package io.scanbot.example.sdk.barcode
+package io.scanbot.example.sdk.barcode.ui
 
 import android.Manifest
 import android.content.Intent
@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository

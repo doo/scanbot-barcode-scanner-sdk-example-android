@@ -11,9 +11,9 @@ import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.ui.adapter.BarcodeTypesAdapter.BarcodeTypesViewHolder
 import io.scanbot.sdk.barcode.entity.BarcodeFormat
 
-class BarcodeTypesAdapter() :
-    RecyclerView.Adapter<BarcodeTypesViewHolder>() {
-    val values = BarcodeFormat.ALL_CODES
+class BarcodeTypesAdapter : RecyclerView.Adapter<BarcodeTypesViewHolder>() {
+
+    private val values = BarcodeFormat.ALL_CODES
 
     class BarcodeTypesViewHolder(barcodeTypeView: View) : RecyclerView.ViewHolder(barcodeTypeView) {
         var barcodeTypeName: TextView
