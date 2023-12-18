@@ -15,15 +15,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import io.scanbot.example.sdk.barcode.R
-import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
-import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
+import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultBundle
+import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultRepository
+import io.scanbot.example.sdk.barcode.model.toV2Results
 import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
 import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.*
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
 
 class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
 
@@ -33,7 +35,6 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
     private var flashEnabled = false
     private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -94,16 +95,18 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         cameraView.onPause()
     }
 
-
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
         result.value?.let {
-            BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(it)
-            val intent = Intent(this, BarcodeResultActivity::class.java)
+            BarcodeV2ResultRepository.barcodeResultBundle = BarcodeV2ResultBundle(
+                BarcodeScannerResult(it.barcodeItems.toV2Results()),
+                imagePath = null,
+                previewPath = null,
+            )
+            val intent = Intent(this, BarcodeV2ResultActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
-
 
     fun processPictureTaken(image: ByteArray, imageOrientation: Int) {
         val bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
@@ -119,7 +122,6 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
             cameraView.startPreview()
         }
     }
-
 
     override fun handle(result: FrameHandlerResult<BarcodeScanningResult?, SdkLicenseError>): Boolean {
         if (result is FrameHandlerResult.Success) {

@@ -21,20 +21,12 @@
         </activity>
 
         <activity
-            android:name=".ui.DetailedItemDataActivity"
-            android:label="@string/title_activity_detailed_item_data"
+            android:name=".ui.BarcodeV2ResultActivity"
+            android:label="@string/title_activity_barcode_result"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.DetailedItemV2DataActivity"
             android:label="@string/title_activity_detailed_item_data"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ui.BarcodeResultActivity"
-            android:label="@string/title_activity_barcode_result"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ui.BarcodeV2ResultActivity"
-            android:label="@string/title_activity_barcode_result"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.QRScanCameraViewActivity" />
         <activity android:name=".ui.BarcodeTypesActivity" />

@@ -2,7 +2,7 @@ package io.scanbot.example.sdk.barcode.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import io.scanbot.example.sdk.barcode.databinding.ActivityDetailedItemDataBinding
+import io.scanbot.example.sdk.barcode.databinding.ActivityDetailedV2ItemDataBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultRepository
 import io.scanbot.sdk.ui_v2.barcode.configuration.AAMVADocumentFormat
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItem
@@ -19,7 +19,7 @@ class DetailedItemV2DataActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityDetailedItemDataBinding.inflate(layoutInflater)
+        val binding = ActivityDetailedV2ItemDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
