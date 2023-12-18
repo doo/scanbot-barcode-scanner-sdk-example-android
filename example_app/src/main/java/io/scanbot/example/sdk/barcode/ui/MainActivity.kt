@@ -13,8 +13,8 @@ import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.databinding.ActivityMainBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
-import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultBundle
-import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultRepository
+import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
+import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.toV2Results
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.sap.Status
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                     // tweak other behaviour as needed
                 }
             }
-            barcodeV2ResultLauncher.launch(barcodeCameraConfiguration)
+            barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
         binding.rtuUiSelectionOverlay.setOnClickListener {
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                 this.arOverlay.visible = true
             }
             // tweak other behaviour as needed
-            barcodeV2ResultLauncher.launch(barcodeCameraConfiguration)
+            barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
         binding.rtuUiImport.setOnClickListener {
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                 // tweak other behaviour as needed
             }
 
-            barcodeV2ResultLauncher.launch(barcodeCameraConfiguration)
+            barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
         binding.settings.setOnClickListener {
@@ -134,15 +134,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val barcodeV2ResultLauncher: ActivityResultLauncher<BarcodeScannerConfiguration> =
+    private val barcodeResultLauncher: ActivityResultLauncher<BarcodeScannerConfiguration> =
         registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
             val imagePath = resultEntity.barcodeImagePath
             val previewPath = resultEntity.barcodePreviewFramePath
 
-            BarcodeV2ResultRepository.barcodeResultBundle =
-                BarcodeV2ResultBundle(resultEntity.result!!, imagePath, previewPath)
+            BarcodeResultRepository.barcodeResultBundle =
+                BarcodeResultBundle(resultEntity.result!!, imagePath, previewPath)
 
-            val intent = Intent(this, BarcodeV2ResultActivity::class.java)
+            val intent = Intent(this, BarcodeResultActivity::class.java)
             startActivity(intent)
         }
 
@@ -157,14 +157,14 @@ class MainActivity : AppCompatActivity() {
                         barcodeDetector.modifyConfig { setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList()) }
                         val result = barcodeDetector.detectFromBitmap(bitmap, 0)
 
-                        BarcodeV2ResultRepository.barcodeResultBundle =
+                        BarcodeResultRepository.barcodeResultBundle =
                             result?.let { v1Result ->
                                 val result = BarcodeScannerResult(
                                     v1Result.barcodeItems.toV2Results()
                                 )
-                                BarcodeV2ResultBundle(result, null, null) }
+                                BarcodeResultBundle(result, null, null) }
 
-                        startActivity(Intent(this, BarcodeV2ResultActivity::class.java))
+                        startActivity(Intent(this, BarcodeResultActivity::class.java))
                     }
                 }
             }
@@ -193,11 +193,11 @@ class MainActivity : AppCompatActivity() {
                             // set the last detected result as the final result
                             result?.barcodeItems ?: emptyList()
                         }.let {
-                            BarcodeV2ResultRepository.barcodeResultBundle =
-                                BarcodeV2ResultBundle(BarcodeScannerResult(it.flatten().toV2Results()), null, null)
+                            BarcodeResultRepository.barcodeResultBundle =
+                                BarcodeResultBundle(BarcodeScannerResult(it.flatten().toV2Results()), null, null)
                         }
 
-                        startActivity(Intent(this, BarcodeV2ResultActivity::class.java))
+                        startActivity(Intent(this, BarcodeResultActivity::class.java))
                     }
                 }
             }

@@ -2,8 +2,8 @@ package io.scanbot.example.sdk.barcode.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import io.scanbot.example.sdk.barcode.databinding.ActivityDetailedV2ItemDataBinding
-import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultRepository
+import io.scanbot.example.sdk.barcode.databinding.ActivityDetailedItemDataBinding
+import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.sdk.ui_v2.barcode.configuration.AAMVADocumentFormat
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItem
 import io.scanbot.sdk.ui_v2.barcode.configuration.BoardingPassDocumentFormat
@@ -15,15 +15,15 @@ import io.scanbot.sdk.ui_v2.barcode.configuration.SEPADocumentFormat
 import io.scanbot.sdk.ui_v2.barcode.configuration.SwissQRCodeDocumentFormat
 import io.scanbot.sdk.ui_v2.barcode.configuration.VCardDocumentFormat
 
-class DetailedItemV2DataActivity : AppCompatActivity() {
+class DetailedItemDataActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityDetailedV2ItemDataBinding.inflate(layoutInflater)
+        val binding = ActivityDetailedItemDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        BarcodeV2ResultRepository.selectedBarcodeItem?.let { item ->
+        BarcodeResultRepository.selectedBarcodeItem?.let { item ->
             binding.docFormat.text = item.formattedResult?.let {
                 it::class.java.simpleName
             } ?: "Unknown document"

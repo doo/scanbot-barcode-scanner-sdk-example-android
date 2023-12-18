@@ -149,9 +149,14 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
     }
 
     override fun onBindViewHolder(holder: BarcodeViewHolder, position: Int) {
-        val item = items.get(position)
+        val item = items[position]
         holder.text.text = item.textWithExtension
         holder.barcodeType.text = item.barcodeFormat.name
+        if (item.image == null) {
+            holder.image.visibility = View.GONE
+        } else {
+            holder.image.visibility = View.VISIBLE
+        }
         holder.image.setImageBitmap(item.image)
     }
 

@@ -5,13 +5,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
 import io.scanbot.example.sdk.barcode.databinding.ActivityBarcodeResultBinding
-import io.scanbot.example.sdk.barcode.databinding.BarcodeItemV2Binding
+import io.scanbot.example.sdk.barcode.databinding.BarcodeItemBinding
 import io.scanbot.example.sdk.barcode.databinding.SnapImageItemBinding
-import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultRepository
+import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
 import java.io.File
 
-class BarcodeV2ResultActivity : AppCompatActivity() {
+class BarcodeResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBarcodeResultBinding
 
@@ -22,11 +22,11 @@ class BarcodeV2ResultActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         showSnapImageIfExists(
-            BarcodeV2ResultRepository.barcodeResultBundle?.previewPath
-                ?: BarcodeV2ResultRepository.barcodeResultBundle?.imagePath
+            BarcodeResultRepository.barcodeResultBundle?.previewPath
+                ?: BarcodeResultRepository.barcodeResultBundle?.imagePath
         )
 
-        showLatestBarcodeResult(BarcodeV2ResultRepository.barcodeResultBundle?.barcodeScanningResult)
+        showLatestBarcodeResult(BarcodeResultRepository.barcodeResultBundle?.barcodeScanningResult)
     }
 
     private fun showSnapImageIfExists(imagePath: String?) {
@@ -43,13 +43,13 @@ class BarcodeV2ResultActivity : AppCompatActivity() {
 
         detectedBarcodes?.let {
             detectedBarcodes.items.asSequence().map { item ->
-                val itemViewBinding = BarcodeItemV2Binding.inflate(layoutInflater, binding.recognisedItems, false)
+                val itemViewBinding = BarcodeItemBinding.inflate(layoutInflater, binding.recognisedItems, false)
                 itemViewBinding.barcodeFormat.text = item.type.name
                 itemViewBinding.docFormat.text = item.formattedResult?.let { it::class.java.simpleName } ?: "Unknown document"
                 itemViewBinding.docText.text = item.textWithExtension
                 itemViewBinding.root.setOnClickListener {
-                    val intent = Intent(this, DetailedItemV2DataActivity::class.java)
-                    BarcodeV2ResultRepository.selectedBarcodeItem = item
+                    val intent = Intent(this, DetailedItemDataActivity::class.java)
+                    BarcodeResultRepository.selectedBarcodeItem = item
                     startActivity(intent)
                 }
                 itemViewBinding.root

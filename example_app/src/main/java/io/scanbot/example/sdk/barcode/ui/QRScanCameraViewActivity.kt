@@ -16,8 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
-import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultBundle
-import io.scanbot.example.sdk.barcode.model.BarcodeV2ResultRepository
+import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
+import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.toV2Results
 import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
@@ -97,12 +97,12 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
         result.value?.let {
-            BarcodeV2ResultRepository.barcodeResultBundle = BarcodeV2ResultBundle(
+            BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(
                 BarcodeScannerResult(it.barcodeItems.toV2Results()),
                 imagePath = null,
                 previewPath = null,
             )
-            val intent = Intent(this, BarcodeV2ResultActivity::class.java)
+            val intent = Intent(this, BarcodeResultActivity::class.java)
             startActivity(intent)
             finish()
         }
