@@ -1,8 +1,7 @@
 
 buildscript {
     ext.kotlin_version = "1.8.10" // use the same version as SDK does
-    ext.sdkVersion = "5.0.0.332-SNAPSHOT"
-    ext.sdkBundleVersion = "4.2.0" // merge with SDK version when 5.0 bundle starts existing
+    ext.sdkVersion = "5.0.0.334-SNAPSHOT"
 }
 
 plugins {

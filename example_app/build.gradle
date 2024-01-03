@@ -1,7 +1,7 @@
 
 plugins {
-    id "com.android.application"
-    id "org.jetbrains.kotlin.android"
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -42,7 +42,7 @@ dependencies {
 
     implementation("io.scanbot:scanbot-barcode-scanner-sdk:$sdkVersion")
     implementation("io.scanbot:rtu-ui-v2-barcode:$sdkVersion")
-    implementation("io.scanbot:barcode-sdk-pdfium:$sdkBundleVersion") // switch to sdkVersion when possible
+    implementation("io.scanbot:barcode-sdk-pdfium:$sdkVersion")
 
     implementation("com.google.android.material:material:1.11.0")
 }
