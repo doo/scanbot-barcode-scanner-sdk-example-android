@@ -39,6 +39,9 @@ fun multipleScanningUseCaseSnippet() {
             // Enable manual count change.
             this.manualCountChangeEnabled = true
 
+            // Set the delay before same barcode counting repeat.
+            this.countingRepeatDelay = 1000
+
             // Configure the submit button.
             this.scannedBarcodesListSheet.submitButton.text = "Submit"
             this.scannedBarcodesListSheet.submitButton.foreground.color = ScanbotColor("#000000")
