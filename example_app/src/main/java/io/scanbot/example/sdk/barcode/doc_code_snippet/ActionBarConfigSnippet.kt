@@ -37,7 +37,7 @@ fun actionBarConfigSnippet() {
         // Configure the inactive state of the zoom button.
         this.actionBar.zoomButton.backgroundColor = ScanbotColor("#7A000000")
         this.actionBar.zoomButton.foregroundColor = ScanbotColor("#FFFFFF")
-        // Zoom button has no active state - it only switches between zoom levels (for configuring those please refer camera configuring).
+        // Zoom button has no active state - it only switches between zoom levels (for configuring those please refer to camera configuring).
 
         // Hide/unhide the flip camera button.
         this.actionBar.flipCameraButton.visible = true
