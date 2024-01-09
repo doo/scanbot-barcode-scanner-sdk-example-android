@@ -35,20 +35,28 @@ class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.doc_snippet_activity_artu_barcode_scanner)
 
+        // If you use "traditional" Android XML-driven UI - integrate ComposeView into your layout
+        // and use code below to render our BarcodeScannerView in it.
         val cameraContainerView: ComposeView = findViewById(R.id.compose_container)
         cameraContainerView.apply {
             setContent {
+
+                //In case if you already migrated to Compose UI - just use
+                // the code below in your Composable function.
                 val configuration = remember {
                     BarcodeScannerConfiguration().apply {
                         // TODO: configure as needed
                     }
                 }
 
+                // This `LaunchedEffect` will allow view to react on
+                // BarcodeScannerConfiguration's `statusBarMode` correctly.
                 val statusBarHidden = configuration.topBar.statusBarMode == StatusBarMode.HIDDEN
                 LaunchedEffect(key1 = true, block = {
                     if (statusBarHidden) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+                            window.attributes.layoutInDisplayCutoutMode =
+                                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
                         }
 
                         WindowCompat.setDecorFitsSystemWindows(window, false)
