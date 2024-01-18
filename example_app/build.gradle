@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "io.scanbot.example.sdk.barcode"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "io.scanbot.example.sdk.barcode.android"
@@ -25,11 +25,16 @@ android {
     }
 
     kotlin {
-        jvmToolchain(17)
+        jvmToolchain(11)
     }
 
     buildFeatures {
         viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.4"
     }
 }
 
@@ -44,5 +49,5 @@ dependencies {
     implementation("io.scanbot:rtu-ui-v2-barcode:$sdkVersion")
     implementation("io.scanbot:barcode-sdk-pdfium:$sdkVersion")
 
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.9.0")
 }
