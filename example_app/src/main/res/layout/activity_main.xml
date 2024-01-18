@@ -183,6 +183,21 @@
                 android:background="#50000000" />
 
             <TextView
+                android:id="@+id/rtu_ui_multiple_unique"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical"
+                android:text="RTU UI - multiple unique barcode scanning"
+                android:textColor="@color/textColorPrimary" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+            <TextView
                 android:id="@+id/rtu_ui_import"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"

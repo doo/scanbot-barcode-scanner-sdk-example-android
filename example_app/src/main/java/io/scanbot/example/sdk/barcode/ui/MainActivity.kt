@@ -26,6 +26,7 @@ import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
 import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleBarcodesScanningMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleScanningMode
+import io.scanbot.sdk.ui_v2.barcode.configuration.SheetMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.SingleScanningMode
 import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
 import java.io.File
@@ -87,6 +88,38 @@ class MainActivity : AppCompatActivity() {
             barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
+        binding.rtuUiBatchMode.setOnClickListener {
+            val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
+                this.recognizerConfiguration.apply {
+                    this.barcodeFormats = BarcodeTypeRepository.selectedTypes.map { it.toV2() }
+                }
+                this.useCase = MultipleScanningMode().apply {
+                    this.mode = MultipleBarcodesScanningMode.COUNTING
+                }
+                // tweak other behaviour as needed
+            }
+
+            barcodeResultLauncher.launch(barcodeCameraConfiguration)
+        }
+
+        binding.rtuUiMultipleUnique.setOnClickListener {
+            val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
+                this.useCase = MultipleScanningMode().apply {
+                    this.mode = MultipleBarcodesScanningMode.UNIQUE
+                    this.manualCountChangeEnabled = false
+                    this.sheet.mode = SheetMode.COLLAPSED_SHEET
+                }
+
+                this.arOverlay.visible = true
+                this.arOverlay.automaticSelectionEnabled = false
+
+                this.userGuidance.title.text =
+                    "Please align the QR-/Barcode in the frame above to scan it."
+            }
+
+            barcodeResultLauncher.launch(barcodeCameraConfiguration)
+        }
+
         binding.rtuUiImport.setOnClickListener {
             // select an image from photo library and run document detection on it:
             val imageIntent = Intent()
@@ -107,20 +140,6 @@ class MainActivity : AppCompatActivity() {
             imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
             val wrappedIntent = Intent.createChooser(imageIntent, getString(R.string.share_title))
             importPdfResultLauncher.launch(wrappedIntent)
-        }
-
-        binding.rtuUiBatchMode.setOnClickListener {
-            val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
-                this.recognizerConfiguration.apply {
-                    this.barcodeFormats = BarcodeTypeRepository.selectedTypes.map { it.toV2() }
-                }
-                this.useCase = MultipleScanningMode().apply {
-                    this.mode = MultipleBarcodesScanningMode.COUNTING
-                }
-                // tweak other behaviour as needed
-            }
-
-            barcodeResultLauncher.launch(barcodeCameraConfiguration)
         }
 
         binding.settings.setOnClickListener {
