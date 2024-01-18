@@ -1,12 +1,7 @@
 
-buildscript {
-    ext.kotlin_version = "1.8.10" // use the same version as SDK does
-    ext.sdkVersion = "5.0.0.334-SNAPSHOT"
-}
-
 plugins {
-    id "com.android.application" version '7.4.2' apply false
-    id "org.jetbrains.kotlin.android" version "$kotlin_version" apply false
+    id "com.android.application" version "7.4.2" apply false
+    id "org.jetbrains.kotlin.android" version "1.8.10" apply false
 }
 
 task clean(type: Delete) {
