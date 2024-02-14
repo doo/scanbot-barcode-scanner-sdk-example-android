@@ -1,6 +1,7 @@
 package io.scanbot.example.sdk.barcode
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,8 +19,11 @@ import androidx.recyclerview.widget.RecyclerView
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
+import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode.entity.BarcodeItem
+import io.scanbot.sdk.barcode.entity.BarcodeScannerConfig
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
+import io.scanbot.sdk.barcode.entity.EngineMode
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.FrameHandlerResult
 import io.scanbot.sdk.camera.ScanbotCameraView
@@ -31,6 +35,7 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
     private lateinit var flash: View
     private var flashEnabled = false
     private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
+    private lateinit var barcodeDetector: ScanbotBarcodeDetector
     private val resultAdapter by lazy { ResultAdapter(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,10 +45,7 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
 
         cameraView = findViewById(R.id.camera)
         flash = findViewById(R.id.flash)
-        flash.setOnClickListener {
-            flashEnabled = !flashEnabled
-            cameraView.useFlash(flashEnabled)
-        }
+
         resultView = findViewById(R.id.resultsList)
         resultView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         resultView.adapter = resultAdapter
@@ -54,8 +56,23 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
                 cameraView.continuousFocus()
             }, 300)
         }
+        cameraView.setAutoFocusOnTouch(false)
+        cameraView.lockToPortrait(true)
 
-        val barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
+        barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
+        val config = BarcodeScannerConfig(
+            engineMode = EngineMode.NextGen,
+            saveCameraPreviewFrame = false,
+            // to disable GS1 Decoding
+        )
+
+        barcodeDetector?.setConfig(config)
+
+        flash.setOnClickListener {
+            //flashEnabled = !flashEnabled
+            //cameraView.useFlash(flashEnabled)
+            barcodeDetector.enableBarcodeScan(true)
+        }
 
         barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.attach(
             cameraView,
@@ -69,6 +86,7 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
             setSaveCameraPreviewFrame(false)
             setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
         }
+        barcodeDetector.enableBarcodeScan(false)
     }
 
     override fun onResume() {
@@ -94,10 +112,12 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
     }
 
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
-        Thread.sleep(3000)
+        //Thread.sleep(3000)
         result.value?.let {
             cameraView.post {
-                resultAdapter.addBarcodeItems(it.barcodeItems)
+                resultAdapter.addBarcodeItems(it.barcodeItems, barcodeDetector)
+                //Thread.sleep(1000)
+                //barcodeDetector.enableBarcodeScan(false)
             }
         }
     }
@@ -132,7 +152,7 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
     RecyclerView.Adapter<BarcodeViewHolder>() {
     private val items: MutableList<CountedItem> = mutableListOf()
 
-    fun addBarcodeItems(items: List<BarcodeItem>) {
+    fun addBarcodeItems(items: List<BarcodeItem>, barcodeDetector: ScanbotBarcodeDetector) {
         // lets check duplicates
         items.forEach { item ->
             var insertedCount = 0
@@ -147,6 +167,7 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
             }
             notifyDataSetChanged()
         }
+        barcodeDetector.enableBarcodeScan(false)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BarcodeViewHolder {
