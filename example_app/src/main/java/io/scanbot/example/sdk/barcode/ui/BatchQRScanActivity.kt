@@ -94,6 +94,7 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
     }
 
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
+        Thread.sleep(3000)
         result.value?.let {
             cameraView.post {
                 resultAdapter.addBarcodeItems(it.barcodeItems)
@@ -129,17 +130,22 @@ class BarcodeViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
 class ResultAdapter(val layoutInflater: LayoutInflater) :
     RecyclerView.Adapter<BarcodeViewHolder>() {
-    private val items: MutableList<BarcodeItem> = mutableListOf()
+    private val items: MutableList<CountedItem> = mutableListOf()
 
     fun addBarcodeItems(items: List<BarcodeItem>) {
         // lets check duplicates
         items.forEach { item ->
             var insertedCount = 0
-            if (!this.items.any { it.textWithExtension == item.textWithExtension }) {
-                this.items.add(0, item)
+            if (!this.items.any { it.item.textWithExtension == item.textWithExtension }) {
+                this.items.add(0, CountedItem(item, 1))
                 insertedCount += 1
+            } else {
+                val existingItem = this.items.find { it.item.textWithExtension == item.textWithExtension }
+                existingItem?.let {
+                    existingItem.count += 1
+                }
             }
-            notifyItemRangeInserted(0, insertedCount)
+            notifyDataSetChanged()
         }
     }
 
@@ -149,11 +155,12 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
 
     override fun onBindViewHolder(holder: BarcodeViewHolder, position: Int) {
         val item = items.get(position)
-        holder.text.text = item.textWithExtension
-        holder.barcodeType.text = item.barcodeFormat.name
-        holder.image.setImageBitmap(item.image)
+        holder.text.text = "x${item.count} ${item.item.textWithExtension}"
+        holder.barcodeType.text = item.item.barcodeFormat.name
+        holder.image.setImageBitmap(item.item.image)
     }
 
     override fun getItemCount(): Int = items.size
 
+    data class CountedItem(var item: BarcodeItem, var count: Int)
 }
