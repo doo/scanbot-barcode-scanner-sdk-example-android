@@ -21,7 +21,11 @@ import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
+import io.scanbot.sdk.ui_v2.barcode.common.mappers.getName
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.toV2
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItemMapper
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeMappedData
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeMappingResult
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeUseCase
@@ -117,6 +121,29 @@ class MainActivity : AppCompatActivity() {
 
                 this.userGuidance.title.text =
                     "Please align the QR-/Barcode in the frame above to scan it."
+
+                class CustomBarcodeItemMapper : BarcodeItemMapper {
+
+                    // NOTE: callback implementation class must be static (in case of Java)
+                    // or non-inner (in case of Kotlin), have default (empty) constructor
+                    // and must not touch fields or methods of enclosing class/method
+                    override fun mapBarcodeItem(
+                        barcodeItem: io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItem,
+                        result: BarcodeMappingResult,
+                    ) {
+                        // TODO: use barcodeItem appropriately here as needed
+                        result.onResult(
+                            BarcodeMappedData(
+                                title = barcodeItem.textWithExtension,
+                                subtitle = barcodeItem.type.getName(),
+                                barcodeImage = ""
+                            )
+                        )
+                    }
+                }
+                this.useCase = MultipleScanningMode().apply {
+                    this.barcodeInfoMapping.barcodeItemMapper = CustomBarcodeItemMapper()
+                }
             }
 
             barcodeResultLauncher.launch(barcodeCameraConfiguration)

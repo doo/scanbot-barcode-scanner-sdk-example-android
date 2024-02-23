@@ -25,7 +25,7 @@ fun itemMappingConfigSnippet() {
         // Configure parameters (use explicit `this.` receiver for better code completion):
 
         this.useCase = BarcodeUseCase.singleScanningMode().apply {
-            this.barcodeInfoMapping.barcodeItemMapper = object : BarcodeItemMapper {
+            class CustomMapper() : BarcodeItemMapper {
 
                 override fun mapBarcodeItem(
                     barcodeItem: BarcodeItem,
@@ -54,6 +54,7 @@ fun itemMappingConfigSnippet() {
                     }
                 }
             }
+            this.barcodeInfoMapping.barcodeItemMapper = CustomMapper()
         }
 
         // Configure other parameters as needed.
