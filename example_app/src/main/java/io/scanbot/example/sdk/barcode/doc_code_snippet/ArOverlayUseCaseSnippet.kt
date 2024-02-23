@@ -24,15 +24,15 @@ fun arOverlayUseCaseSnippet() {
     val config = BarcodeScannerConfiguration().apply {
         // Configure parameters (use explicit `this.` receiver for better code completion):
 
-        // Configure AR Overlay.
-        this.arOverlay.visible = true
-        this.arOverlay.automaticSelectionEnabled = false
 
         // Configure the usecase.
         this.useCase = MultipleScanningMode().apply {
             this.mode = MultipleBarcodesScanningMode.UNIQUE
-            this.scannedBarcodesPreview.mode = SheetMode.COLLAPSED_SHEET
-            this.scannedBarcodesPreview.collapsedVisibleHeight = CollapsedVisibleHeight.SMALL
+            this.sheet.mode = SheetMode.COLLAPSED_SHEET
+            this.sheet.collapsedVisibleHeight = CollapsedVisibleHeight.SMALL
+            // Configure AR Overlay.
+            this.arOverlay.visible = true
+            this.arOverlay.automaticSelectionEnabled = false
 
             // Configure other parameters, pertaining to use case as needed.
         }

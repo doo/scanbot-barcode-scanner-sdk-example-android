@@ -24,6 +24,7 @@ import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.toV2
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeUseCase
 import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleBarcodesScanningMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleScanningMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.SheetMode
@@ -82,7 +83,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.rtuUiSelectionOverlay.setOnClickListener {
             val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
-                this.arOverlay.visible = true
+               this.useCase = BarcodeUseCase.singleScanningMode().apply {
+                   this.arOverlay.visible = true
+               }
             }
             // tweak other behaviour as needed
             barcodeResultLauncher.launch(barcodeCameraConfiguration)
@@ -106,12 +109,11 @@ class MainActivity : AppCompatActivity() {
             val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
                 this.useCase = MultipleScanningMode().apply {
                     this.mode = MultipleBarcodesScanningMode.UNIQUE
-                    this.manualCountChangeEnabled = false
+                    this.sheetContent.manualCountChangeEnabled = false
                     this.sheet.mode = SheetMode.COLLAPSED_SHEET
+                    this.arOverlay.visible = true
+                    this.arOverlay.automaticSelectionEnabled = false
                 }
-
-                this.arOverlay.visible = true
-                this.arOverlay.automaticSelectionEnabled = false
 
                 this.userGuidance.title.text =
                     "Please align the QR-/Barcode in the frame above to scan it."
