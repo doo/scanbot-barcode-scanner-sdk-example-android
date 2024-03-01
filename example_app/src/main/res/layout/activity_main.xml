@@ -68,7 +68,7 @@
                 android:gravity="center_vertical"
                 android:text="Classic Component"
 
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                 android:gravity="center_vertical"
                 android:text="Classic Component with AR Overlay"
 
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -100,7 +100,7 @@
                 android:gravity="center_vertical"
                 android:text="Scan and Count "
 
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:text="Batch Barcode Classic Component"
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:text="Barcode Document Parser"
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -145,22 +145,7 @@
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:text="RTU UI"
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#50000000" />
-
-            <TextView
-                android:id="@+id/rtu_ui_image"
-                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="RTU UI - with barcode image"
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -175,7 +160,7 @@
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:text="RTU UI - with selection overlay"
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -190,7 +175,22 @@
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:text="RTU UI - batch barcode scanning"
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+            <TextView
+                android:id="@+id/rtu_ui_multiple_unique"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical"
+                android:text="RTU UI - multiple unique barcode scanning"
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -205,7 +205,7 @@
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:text="Pick image from library"
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -220,7 +220,7 @@
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:text="Pick pdf from library"
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"
@@ -235,7 +235,7 @@
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
                 android:text="Set accepted barcodes"
-                android:textColor="@color/scanbot_sdk_textColorPrimary" />
+                android:textColor="@color/textColorPrimary" />
 
             <View
                 android:layout_width="match_parent"

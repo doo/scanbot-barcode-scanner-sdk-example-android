@@ -9,6 +9,7 @@ import io.scanbot.sdk.barcode.document.BarcodeDocumentParser
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 
 class BarcodeDocumentParserDemoActivity : AppCompatActivity() {
+
     private lateinit var barcodeDocumentParser: BarcodeDocumentParser
 
     override fun onCreate(savedInstanceState: Bundle?) {

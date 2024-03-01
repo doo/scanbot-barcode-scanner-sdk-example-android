@@ -1,5 +1,4 @@
-Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 4.2.0
-
+Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 5.0.0
 CWAC-Camera
 
 Version 0.6.42
@@ -1300,6 +1299,18 @@ OF THIS SOFTWARE.
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
+libzueci
+
+Version 1.0.0
+(https://sourceforge.net/projects/libzueci/)
+
+A simple, standalone, BSD-3-Clause C library for converting UTF-8 to/from Extended Channel Interpretations, as
+defined by AIM ITS/04-023 International Technical Standard - Extended Channel Interpretations Part 3: Register
+(Version 2, February 2022).
+
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
 magic-enum
 
 Version v0.8.1
@@ -2359,4 +2370,5 @@ Version 1.1.0
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
 

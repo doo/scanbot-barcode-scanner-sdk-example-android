@@ -9,12 +9,11 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import io.scanbot.example.sdk.barcode.R
 
-
 class ErrorFragment : androidx.fragment.app.DialogFragment() {
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(this.activity!!)
+        val builder = AlertDialog.Builder(this.requireActivity())
 
         val inflater = LayoutInflater.from(activity)
 

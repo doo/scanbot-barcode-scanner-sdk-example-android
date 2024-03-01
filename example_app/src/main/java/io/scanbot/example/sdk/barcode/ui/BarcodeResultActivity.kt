@@ -1,24 +1,25 @@
-package io.scanbot.example.sdk.barcode
+package io.scanbot.example.sdk.barcode.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
+import io.scanbot.example.sdk.barcode.databinding.ActivityBarcodeResultBinding
+import io.scanbot.example.sdk.barcode.databinding.BarcodeItemBinding
+import io.scanbot.example.sdk.barcode.databinding.SnapImageItemBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
-import io.scanbot.example.sdk.barcode.ui.DetailedItemDataActivity
-import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
-import kotlinx.android.synthetic.main.activity_barcode_result.*
-import kotlinx.android.synthetic.main.barcode_item.view.*
-import kotlinx.android.synthetic.main.snap_image_item.view.*
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
 import java.io.File
 
 class BarcodeResultActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityBarcodeResultBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_barcode_result)
-        setSupportActionBar(toolbar)
+        binding = ActivityBarcodeResultBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         showSnapImageIfExists(
             BarcodeResultRepository.barcodeResultBundle?.previewPath
@@ -30,44 +31,31 @@ class BarcodeResultActivity : AppCompatActivity() {
 
     private fun showSnapImageIfExists(imagePath: String?) {
         imagePath?.let { imagePath ->
-            recognisedItems.addView(
-                layoutInflater.inflate(
-                    R.layout.snap_image_item,
-                    recognisedItems,
-                    false
-                )?.also {
+            binding.recognisedItems.addView(
+                SnapImageItemBinding.inflate(layoutInflater, binding.recognisedItems, false).also {
                     Picasso.get().load(File(imagePath)).into(it.snapImage)
-                })
+                }.root
+            )
         }
     }
 
-    private fun showLatestBarcodeResult(detectedBarcodes: BarcodeScanningResult?) {
+    private fun showLatestBarcodeResult(detectedBarcodes: BarcodeScannerResult?) {
 
         detectedBarcodes?.let {
-            detectedBarcodes.barcodeItems.asSequence().map { item ->
-                layoutInflater.inflate(R.layout.barcode_item, recognisedItems, false)?.also {
-                    item.image?.let { bitmap ->
-                        it.image.setImageBitmap(bitmap)
-                    }
-                    it.barcodeFormat.text = item.barcodeFormat.name
-                    it.docFormat.text = item.formattedResult?.let {
-                        it::class.java.simpleName
-                    } ?: "Unknown document"
-                    it.docFormat.visibility =
-                        if (item.formattedResult != null) View.VISIBLE else View.GONE
-                    it.docText.text = item.textWithExtension
-                    it.setOnClickListener {
-                        val intent = Intent(this, DetailedItemDataActivity::class.java)
-                        BarcodeResultRepository.selectedBarcodeItem = item
-                        startActivity(intent)
-                    }
+            detectedBarcodes.items.asSequence().map { item ->
+                val itemViewBinding = BarcodeItemBinding.inflate(layoutInflater, binding.recognisedItems, false)
+                itemViewBinding.barcodeFormat.text = item.type.name
+                itemViewBinding.docFormat.text = item.formattedResult?.let { it::class.java.simpleName } ?: "Unknown document"
+                itemViewBinding.docText.text = item.textWithExtension
+                itemViewBinding.root.setOnClickListener {
+                    val intent = Intent(this, DetailedItemDataActivity::class.java)
+                    BarcodeResultRepository.selectedBarcodeItem = item
+                    startActivity(intent)
                 }
+                itemViewBinding.root
             }.forEach {
-                recognisedItems.addView(it)
+                binding.recognisedItems.addView(it)
             }
-
         }
-
     }
-
 }

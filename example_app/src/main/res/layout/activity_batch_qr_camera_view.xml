@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QRScanCameraViewActivity">
+    tools:context=".ui.QRScanCameraViewActivity">
 
     <io.scanbot.sdk.camera.ScanbotCameraView
         android:id="@+id/camera"

@@ -1,4 +1,4 @@
-package io.scanbot.example.sdk.barcode
+package io.scanbot.example.sdk.barcode.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
@@ -148,12 +149,16 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
     }
 
     override fun onBindViewHolder(holder: BarcodeViewHolder, position: Int) {
-        val item = items.get(position)
+        val item = items[position]
         holder.text.text = item.textWithExtension
         holder.barcodeType.text = item.barcodeFormat.name
+        if (item.image == null) {
+            holder.image.visibility = View.GONE
+        } else {
+            holder.image.visibility = View.VISIBLE
+        }
         holder.image.setImageBitmap(item.image)
     }
 
     override fun getItemCount(): Int = items.size
-
 }
