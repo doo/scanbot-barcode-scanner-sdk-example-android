@@ -111,17 +111,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.rtuUiMultipleUnique.setOnClickListener {
             val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
-                this.useCase = MultipleScanningMode().apply {
-                    this.mode = MultipleBarcodesScanningMode.UNIQUE
-                    this.sheetContent.manualCountChangeEnabled = false
-                    this.sheet.mode = SheetMode.COLLAPSED_SHEET
-                    this.arOverlay.visible = true
-                    this.arOverlay.automaticSelectionEnabled = false
-                }
-
-                this.userGuidance.title.text =
-                    "Please align the QR-/Barcode in the frame above to scan it."
-
                 class CustomBarcodeItemMapper : BarcodeItemMapper {
 
                     // NOTE: callback implementation class must be static (in case of Java)
@@ -141,9 +130,20 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
                 }
+
                 this.useCase = MultipleScanningMode().apply {
+                    this.mode = MultipleBarcodesScanningMode.UNIQUE
+                    this.sheetContent.manualCountChangeEnabled = false
+                    this.sheet.mode = SheetMode.COLLAPSED_SHEET
+                    this.arOverlay.visible = true
+                    this.arOverlay.automaticSelectionEnabled = false
                     this.barcodeInfoMapping.barcodeItemMapper = CustomBarcodeItemMapper()
                 }
+
+                this.userGuidance.title.text =
+                    "Please align the QR-/Barcode in the frame above to scan it."
+
+
             }
 
             barcodeResultLauncher.launch(barcodeCameraConfiguration)
