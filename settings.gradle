@@ -10,7 +10,7 @@ dependencyResolutionManagement {
    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 
    repositories {
-      mavenLocal() // TODO: remove
+//      mavenLocal() // for dev-use only, do NOT commit!
       google()
       mavenCentral()
 
