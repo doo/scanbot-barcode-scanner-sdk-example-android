@@ -21,18 +21,23 @@ import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
+import io.scanbot.sdk.ui_v2.barcode.common.mappers.COMMON_CODES
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.getName
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.toV2
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeFormat
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItemMapper
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeMappedData
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeMappingResult
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeUseCase
+import io.scanbot.sdk.ui_v2.barcode.configuration.CollapsedVisibleHeight
+import io.scanbot.sdk.ui_v2.barcode.configuration.ExpectedBarcode
 import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleBarcodesScanningMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleScanningMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.SheetMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.SingleScanningMode
+import io.scanbot.sdk.ui_v2.common.ScanbotColor
 import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
 import java.io.File
 import java.io.IOException
@@ -124,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                         result.onResult(
                             BarcodeMappedData(
                                 title = barcodeItem.textWithExtension,
-                                subtitle = barcodeItem.type.getName(),
+                                subtitle = barcodeItem.type?.getName() ?: "Unknown",
                                 barcodeImage = ""
                             )
                         )
@@ -143,6 +148,52 @@ class MainActivity : AppCompatActivity() {
                 this.userGuidance.title.text =
                     "Please align the QR-/Barcode in the frame above to scan it."
 
+
+            }
+
+            barcodeResultLauncher.launch(barcodeCameraConfiguration)
+        }
+
+        binding.rtuUiFindAndPick.setOnClickListener {
+            val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
+
+                this.useCase = BarcodeUseCase.findAndPickScanningMode().apply {
+
+                    this.sheet.mode = SheetMode.COLLAPSED_SHEET
+                    this.sheet.collapsedVisibleHeight = CollapsedVisibleHeight.LARGE
+                    this.arOverlay.automaticSelectionEnabled = false
+
+                    this.allowPartialScan = false
+
+                    this.countingRepeatDelay = 1000
+
+                    this.sheetContent.manualCountChangeEnabled = true
+                    this.sheetContent.submitButton.text = "Submit"
+                    this.sheetContent.submitButton.foreground.color = ScanbotColor("#000000")
+
+                    // Configure other parameters, pertaining to findAndPick-scanning mode as needed.
+                    // Set the expected barcodes.
+                    expectedBarcodes = listOf(
+                        ExpectedBarcode(
+                            barcodeValue = "123456",
+                            title = "numeric barcode",
+                            image = "",
+                            count = 4
+                        ),
+                        ExpectedBarcode(
+                            barcodeValue = "SCANBOT",
+                            title = "value barcode",
+                            image = "",
+                            count = 3
+                        )
+                    )
+                }
+
+                // Set an array of accepted barcode types.
+                this.recognizerConfiguration.barcodeFormats = BarcodeFormat.COMMON_CODES
+
+                this.userGuidance.title.text =
+                    "Please align the QR-/Barcode in the frame above to scan it."
 
             }
 

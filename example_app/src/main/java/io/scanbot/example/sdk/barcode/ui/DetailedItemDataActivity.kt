@@ -2,18 +2,18 @@ package io.scanbot.example.sdk.barcode.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import io.scanbot.barcodescanner.entity.AAMVA
+import io.scanbot.barcodescanner.entity.BoardingPass
+import io.scanbot.barcodescanner.entity.DEMedicalPlan
+import io.scanbot.barcodescanner.entity.GS1
+import io.scanbot.barcodescanner.entity.IDCardPDF417
+import io.scanbot.barcodescanner.entity.MedicalCertificate
+import io.scanbot.barcodescanner.entity.SEPA
+import io.scanbot.barcodescanner.entity.SwissQR
+import io.scanbot.barcodescanner.entity.VCard
 import io.scanbot.example.sdk.barcode.databinding.ActivityDetailedItemDataBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
-import io.scanbot.sdk.ui_v2.barcode.configuration.AAMVADocumentFormat
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItem
-import io.scanbot.sdk.ui_v2.barcode.configuration.BoardingPassDocumentFormat
-import io.scanbot.sdk.ui_v2.barcode.configuration.GS1DocumentFormat
-import io.scanbot.sdk.ui_v2.barcode.configuration.IDCardPDF417DocumentFormat
-import io.scanbot.sdk.ui_v2.barcode.configuration.MedicalCertificateDocumentFormat
-import io.scanbot.sdk.ui_v2.barcode.configuration.MedicalPlanDocumentFormat
-import io.scanbot.sdk.ui_v2.barcode.configuration.SEPADocumentFormat
-import io.scanbot.sdk.ui_v2.barcode.configuration.SwissQRCodeDocumentFormat
-import io.scanbot.sdk.ui_v2.barcode.configuration.VCardDocumentFormat
 
 class DetailedItemDataActivity : AppCompatActivity() {
 
@@ -24,112 +24,101 @@ class DetailedItemDataActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         BarcodeResultRepository.selectedBarcodeItem?.let { item ->
-            binding.docFormat.text = item.formattedResult?.let {
-                it::class.java.simpleName
-            } ?: "Unknown document"
+            binding.docFormat.text = item.parsedDocument?.type?.fullName ?: "Unknown document"
             binding.description.text = printParsedFormat(item)
         }
     }
 
     private fun printParsedFormat(item: BarcodeItem): String {
-        val formattedResult = item.formattedResult
-                ?: return "${item.textWithExtension}\n\nBinary data:\n${item.rawBytes.toByteArray().toHexString()}" // for not supported by current barcode detector implementation
+        val formattedResult = item.parsedDocument
+                ?: return "${item.textWithExtension}\n\nBinary data:\n${item.rawBytes.toHexString()}" // for not supported by current barcode detector implementation
 
         val barcodesResult = StringBuilder()
-        when (formattedResult) {
-            is AAMVADocumentFormat -> {
+        when (formattedResult.type.name) {
+            BoardingPass.DOCUMENT_TYPE -> {
                 barcodesResult.append("\n")
-                        .append("AAMVA Document\n")
-                        .append(formattedResult.aamvaVersionNumber).append("\n")
-                        .append(formattedResult.issuerIdentificationNumber).append("\n")
-                        .append(formattedResult.jurisdictionVersionNumber).append("\n")
-                formattedResult.subfiles.forEach { subfile ->
-                    for (field in subfile.fields) {
-                        barcodesResult.append(field.type.name).append(": ").append(field.value)
-                                .append("\n")
-                    }
+                    .append("Boarding Pass Document\n")
+                formattedResult.fields.forEach { field ->
+                    barcodesResult.append("${field.type.name}:${field.value?.text}\n")
                 }
-            }
-            is BoardingPassDocumentFormat -> {
-                barcodesResult.append("\n")
-                        .append("Boarding Pass Document\n")
-                        .append("${formattedResult.name}\n")
-                formattedResult.legs?.forEach { leg ->
+                formattedResult.children.forEach { leg ->
                     leg.fields.forEach {
-                        barcodesResult.append("${it.type.name}:${it.value}\n")
+                        barcodesResult.append("${it.type.name}:${it.value?.text}\n")
                     }
                 }
             }
-            is MedicalPlanDocumentFormat -> {
-                barcodesResult.append("\nDE Medical Plan Document\n")
-
-                barcodesResult.append("Doctor Fields:\n")
-                formattedResult.doctor.fields.forEach {
-                    barcodesResult.append("${it.type.name}: ${it.value}\n")
-                }
-                barcodesResult.append("\n")
-
-                barcodesResult.append("Patient Fields:\n")
-                formattedResult.patient.fields.forEach {
-                    barcodesResult.append("${it.type.name}: ${it.value}\n")
-                }
-                barcodesResult.append("\n")
-
-                barcodesResult.append("Medicine Fields:").append("\n")
-                formattedResult.subheadings
-                        .asSequence()
-                        .flatMap {
-                            barcodesResult.append("\n")
-                            it.medicines.asSequence()
-                        }
-                        .flatMap { it.fields.asSequence() }
-                        .forEach {
-                            barcodesResult.append("${it.type.name}: ${it.value}\n")
-                        }
-            }
-            is MedicalCertificateDocumentFormat -> {
-                barcodesResult.append("\nMedical Certificate Document\n")
+            SwissQR.DOCUMENT_TYPE -> {
+                barcodesResult.append("\nSwiss QR Document\n")
 
                 formattedResult.fields.forEach {
-                    barcodesResult.append("${it.type?.name}: ${it.value}\n")
+                    barcodesResult.append("${it.type.name}: ${it.value?.text}\n")
                 }
             }
-            is IDCardPDF417DocumentFormat -> {
+            DEMedicalPlan.DOCUMENT_TYPE -> {
+                barcodesResult.append("\nDE Medical Plan Document\n")
+
+                formattedResult.fields.forEach { field ->
+                    barcodesResult.append(field.type.name).append(": ").append(field.value?.text)
+                        .append("\n")
+                }
+                formattedResult.children.forEach { subfile ->
+                    for (field in subfile.fields) {
+                        barcodesResult.append(field.type.name).append(": ").append(field.value?.text)
+                            .append("\n")
+                    }
+                }
+            }
+            IDCardPDF417.DOCUMENT_TYPE -> {
                 barcodesResult.append("\nId Card PDF417\n")
 
                 formattedResult.fields.forEach {
-                    barcodesResult.append("${it.type?.name}: ${it.value}\n")
+                    barcodesResult.append("${it.type?.name}: ${it.value?.text}\n")
                 }
             }
-            is SEPADocumentFormat -> {
-                barcodesResult.append("\nSEPA Document\n")
-
-                formattedResult.fields.forEach {
-                    barcodesResult.append("${it.type.name}: ${it.value}\n")
-                }
-            }
-            is SwissQRCodeDocumentFormat -> {
-                barcodesResult.append("\nSwiss QR Document\n")
-                barcodesResult.append("Version: ${formattedResult.version.name}\n")
-
-                formattedResult.fields.forEach {
-                    barcodesResult.append("${it.type.name}: ${it.value}\n")
-                }
-            }
-            is VCardDocumentFormat -> {
-                barcodesResult.append("\nVcard Document\n")
-
-                formattedResult.fields.forEach {
-                    barcodesResult.append("${it.type.name}: ${it.rawText}\n")
-                }
-            }
-            is GS1DocumentFormat -> {
+            GS1.DOCUMENT_TYPE -> {
                 barcodesResult.append("\nGs1 Document\n")
 
                 formattedResult.fields.forEach {
-                    barcodesResult.append("${it.fieldDescription}: ${it.rawValue}\n")
+                    barcodesResult.append("${it.type.name}: ${it.value?.text}\n")
                 }
             }
+            SEPA.DOCUMENT_TYPE -> {
+                barcodesResult.append("\nSEPA Document\n")
+
+                formattedResult.fields.forEach {
+                    barcodesResult.append("${it.type.name}: ${it.value?.text}\n")
+                }
+            }
+            MedicalCertificate.DOCUMENT_TYPE -> {
+                barcodesResult.append("\nMedical Certificate Document\n")
+
+                formattedResult.fields.forEach {
+                    barcodesResult.append("${it.type?.name}: ${it.value?.text}\n")
+                }
+            }
+            VCard.DOCUMENT_TYPE -> {
+                barcodesResult.append("\nVcard Document\n")
+
+                formattedResult.fields.forEach {
+                    barcodesResult.append("${it.type.name}: ${it.value?.text}\n")
+                }
+            }
+            AAMVA.DOCUMENT_TYPE -> {
+                barcodesResult.append("\n")
+                    .append("AAMVA Document\n")
+                formattedResult.fields.forEach { field ->
+                    barcodesResult.append(field.type.name).append(": ").append(field.value?.text)
+                        .append("\n")
+                }
+                formattedResult.children.forEach { subfile ->
+                    for (field in subfile.fields) {
+                        barcodesResult.append(field.type.name).append(": ").append(field.value?.text)
+                            .append("\n")
+                    }
+                }
+            }
+            else -> throw AssertionError("Unsupported root document type")
+
         }
         return barcodesResult.toString()
     }
