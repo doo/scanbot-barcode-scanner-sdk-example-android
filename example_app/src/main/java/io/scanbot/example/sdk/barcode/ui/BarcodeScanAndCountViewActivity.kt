@@ -30,6 +30,7 @@ class BarcodeScanAndCountViewActivity : AppCompatActivity() {
     private lateinit var scanButton: Button
     private lateinit var nextButton: Button
     private lateinit var snapResult: TextView
+    private lateinit var flash: View
 
     private var flashEnabled = false
 
@@ -129,6 +130,12 @@ class BarcodeScanAndCountViewActivity : AppCompatActivity() {
                 valueTextView.translationY = bounds.height() / 2 + 20f
             }
         })
+
+        flash = findViewById(R.id.flash)
+        flash.setOnClickListener {
+            flashEnabled = !flashEnabled
+            scanCountView.viewController.useFlash(flashEnabled)
+        }
 
         // TODO to get the result of all scanned barcodes, use the following code
     }
