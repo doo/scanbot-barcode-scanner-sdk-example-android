@@ -24,7 +24,7 @@ class DetailedItemDataActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         BarcodeResultRepository.selectedBarcodeItem?.let { item ->
-            binding.docFormat.text = item.parsedDocument?.type?.fullName ?: "Unknown document"
+            binding.docFormat.text = item.parsedDocument?.type?.fullName ?: ""
             binding.description.text = printParsedFormat(item)
         }
     }
