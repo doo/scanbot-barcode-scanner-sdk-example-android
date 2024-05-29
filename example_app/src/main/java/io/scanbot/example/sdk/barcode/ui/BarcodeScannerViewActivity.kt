@@ -30,6 +30,7 @@ import io.scanbot.sdk.ui.camera.CameraUiSettings
 class BarcodeScannerViewActivity : AppCompatActivity() {
     private lateinit var barcodeScannerView: BarcodeScannerView
     private lateinit var resultView: ImageView
+    private lateinit var flash: View
 
     private val resultsMap = hashMapOf<String, Long>()
 
@@ -126,6 +127,13 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
                 valueTextView.text = textWithExtension
             }
         })
+
+
+        flash = findViewById(R.id.flash)
+        flash.setOnClickListener {
+            flashEnabled = !flashEnabled
+            barcodeScannerView.viewController.useFlash(flashEnabled)
+        }
     }
 
     override fun onResume() {
