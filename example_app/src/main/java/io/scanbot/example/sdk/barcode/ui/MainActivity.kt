@@ -21,6 +21,7 @@ import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.ScanbotBarcodeDetector
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
+import io.scanbot.sdk.ui_v2.barcode.common.mappers.BarcodeMappedDataExtension
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.COMMON_CODES
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.getName
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.toV2
@@ -130,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                             BarcodeMappedData(
                                 title = barcodeItem.textWithExtension,
                                 subtitle = barcodeItem.type?.getName() ?: "Unknown",
-                                barcodeImage = ""
+                                barcodeImage = BarcodeMappedDataExtension.barcodeFormatKey
                             )
                         )
                     }
