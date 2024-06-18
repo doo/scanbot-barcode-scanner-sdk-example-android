@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
                 this.recognizerConfiguration.apply {
                     this.barcodeFormats = BarcodeTypeRepository.selectedTypes.map { it.toV2() }
-                    this.gs1Handling = io.scanbot.sdk.ui_v2.barcode.configuration.Gs1Handling.DECODE
+                    this.gs1Handling = io.scanbot.sdk.ui_v2.barcode.configuration.Gs1Handling.DECODE_FULL
                 }
                 this.useCase = SingleScanningMode().apply {
 //                    this.confirmationSheetEnabled = false
