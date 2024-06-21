@@ -236,11 +236,9 @@ class MainActivity : AppCompatActivity() {
 
     private val barcodeResultLauncher: ActivityResultLauncher<BarcodeScannerConfiguration> =
         registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
-            val imagePath = resultEntity.barcodeImagePath
-            val previewPath = resultEntity.barcodePreviewFramePath
 
             BarcodeResultRepository.barcodeResultBundle =
-                BarcodeResultBundle(resultEntity.result!!, imagePath, previewPath)
+                BarcodeResultBundle(resultEntity.result!!)
 
             val intent = Intent(this, BarcodeResultActivity::class.java)
             startActivity(intent)
