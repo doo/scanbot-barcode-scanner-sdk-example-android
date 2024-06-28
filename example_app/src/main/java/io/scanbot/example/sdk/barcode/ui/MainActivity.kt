@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             val barcodeCameraConfiguration = BarcodeScannerConfiguration().apply {
                 this.recognizerConfiguration.apply {
                     this.barcodeFormats = BarcodeTypeRepository.selectedTypes.map { it.toV2() }
-                    this.gs1Handling = io.scanbot.sdk.ui_v2.barcode.configuration.Gs1Handling.DECODE
+                    this.gs1Handling = io.scanbot.sdk.ui_v2.barcode.configuration.Gs1Handling.DECODE_FULL
                 }
                 this.useCase = SingleScanningMode().apply {
 //                    this.confirmationSheetEnabled = false
@@ -236,11 +236,9 @@ class MainActivity : AppCompatActivity() {
 
     private val barcodeResultLauncher: ActivityResultLauncher<BarcodeScannerConfiguration> =
         registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
-            val imagePath = resultEntity.barcodeImagePath
-            val previewPath = resultEntity.barcodePreviewFramePath
 
             BarcodeResultRepository.barcodeResultBundle =
-                BarcodeResultBundle(resultEntity.result!!, imagePath, previewPath)
+                BarcodeResultBundle(resultEntity.result!!)
 
             val intent = Intent(this, BarcodeResultActivity::class.java)
             startActivity(intent)
