@@ -22,6 +22,8 @@ import io.scanbot.example.sdk.barcode.model.toV2Results
 import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
 import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
+import io.scanbot.sdk.barcode.entity.BarcodeFormat
+import io.scanbot.sdk.barcode.entity.BarcodeItem
 import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.*
@@ -36,6 +38,8 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
     private var flashEnabled = false
     private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
 
+    private val detectedBarcodes = mutableSetOf<BarcodeItem>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY)
@@ -43,7 +47,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         setContentView(R.layout.activity_qr_camera_view)
 
         cameraView = findViewById(R.id.camera)
-        resultView = findViewById(R.id.result)
+        resultView = findViewById(R.id.result_image)
         flash = findViewById(R.id.flash)
         flash.setOnClickListener {
             flashEnabled = !flashEnabled
@@ -63,12 +67,13 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
             barcodeDetector
         )
 
-        barcodeDetectorFrameHandler?.setDetectionInterval(1000)
+        barcodeDetectorFrameHandler?.setDetectionInterval(1)
         barcodeDetectorFrameHandler?.addResultHandler(this)
 
         barcodeDetector.modifyConfig {
             setSaveCameraPreviewFrame(true)
-            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
+            // TODO Define/limit the barcode types/symbologies that the detector should recognize:
+            setBarcodeFormats(arrayListOf(BarcodeFormat.DATA_MATRIX, BarcodeFormat.QR_CODE))
         }
 
         val barcodeAutoSnappingController =
@@ -97,14 +102,20 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
 
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
         result.value?.let {
-            BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(
-                BarcodeScannerResult(it.barcodeItems.toV2Results()),
-                imagePath = null,
-                previewPath = null,
-            )
-            val intent = Intent(this, BarcodeResultActivity::class.java)
-            startActivity(intent)
-            finish()
+            it.barcodeItems.forEach {
+                // TODO Collect 4 unique(!) barcodes of each corner by using the values and/or resultPoints.
+                // The barcodes could have been detected all at once or in several frame results.
+                detectedBarcodes.add(it)
+                //it.text => value
+                //it.barcodeFormat => symbology
+                //it.resultPoints => coordinates
+            }
+
+            // TODO Once you have the 4 barcodes, stop the barcode detector and take the picture (trigger image snapping):
+            if (detectedBarcodes.size >= 4) {
+                barcodeDetectorFrameHandler?.isEnabled = false
+                cameraView.takePicture(false)
+            }
         }
     }
 
@@ -115,6 +126,9 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         matrix.setRotate(imageOrientation.toFloat(), bitmap.width / 2f, bitmap.height / 2f)
         val resultBitmap =
             Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
+
+        // TODO Crop the resultBitmap by using the coordinates from 4 detectedBarcodes
+        // detectedBarcodes....
 
         resultView.post {
             resultView.setImageBitmap(resultBitmap)
