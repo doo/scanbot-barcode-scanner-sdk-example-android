@@ -78,7 +78,7 @@ class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
                             ).show()
                             AutoCancelTimeout -> Unit // just close screen (below)
                             CanceledByUser -> Unit // just close screen (below)
-                            is SystemError ->Unit // handle system error here
+                            is SystemError -> Unit // handle system error here
                         }
                         finish()
                     }
