@@ -21,9 +21,30 @@ limitations under the License.
 
 
 
+Coil image loading
+
+Version 2.3.0
+(https://coil-kt.github.io/coil/)
+
+Copyright 2024 Coil Contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+
 Kotlin Standard Library
 
-Version 1.7.10
+Version 1.9.23
 (https://github.com/JetBrains/kotlin)
 
 Copyright 2010-2018 JetBrains s.r.o.
