@@ -101,7 +101,7 @@ limitations under the License.
 
 Dagger
 
-Version 2.45
+Version 2.50
 (https://github.com/google/dagger)
 
 Copyright 2012 The Dagger Authors
