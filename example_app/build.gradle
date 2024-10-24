@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace = "io.scanbot.example.sdk.barcode"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "io.scanbot.example.sdk.barcode.android"
-        targetSdk = 33
+        targetSdk = 34
         minSdk = 21
 
         versionCode = 1
@@ -45,7 +45,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    def sdkVersion = "5.2.0"
+    def sdkVersion = "6.0.0"
     implementation("io.scanbot:scanbot-barcode-scanner-sdk:$sdkVersion")
     implementation("io.scanbot:rtu-ui-v2-barcode:$sdkVersion")
     implementation("io.scanbot:barcode-sdk-pdfium:$sdkVersion")
