@@ -18,8 +18,16 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled = false
+            shrinkResources = false
+            debuggable = true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
         release {
-            minifyEnabled true
+            minifyEnabled = true
+            shrinkResources = true
+            debuggable = false
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
@@ -34,7 +42,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.4"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 }
 
@@ -50,5 +58,5 @@ dependencies {
     implementation("io.scanbot:rtu-ui-v2-barcode:$sdkVersion")
     implementation("io.scanbot:barcode-sdk-pdfium:$sdkVersion")
 
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.11.0")
 }
