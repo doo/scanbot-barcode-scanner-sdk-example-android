@@ -18,20 +18,21 @@ import androidx.recyclerview.widget.RecyclerView
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.sdk.SdkLicenseError
-import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
-import io.scanbot.sdk.barcode.entity.BarcodeItem
-import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
+import io.scanbot.sdk.barcode.BarcodeItem
+import io.scanbot.sdk.barcode.BarcodeScannerFrameHandler
+import io.scanbot.sdk.barcode.BarcodeScannerResult
+import io.scanbot.sdk.barcode.entity.textWithExtension
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.FrameHandlerResult
 import io.scanbot.sdk.camera.ScanbotCameraView
 
-class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
+class BatchQRScanActivity : AppCompatActivity(), BarcodeScannerFrameHandler.ResultHandler {
 
     private lateinit var cameraView: ScanbotCameraView
     private lateinit var resultView: RecyclerView
     private lateinit var flash: View
     private var flashEnabled = false
-    private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
+    private var barcodeScannerFrameHandler: BarcodeScannerFrameHandler? = null
     private val resultAdapter by lazy { ResultAdapter(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,20 +57,19 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
             }, 300)
         }
 
-        val barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
+        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
 
-        barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.attach(
+        barcodeScannerFrameHandler = BarcodeScannerFrameHandler.attach(
             cameraView,
-            barcodeDetector
+            barcodeScanner
         )
 
-        barcodeDetectorFrameHandler?.setDetectionInterval(1000)
-        barcodeDetectorFrameHandler?.addResultHandler(this)
+        barcodeScannerFrameHandler?.setScanningInterval(1000)
+        barcodeScannerFrameHandler?.addResultHandler(this)
 
-        barcodeDetector.modifyConfig {
-            setSaveCameraPreviewFrame(false)
-            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
-        }
+        barcodeScanner.setConfigurations(
+            barcodeFormats = BarcodeTypeRepository.selectedTypes.toList()
+        )
     }
 
     override fun onResume() {
@@ -94,15 +94,15 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.Res
         cameraView.onPause()
     }
 
-    private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
+    private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScannerResult?>) {
         result.value?.let {
             cameraView.post {
-                resultAdapter.addBarcodeItems(it.barcodeItems)
+                resultAdapter.addBarcodeItems(it.barcodes)
             }
         }
     }
 
-    override fun handle(result: FrameHandlerResult<BarcodeScanningResult?, SdkLicenseError>): Boolean {
+    override fun handle(result: FrameHandlerResult<BarcodeScannerResult?, SdkLicenseError>): Boolean {
         if (result is FrameHandlerResult.Success) {
             handleSuccess(result)
         } else {
@@ -151,13 +151,13 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
     override fun onBindViewHolder(holder: BarcodeViewHolder, position: Int) {
         val item = items[position]
         holder.text.text = item.textWithExtension
-        holder.barcodeType.text = item.barcodeFormat.name
-        if (item.image == null) {
+        holder.barcodeType.text = item.format.name
+        if (item.sourceImage == null) {
             holder.image.visibility = View.GONE
         } else {
             holder.image.visibility = View.VISIBLE
         }
-        holder.image.setImageBitmap(item.image)
+        holder.image.setImageBitmap(item.sourceImage?.toBitmap())
     }
 
     override fun getItemCount(): Int = items.size

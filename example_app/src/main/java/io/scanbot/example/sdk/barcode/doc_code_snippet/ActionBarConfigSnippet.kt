@@ -12,11 +12,12 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // TODO: add URLs here
 
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.ScanbotColor
 
 fun actionBarConfigSnippet() {
     // Create the default configuration object.
-    BarcodeScannerConfiguration().apply {
+    BarcodeScannerScreenConfiguration().apply {
         // Configure parameters (use explicit `this.` receiver for better code completion):
 
         // Configure the action bar.

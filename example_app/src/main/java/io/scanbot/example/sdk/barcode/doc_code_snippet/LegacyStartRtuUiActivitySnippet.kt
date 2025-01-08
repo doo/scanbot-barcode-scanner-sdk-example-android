@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 
 /** Deprecated approach, use ActivityResultLauncher instead - see [AlmostRtuUiBarcodeScannerActivity] */
 class LegacyStartRtuUiActivitySnippet : AppCompatActivity() {
@@ -26,7 +26,7 @@ class LegacyStartRtuUiActivitySnippet : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.doc_snippet_activity_rtu_barcode_scanner_start)
 
-        val config = BarcodeScannerConfiguration().apply {
+        val config = BarcodeScannerScreenConfiguration().apply {
             // TODO: configure as needed
         }
 

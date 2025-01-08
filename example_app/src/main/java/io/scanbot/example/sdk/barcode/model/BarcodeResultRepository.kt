@@ -1,10 +1,11 @@
 package io.scanbot.example.sdk.barcode.model
 
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItem
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerUiItem
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerUiResult
+
 
 data class BarcodeResultBundle(
-    val barcodeScanningResult: BarcodeScannerResult,
+    val barcodeScanningResult: BarcodeScannerUiResult,
     val imagePath: String? = null,
     val previewPath: String? = null
 )
@@ -12,5 +13,5 @@ data class BarcodeResultBundle(
 object BarcodeResultRepository {
     var barcodeResultBundle: BarcodeResultBundle? = null
 
-    var selectedBarcodeItem: BarcodeItem? = null
+    var selectedBarcodeItem: BarcodeScannerUiItem? = null
 }

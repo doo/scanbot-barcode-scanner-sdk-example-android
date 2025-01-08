@@ -11,17 +11,19 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // Page URLs using this code:
 // TODO: add URLs here
 
+import io.scanbot.sdk.barcode.BarcodeItem
+import io.scanbot.sdk.barcode.entity.textWithExtension
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.getName
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItem
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItemMapper
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeMappedData
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeMappingResult
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeMappingErrorCallback
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeMappingResultCallback
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeUseCase
 
 fun itemMappingConfigSnippet() {
     // Create the default configuration object.
-    val config = BarcodeScannerConfiguration().apply {
+    val config = BarcodeScannerScreenConfiguration().apply {
         // Configure parameters (use explicit `this.` receiver for better code completion):
 
         this.useCase = BarcodeUseCase.singleScanningMode().apply {
@@ -29,21 +31,22 @@ fun itemMappingConfigSnippet() {
 
                 override fun mapBarcodeItem(
                     barcodeItem: BarcodeItem,
-                    result: BarcodeMappingResult
+                    onResult: BarcodeMappingResultCallback,
+                    onError: BarcodeMappingErrorCallback
                 ) {
                     /** TODO: process scan result as needed to get your mapped data,
                      * e.g. query your server to get product image, title and subtitle.
                      * See example below.
                      */
                     val title = "Some product ${barcodeItem.textWithExtension}"
-                    val subtitle = barcodeItem.type?.getName() ?: "Unknown"
+                    val subtitle = barcodeItem.format?.getName() ?: "Unknown"
                     val image = "https://avatars.githubusercontent.com/u/1454920" //WARNING: all web links won't work without internet permission
 
                     /** TODO: call [BarcodeMappingResult.onError()] in case of error during obtaining mapped data. */
                     if (barcodeItem.textWithExtension == "Error occurred!") {
-                        result.onError()
+                        onError.onError()
                     } else {
-                        result.onResult(
+                        onResult.onResult(
                             BarcodeMappedData(
                                 title = title,
                                 subtitle = subtitle,

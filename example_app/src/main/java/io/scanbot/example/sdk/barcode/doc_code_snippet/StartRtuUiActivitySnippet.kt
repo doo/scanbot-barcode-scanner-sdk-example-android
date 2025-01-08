@@ -17,12 +17,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
 
 class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
 
-    private val barcodeResultLauncher: ActivityResultLauncher<BarcodeScannerConfiguration> =
+    private val barcodeResultLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
         registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
 
             // TODO: present barcode result as needed
@@ -32,7 +32,7 @@ class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.doc_snippet_activity_rtu_barcode_scanner_start)
 
-        val config = BarcodeScannerConfiguration().apply {
+        val config = BarcodeScannerScreenConfiguration().apply {
             // TODO: configure as needed
         }
 

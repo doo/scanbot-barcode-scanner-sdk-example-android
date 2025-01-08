@@ -17,8 +17,9 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
-import io.scanbot.sdk.barcode.entity.BarcodeItem
-import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
+import io.scanbot.sdk.barcode.BarcodeItem
+import io.scanbot.sdk.barcode.BarcodeScannerResult
+import io.scanbot.sdk.barcode.entity.textWithExtension
 import io.scanbot.sdk.barcode.ui.BarcodePolygonsView
 import io.scanbot.sdk.barcode.ui.BarcodeScannerView
 import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
@@ -44,15 +45,13 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
         barcodeScannerView = findViewById(R.id.barcode_scanner_view)
         resultView = findViewById(R.id.result)
 
-        val barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
-        barcodeDetector.modifyConfig {
-            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
-            setSaveCameraPreviewFrame(false)
-        }
-
+        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
+        barcodeScanner.setConfigurations(
+            barcodeFormats = BarcodeTypeRepository.selectedTypes.toList()
+        )
         barcodeScannerView.apply {
             initCamera(CameraUiSettings(true))
-            initDetectionBehavior(barcodeDetector,
+            initScanningBehavior(barcodeScanner,
                 { result ->
                     if (result is FrameHandlerResult.Success) {
                         handleSuccess(result)
@@ -75,6 +74,10 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
                     override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
                         // we don't need full size pictures in this example
                     }
+
+                    override fun onSelectionOverlayBarcodeClicked(barcodeItem: BarcodeItem) {
+                        // here you can handle the click on the barcode item
+                    }
                 }
             )
         }
@@ -83,7 +86,7 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
         barcodeScannerView.selectionOverlayController.setEnabled(true)
         barcodeScannerView.viewController.apply {
             // This is important for Selection Overlay to work properly
-            barcodeDetectionInterval = 0
+            barcodeScanningInterval = 0
             autoSnappingEnabled = false
         }
         barcodeScannerView.selectionOverlayController.setBarcodeAppearanceDelegate(object :
@@ -158,7 +161,7 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
         barcodeScannerView.viewController.onPause()
     }
 
-    private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
+    private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScannerResult?>) {
         result.value?.let {
             // TODO: uncomment if you wish to proceed to the result screen automatically
             // BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(it)
