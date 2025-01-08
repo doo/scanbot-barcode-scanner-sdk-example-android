@@ -19,17 +19,21 @@ import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.ui.BarcodeScannerView
 import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
+import io.scanbot.sdk.camera.CameraModule
 import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.camera.FrameHandlerResult
+import io.scanbot.sdk.common.AspectRatio
 import io.scanbot.sdk.ui.camera.CameraUiSettings
 
 class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
+
+    private lateinit var barcodeScannerView: BarcodeScannerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.doc_snippet_activity_classic_ui)
 
-        val barcodeScannerView: BarcodeScannerView = findViewById(R.id.barcode_scanner_view)
+        barcodeScannerView = findViewById<BarcodeScannerView>(R.id.barcode_scanner_view)!!
         val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
 
         // modify config as needed
@@ -65,5 +69,25 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
                 }
             )
         }
+
+        // To disable the finder view
+        barcodeScannerView.finderViewController.setFinderEnabled(false)
+        // To set the required aspect ratio
+        barcodeScannerView.finderViewController.setRequiredAspectRatios(listOf(AspectRatio(4.0, 1.0)))
+
+        // To switch to the front camera
+        barcodeScannerView.cameraConfiguration.setCameraModule(CameraModule.FRONT)
+        // To call the take picture function of the Camera
+        barcodeScannerView.viewController.takePicture(acquireFocus = false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        barcodeScannerView.viewController.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        barcodeScannerView.viewController.onPause()
     }
 }
