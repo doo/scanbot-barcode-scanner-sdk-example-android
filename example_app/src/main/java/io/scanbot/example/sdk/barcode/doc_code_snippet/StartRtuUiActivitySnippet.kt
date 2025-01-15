@@ -15,16 +15,18 @@ import android.os.Bundle
 import io.scanbot.example.sdk.barcode.R
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.app.AppCompatActivity
-
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+// @Tag("Add imports for RTU UI v2 activity")
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDKInitializer
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
+// @EndTag("Add imports for RTU UI v2 activity")
 
 class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
 
+    // @Tag("Register RTU UI v2 activity result launcher")
     private val barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
         registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
             // Barcode Scanner result callback:
@@ -37,7 +39,9 @@ class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         }
+    // @EndTag("Register RTU UI v2 activity result launcher")
 
+    // @Tag("Init Scanbot Barcode Scanner SDK")
     // Adapt the 'onCreate' method in your Activity (for example, MainActivity.kt):
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,14 +52,17 @@ class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
             // optional: uncomment the next line if you have a license key
             // .license(this.application, LICENSE_KEY)
             .initialize(this.application)
+        // @EndTag("Init Scanbot Barcode Scanner SDK")
 
         val config = BarcodeScannerScreenConfiguration().apply {
             // TODO: configure as needed
         }
 
         findViewById<AppCompatButton>(R.id.start_barcode_rtu_button).setOnClickListener {
+            // @Tag("Launch RTU UI v2 activity")
             // Launch the barcode scanner:
             barcodeScreenLauncher.launch(config)
+            // @EndTag("Launch RTU UI v2 activity")
         }
     }
 }
