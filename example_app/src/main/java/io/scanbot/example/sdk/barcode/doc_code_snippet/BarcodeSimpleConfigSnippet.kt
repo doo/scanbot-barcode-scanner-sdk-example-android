@@ -17,6 +17,7 @@ import io.scanbot.sdk.barcode.BarcodeFormats
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 
 fun barcodeScannerWithSimpleConfigSnippet(context: Context) {
+    // @Tag("Simple configuring Barcode Scanner")
     val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
 
     barcodeScanner.setConfigurations(
@@ -25,4 +26,5 @@ fun barcodeScannerWithSimpleConfigSnippet(context: Context) {
         extractedDocumentFormats = listOf( BarcodeDocumentFormat.AAMVA, BarcodeDocumentFormat.BOARDING_PASS, BarcodeDocumentFormat.DE_MEDICAL_PLAN, BarcodeDocumentFormat.MEDICAL_CERTIFICATE, BarcodeDocumentFormat.ID_CARD_PDF_417, BarcodeDocumentFormat.SEPA, BarcodeDocumentFormat.SWISS_QR, BarcodeDocumentFormat.VCARD, BarcodeDocumentFormat.GS1, BarcodeDocumentFormat.HIBC ),
         onlyAcceptDocuments = false,
     )
+    // @EndTag("Simple configuring Barcode Scanner")
 }

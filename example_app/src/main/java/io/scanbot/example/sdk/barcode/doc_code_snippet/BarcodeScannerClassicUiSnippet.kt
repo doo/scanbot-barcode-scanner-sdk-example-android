@@ -33,6 +33,7 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.doc_snippet_activity_classic_ui)
 
+        // @Tag("Barcode Classic UI view snippet")
         barcodeScannerView = findViewById<BarcodeScannerView>(R.id.barcode_scanner_view)!!
         val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
 
@@ -69,18 +70,24 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
                 }
             )
         }
+        // @EndTag("Barcode Classic UI view snippet")
 
+        // @Tag("Barcode Classic UI configure finder snippet")
         // To disable the finder view
         barcodeScannerView.finderViewController.setFinderEnabled(false)
         // To set the required aspect ratio
         barcodeScannerView.finderViewController.setRequiredAspectRatios(listOf(AspectRatio(4.0, 1.0)))
+        // @EndTag("Barcode Classic UI configure finder snippet")
 
+        // @Tag("Barcode Classic UI configure camera behaviour snippet")
         // To switch to the front camera
         barcodeScannerView.cameraConfiguration.setCameraModule(CameraModule.FRONT)
         // To call the take picture function of the Camera
         barcodeScannerView.viewController.takePicture(acquireFocus = false)
+        // @EndTag("Barcode Classic UI configure camera behaviour snippet")
     }
 
+    // @Tag("Barcode Classic UI onResume onPause snippet")
     override fun onResume() {
         super.onResume()
         barcodeScannerView.viewController.onResume()
@@ -90,4 +97,5 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
         super.onPause()
         barcodeScannerView.viewController.onPause()
     }
+    // @EndTag("Barcode Classic UI onResume onPause snippet")
 }

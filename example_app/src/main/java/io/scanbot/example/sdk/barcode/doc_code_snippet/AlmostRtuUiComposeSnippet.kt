@@ -11,6 +11,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // Page URLs using this code:
 // TODO: add URLs here
 
+// @Tag("RTU UI v2 Sub Component Barcode scanner snippet")
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -88,3 +89,4 @@ class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
         }
     }
 }
+// @EndTag("RTU UI v2 Sub Component Barcode scanner snippet")

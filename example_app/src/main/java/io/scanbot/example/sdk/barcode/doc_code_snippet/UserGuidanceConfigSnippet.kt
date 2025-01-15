@@ -11,6 +11,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // Page URLs using this code:
 // TODO: add URLs here
 
+// @Tag("Configuring RTU UI v2 user guidance snippet")
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.ScanbotColor
 
@@ -32,3 +33,4 @@ fun userGuidanceConfigSnippet() {
         // Configure other parameters as needed.
     }
 }
+// @EndTag("Configuring RTU UI v2 user guidance snippet")

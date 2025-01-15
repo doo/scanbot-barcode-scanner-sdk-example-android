@@ -11,6 +11,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // Page URLs using this code:
 // TODO: add URLs here
 
+// @Tag("Configuring RTU UI v2 Barcode item mapping snippet")
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.entity.textWithExtension
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.getName
@@ -62,3 +63,4 @@ fun itemMappingConfigSnippet() {
         // Configure other parameters as needed.
     }
 }
+// @EndTag("Configuring RTU UI v2 Barcode item mapping snippet")

@@ -30,6 +30,7 @@ import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import java.util.EnumSet
 
 fun barcodeScannerWithAdvancedConfigSnippet(context: Context) {
+    // @Tag("Advanced configuring Barcode Scanner")
     val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
 
     var configs = mutableListOf<BarcodeFormatConfigurationBase>()
@@ -94,4 +95,21 @@ fun barcodeScannerWithAdvancedConfigSnippet(context: Context) {
         engineMode = BarcodeScannerEngineMode.NEXT_GEN
         returnBarcodeImage = true
     }
+    // @EndTag("Advanced configuring Barcode Scanner")
+}
+
+fun barcodeFormatCommonConfigurationSnippet(context: Context) {
+    // @Tag("Configuring BarcodeFormatCommonConfiguration in Barcode Scanner")
+    val baseConfig = BarcodeFormatCommonConfiguration.default().copy(
+        regexFilter = "",
+        minimum1DQuietZoneSize = 10,
+        stripCheckDigits = false,
+        minimumTextLength = 0,
+        maximumTextLength = 0,
+        gs1Handling = Gs1Handling.PARSE,
+        strictMode = true,
+        formats = BarcodeFormats.common,
+        addAdditionalQuietZone = false
+    )
+    // @EndTag("Configuring BarcodeFormatCommonConfiguration in Barcode Scanner")
 }

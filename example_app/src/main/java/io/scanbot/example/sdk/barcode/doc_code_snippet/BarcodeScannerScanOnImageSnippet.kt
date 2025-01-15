@@ -19,10 +19,13 @@ import io.scanbot.sdk.barcode.BarcodeScannerResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 
 fun scanOnImageSnippet(context: Context) {
+    // @Tag("Creating the Scanner")
     val sdk = ScanbotBarcodeScannerSDK(context)
     val barcodeScanner = sdk.createBarcodeScanner()
+    // @EndTag("Creating the Scanner")
 }
 
+// @Tag("Scanning from Bitmap")
 fun processImageSnippet(
     sdk: ScanbotBarcodeScannerSDK,
     barcodeDetector: BarcodeScanner,
@@ -33,8 +36,10 @@ fun processImageSnippet(
     val result = barcodeDetector.scanFromBitmap(bitmap, 0)
     // handle the detected barcode(s) from result
 }
+// @EndTag("Scanning from Bitmap")
 
 fun handleResultSnippet(context: Context, result: BarcodeScannerResult) {
+    // @Tag("Handling the Result")
     val barcodeData = result!!
     val barcodesTextResult = StringBuilder()
     for (item in barcodeData.barcodes) {
@@ -44,6 +49,7 @@ fun handleResultSnippet(context: Context, result: BarcodeScannerResult) {
             .append("\n")
     }
     Toast.makeText(context, barcodesTextResult.toString(), Toast.LENGTH_LONG).show()
+    // @EndTag("Handling the Result")
 }
 
 

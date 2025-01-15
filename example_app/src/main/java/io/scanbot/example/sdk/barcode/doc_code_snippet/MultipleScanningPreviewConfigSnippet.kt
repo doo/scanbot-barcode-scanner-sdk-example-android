@@ -11,6 +11,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // Page URLs using this code:
 // TODO: add URLs here
 
+// @Tag("Configuring RTU UI v2 Barcode multiple scanning sheet snippet")
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.CollapsedVisibleHeight
 import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleScanningMode
@@ -40,3 +41,4 @@ fun multipleScanningPreviewConfigSnippet() {
         // Configure other parameters as needed.
     }
 }
+// @EndTag("Configuring RTU UI v2 Barcode multiple scanning sheet snippet")
