@@ -1,11 +1,12 @@
 package io.scanbot.example.sdk.barcode.model
 
-import io.scanbot.sdk.barcode.entity.BarcodeFormat
+import io.scanbot.sdk.barcode.BarcodeFormat
+import io.scanbot.sdk.barcode.BarcodeFormats
 
 object BarcodeTypeRepository {
 
     val selectedTypes = mutableSetOf<BarcodeFormat>().also {
-        it.addAll(BarcodeFormat.ALL_CODES)
+        it.addAll(BarcodeFormats.all)
     }
 
     fun selectType(type: BarcodeFormat) {

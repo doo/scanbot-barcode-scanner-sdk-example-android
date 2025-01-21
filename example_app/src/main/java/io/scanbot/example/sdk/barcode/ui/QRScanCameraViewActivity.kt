@@ -15,26 +15,29 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import io.scanbot.example.sdk.barcode.R
-import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
-import io.scanbot.example.sdk.barcode.model.toV2Results
+import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
-import io.scanbot.sdk.barcode.BarcodeDetectorFrameHandler
-import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
+import io.scanbot.sdk.barcode.BarcodeScannerFrameHandler
+import io.scanbot.sdk.barcode.BarcodeScannerResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
-import io.scanbot.sdk.camera.*
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
+import io.scanbot.sdk.camera.CaptureInfo
+import io.scanbot.sdk.camera.FrameHandlerResult
+import io.scanbot.sdk.camera.PictureCallback
+import io.scanbot.sdk.camera.ScanbotCameraView
+import io.scanbot.sdk.ui_v2.barcode.common.mappers.toV2
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerUiResult
 
-class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandler.ResultHandler {
+class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler.ResultHandler {
 
     private lateinit var cameraView: ScanbotCameraView
     private lateinit var resultView: ImageView
     private lateinit var flash: View
 
     private var flashEnabled = false
-    private var barcodeDetectorFrameHandler: BarcodeDetectorFrameHandler? = null
+    private var barcodeScannerFrameHandler: BarcodeScannerFrameHandler? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -56,23 +59,20 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
             }, 300)
         }
 
-        val barcodeDetector = ScanbotBarcodeScannerSDK(this).createBarcodeDetector()
+        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
 
-        barcodeDetectorFrameHandler = BarcodeDetectorFrameHandler.attach(
+        barcodeScannerFrameHandler = BarcodeScannerFrameHandler.attach(
             cameraView,
-            barcodeDetector
+            barcodeScanner
         )
 
-        barcodeDetectorFrameHandler?.setDetectionInterval(1000)
-        barcodeDetectorFrameHandler?.addResultHandler(this)
+        barcodeScannerFrameHandler?.setScanningInterval(1000)
+        barcodeScannerFrameHandler?.addResultHandler(this)
 
-        barcodeDetector.modifyConfig {
-            setSaveCameraPreviewFrame(true)
-            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
-        }
+        barcodeScanner.setConfigurations(barcodeFormats = BarcodeTypeRepository.selectedTypes.toList())
 
         val barcodeAutoSnappingController =
-            BarcodeAutoSnappingController.attach(cameraView, barcodeDetectorFrameHandler!!)
+            BarcodeAutoSnappingController.attach(cameraView, barcodeScannerFrameHandler!!)
         barcodeAutoSnappingController.setSensitivity(1f)
         cameraView.addPictureCallback(object : PictureCallback() {
             override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
@@ -95,10 +95,10 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         cameraView.onPause()
     }
 
-    private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScanningResult?>) {
+    private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScannerResult?>) {
         result.value?.let {
             BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(
-                BarcodeScannerResult(it.barcodeItems.toV2Results()),
+                BarcodeScannerUiResult(it.barcodes.map { it.toV2(1) }),
                 imagePath = null,
                 previewPath = null,
             )
@@ -123,7 +123,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeDetectorFrameHandle
         }
     }
 
-    override fun handle(result: FrameHandlerResult<BarcodeScanningResult?, SdkLicenseError>): Boolean {
+    override fun handle(result: FrameHandlerResult<BarcodeScannerResult?, SdkLicenseError>): Boolean {
         if (result is FrameHandlerResult.Success) {
             handleSuccess(result)
         } else {

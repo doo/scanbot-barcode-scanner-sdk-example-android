@@ -8,7 +8,8 @@ import io.scanbot.example.sdk.barcode.databinding.ActivityBarcodeResultBinding
 import io.scanbot.example.sdk.barcode.databinding.BarcodeItemBinding
 import io.scanbot.example.sdk.barcode.databinding.SnapImageItemBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerResult
+import io.scanbot.sdk.barcode.entity.textWithExtension
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerUiResult
 import java.io.File
 
 class BarcodeResultActivity : AppCompatActivity() {
@@ -39,14 +40,14 @@ class BarcodeResultActivity : AppCompatActivity() {
         }
     }
 
-    private fun showLatestBarcodeResult(detectedBarcodes: BarcodeScannerResult?) {
+    private fun showLatestBarcodeResult(scannedBarcodes: BarcodeScannerUiResult?) {
 
-        detectedBarcodes?.let {
-            detectedBarcodes.items.asSequence().map { item ->
+        scannedBarcodes?.let {
+            it.items.asSequence().map { item ->
                 val itemViewBinding = BarcodeItemBinding.inflate(layoutInflater, binding.recognisedItems, false)
-                itemViewBinding.barcodeFormat.text = "${item.count}x " + (item.type?.name ?: "")
-                itemViewBinding.docFormat.text = item.parsedDocument?.type?.fullName ?: ""
-                itemViewBinding.docText.text = item.textWithExtension
+                itemViewBinding.barcodeFormat.text = "${item.count}x " + (item.barcode.format?.name ?: "")
+                itemViewBinding.docFormat.text = item.barcode.extractedDocument?.type?.fullName ?: ""
+                itemViewBinding.docText.text = item.barcode.textWithExtension
                 itemViewBinding.root.setOnClickListener {
                     val intent = Intent(this, DetailedItemDataActivity::class.java)
                     BarcodeResultRepository.selectedBarcodeItem = item

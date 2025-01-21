@@ -11,13 +11,14 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // Page URLs using this code:
 // TODO: add URLs here
 
+// @Tag("Start RTU UI Barcode snippet (deprecated Android API)")
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 
 /** Deprecated approach, use ActivityResultLauncher instead - see [AlmostRtuUiBarcodeScannerActivity] */
 class LegacyStartRtuUiActivitySnippet : AppCompatActivity() {
@@ -26,7 +27,7 @@ class LegacyStartRtuUiActivitySnippet : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.doc_snippet_activity_rtu_barcode_scanner_start)
 
-        val config = BarcodeScannerConfiguration().apply {
+        val config = BarcodeScannerScreenConfiguration().apply {
             // TODO: configure as needed
         }
 
@@ -55,3 +56,4 @@ class LegacyStartRtuUiActivitySnippet : AppCompatActivity() {
         const val BARCODE_SCANNER_REQUEST_CODE = 42
     }
 }
+// @EndTag("Start RTU UI Barcode snippet (deprecated Android API)")
