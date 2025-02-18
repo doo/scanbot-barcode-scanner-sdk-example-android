@@ -13,7 +13,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 
 // @Tag("Configuring RTU UI v2 Barcode item mapping snippet")
 import io.scanbot.sdk.barcode.BarcodeItem
-import io.scanbot.sdk.barcode.entity.textWithExtension
+import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.getName
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItemMapper
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeMappedData

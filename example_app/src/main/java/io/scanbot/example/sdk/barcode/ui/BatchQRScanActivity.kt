@@ -21,7 +21,7 @@ import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScannerFrameHandler
 import io.scanbot.sdk.barcode.BarcodeScannerResult
-import io.scanbot.sdk.barcode.entity.textWithExtension
+import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.FrameHandlerResult
 import io.scanbot.sdk.camera.ScanbotCameraView

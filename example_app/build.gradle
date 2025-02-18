@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace = "io.scanbot.example.sdk.barcode"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "io.scanbot.example.sdk.barcode.android"
-        targetSdk = 34
+        targetSdk = 35
         minSdk = 21
 
         versionCode = 1

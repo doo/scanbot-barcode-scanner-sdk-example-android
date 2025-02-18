@@ -8,7 +8,7 @@ import io.scanbot.example.sdk.barcode.databinding.ActivityBarcodeResultBinding
 import io.scanbot.example.sdk.barcode.databinding.BarcodeItemBinding
 import io.scanbot.example.sdk.barcode.databinding.SnapImageItemBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
-import io.scanbot.sdk.barcode.entity.textWithExtension
+import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerUiResult
 import java.io.File
 

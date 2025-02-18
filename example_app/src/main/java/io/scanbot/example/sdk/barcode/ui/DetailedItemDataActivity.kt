@@ -15,7 +15,7 @@ import io.scanbot.sdk.barcode.entity.MedicalCertificate
 import io.scanbot.sdk.barcode.entity.SEPA
 import io.scanbot.sdk.barcode.entity.SwissQR
 import io.scanbot.sdk.barcode.entity.VCard
-import io.scanbot.sdk.barcode.entity.textWithExtension
+import io.scanbot.sdk.barcode.textWithExtension
 
 class DetailedItemDataActivity : AppCompatActivity() {
 

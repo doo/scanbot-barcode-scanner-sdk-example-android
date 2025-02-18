@@ -20,7 +20,7 @@ import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.sdk.barcode.BarcodeItem
-import io.scanbot.sdk.barcode.entity.textWithExtension
+import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode.ui.BarcodePolygonsStaticView
 import io.scanbot.sdk.barcode.ui.BarcodeScanAndCountView
 import io.scanbot.sdk.barcode.ui.IBarcodeScanCountViewCallback

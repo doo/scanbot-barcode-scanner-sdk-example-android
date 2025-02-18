@@ -21,7 +21,7 @@ import io.scanbot.sdk.barcode.BarcodeFormats
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScanner
 import io.scanbot.sdk.barcode.Gs1Handling
-import io.scanbot.sdk.barcode.entity.textWithExtension
+import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.BarcodeMappedDataExtension
