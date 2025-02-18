@@ -25,10 +25,11 @@ import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.FrameHandlerResult
 import io.scanbot.sdk.camera.ScanbotCameraView
+import io.scanbot.sdk.ui.camera.ScanbotCameraXView
 
 class BatchQRScanActivity : AppCompatActivity(), BarcodeScannerFrameHandler.ResultHandler {
 
-    private lateinit var cameraView: ScanbotCameraView
+    private lateinit var cameraView: ScanbotCameraXView
     private lateinit var resultView: RecyclerView
     private lateinit var flash: View
     private var flashEnabled = false
@@ -74,7 +75,6 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeScannerFrameHandler.Resu
 
     override fun onResume() {
         super.onResume()
-        cameraView.onResume()
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
@@ -91,7 +91,6 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeScannerFrameHandler.Resu
 
     override fun onPause() {
         super.onPause()
-        cameraView.onPause()
     }
 
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScannerResult?>) {
