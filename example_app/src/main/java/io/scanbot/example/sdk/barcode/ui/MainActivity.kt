@@ -21,6 +21,7 @@ import io.scanbot.sdk.barcode.BarcodeFormats
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScanner
 import io.scanbot.sdk.barcode.Gs1Handling
+import io.scanbot.sdk.barcode.setBarcodeFormats
 import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
@@ -255,7 +256,9 @@ class MainActivity : AppCompatActivity() {
                     showLicenseDialog()
                 } else {
                     processImageGalleryResult(activityResult.data!!)?.let { bitmap ->
-                        barcodeScanner.setConfigurations(barcodeFormats = BarcodeTypeRepository.selectedTypes.toList())
+                        barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+                            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
+                        })
                         val result = barcodeScanner.scanFromBitmap(bitmap, 0)
 
                         BarcodeResultRepository.barcodeResultBundle =
@@ -287,7 +290,9 @@ class MainActivity : AppCompatActivity() {
                         val images =
                             pdfImagesExtractor.imageUrlsFromPdf(file, outputDir, prefix = "image")
 
-                        barcodeScanner.setConfigurations(barcodeFormats = BarcodeTypeRepository.selectedTypes.toList())
+                        barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+                            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
+                        })
                         images.map { uri ->
                             val bitmap = BitmapFactory.decodeFile(uri.path)
                             val result = barcodeScanner.scanFromBitmap(bitmap, 0)

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.sdk.barcode.BarcodeFormats
 import io.scanbot.sdk.barcode.BarcodeItem
+import io.scanbot.sdk.barcode.setBarcodeFormats
 import io.scanbot.sdk.barcode.ui.BarcodeScannerView
 import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
@@ -38,9 +39,13 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
         val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
 
         // modify config as needed
-        barcodeScanner.setConfigurations(
-            // set the supported barcode formats here
-            barcodeFormats = BarcodeFormats.common
+        barcodeScanner.setConfiguration(
+            barcodeScanner.copyCurrentConfiguration().apply {
+                // set the supported barcode formats here
+                setBarcodeFormats(
+                    barcodeFormats = BarcodeFormats.common
+                )
+            }
         )
 
         // both calls initCamera and initScanningBehavior are required
@@ -58,6 +63,7 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
                     override fun onCameraOpen() {
                         // barcodeScannerView.viewController.useFlash(flashEnabled)
                     }
+
                     override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
                         // process the full size images taken by BarcodeAutoSnappingController here
                         // to enable auto snapping use the following command:
@@ -76,7 +82,14 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
         // To disable the finder view
         barcodeScannerView.finderViewController.setFinderEnabled(false)
         // To set the required aspect ratio
-        barcodeScannerView.finderViewController.setRequiredAspectRatios(listOf(AspectRatio(4.0, 1.0)))
+        barcodeScannerView.finderViewController.setRequiredAspectRatios(
+            listOf(
+                AspectRatio(
+                    4.0,
+                    1.0
+                )
+            )
+        )
         // @EndTag("Barcode Classic UI configure finder snippet")
 
         // @Tag("Barcode Classic UI configure camera behaviour snippet")

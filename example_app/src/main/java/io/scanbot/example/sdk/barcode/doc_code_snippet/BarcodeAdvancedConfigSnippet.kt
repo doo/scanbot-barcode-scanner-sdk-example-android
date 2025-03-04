@@ -88,13 +88,13 @@ fun barcodeScannerWithAdvancedConfigSnippet(context: Context) {
     configs.add(code2Of5Config)
 
     // Set the configurations to the barcode scanner
-    barcodeScanner.configuration = BarcodeScannerConfiguration.default().apply {
+    barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
         barcodeFormatConfigurations = configs
         extractedDocumentFormats = listOf( BarcodeDocumentFormat.AAMVA, BarcodeDocumentFormat.BOARDING_PASS, BarcodeDocumentFormat.DE_MEDICAL_PLAN, BarcodeDocumentFormat.MEDICAL_CERTIFICATE, BarcodeDocumentFormat.ID_CARD_PDF_417, BarcodeDocumentFormat.SEPA, BarcodeDocumentFormat.SWISS_QR, BarcodeDocumentFormat.VCARD, BarcodeDocumentFormat.GS1, BarcodeDocumentFormat.HIBC )
         onlyAcceptDocuments = false
         engineMode = BarcodeScannerEngineMode.NEXT_GEN
         returnBarcodeImage = true
-    }
+    })
     // @EndTag("Advanced configuring Barcode Scanner")
 }
 

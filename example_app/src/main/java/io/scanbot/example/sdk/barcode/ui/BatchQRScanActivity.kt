@@ -21,6 +21,7 @@ import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScannerFrameHandler
 import io.scanbot.sdk.barcode.BarcodeScannerResult
+import io.scanbot.sdk.barcode.setBarcodeFormats
 import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.FrameHandlerResult
@@ -68,9 +69,9 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeScannerFrameHandler.Resu
         barcodeScannerFrameHandler?.setScanningInterval(1000)
         barcodeScannerFrameHandler?.addResultHandler(this)
 
-        barcodeScanner.setConfigurations(
-            barcodeFormats = BarcodeTypeRepository.selectedTypes.toList()
-        )
+        barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
+        })
     }
 
     override fun onResume() {

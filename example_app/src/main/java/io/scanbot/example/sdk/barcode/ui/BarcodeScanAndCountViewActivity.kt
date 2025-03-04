@@ -20,6 +20,7 @@ import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.sdk.barcode.BarcodeItem
+import io.scanbot.sdk.barcode.setBarcodeFormats
 import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode.ui.BarcodePolygonsStaticView
 import io.scanbot.sdk.barcode.ui.BarcodeScanAndCountView
@@ -46,9 +47,9 @@ class BarcodeScanAndCountViewActivity : AppCompatActivity() {
         snapResult = findViewById(R.id.snapped_message)
 
         val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
-        barcodeScanner.setConfigurations(
-            barcodeFormats = BarcodeTypeRepository.selectedTypes.toList()
-        )
+        barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
+        })
         scanButton.setOnClickListener {
             scanCountView.viewController.scanAndCount() // call this to run the scan and count
         }
@@ -63,35 +64,32 @@ class BarcodeScanAndCountViewActivity : AppCompatActivity() {
 
         scanCountView.apply {
             initCamera()
-            initScanningBehavior(
-                barcodeScanner,
-                callback = object : IBarcodeScanCountViewCallback {
-                    override fun onCameraOpen() {
-                        scanCountView.viewController.useFlash(flashEnabled)
-                    }
+            initScanningBehavior(barcodeScanner, callback = object : IBarcodeScanCountViewCallback {
+                override fun onCameraOpen() {
+                    scanCountView.viewController.useFlash(flashEnabled)
+                }
 
-                    override fun onLicenseError() {
-                        scanCountView.post {
-                            Toast.makeText(
-                                this@BarcodeScanAndCountViewActivity,
-                                "License has expired!",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-
-                    override fun onScanAndCountStarted() {
-                        scanButton.isEnabled = false
-                    }
-
-                    override fun onScanAndCountFinished(barcodes: List<BarcodeItem>) {
-                        scanButton.isEnabled = false
-                        nextButton.isEnabled = true
-                        // barcodes is the result of the last scanning session, but to ge all counted barcodes, use the following code
-                        handleSnap(scanCountView.countedBarcodes)
+                override fun onLicenseError() {
+                    scanCountView.post {
+                        Toast.makeText(
+                            this@BarcodeScanAndCountViewActivity,
+                            "License has expired!",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
-            )
+
+                override fun onScanAndCountStarted() {
+                    scanButton.isEnabled = false
+                }
+
+                override fun onScanAndCountFinished(barcodes: List<BarcodeItem>) {
+                    scanButton.isEnabled = false
+                    nextButton.isEnabled = true
+                    // barcodes is the result of the last scanning session, but to ge all counted barcodes, use the following code
+                    handleSnap(scanCountView.countedBarcodes)
+                }
+            })
         }
 
         // Setting the Selection Overlay (AR)
@@ -143,15 +141,12 @@ class BarcodeScanAndCountViewActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
+                this, Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             // Use onActivityResult to handle permission rejection
             ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.CAMERA),
-                REQUEST_PERMISSION_CODE
+                this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CODE
             )
         }
     }

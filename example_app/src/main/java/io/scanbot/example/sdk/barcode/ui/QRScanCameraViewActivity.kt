@@ -22,6 +22,7 @@ import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeAutoSnappingController
 import io.scanbot.sdk.barcode.BarcodeScannerFrameHandler
 import io.scanbot.sdk.barcode.BarcodeScannerResult
+import io.scanbot.sdk.barcode.setBarcodeFormats
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.camera.FrameHandlerResult
@@ -69,7 +70,9 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
         barcodeScannerFrameHandler?.setScanningInterval(1000)
         barcodeScannerFrameHandler?.addResultHandler(this)
 
-        barcodeScanner.setConfigurations(barcodeFormats = BarcodeTypeRepository.selectedTypes.toList())
+        barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
+        })
 
         val barcodeAutoSnappingController =
             BarcodeAutoSnappingController.attach(cameraView, barcodeScannerFrameHandler!!)
