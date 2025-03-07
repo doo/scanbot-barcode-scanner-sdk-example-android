@@ -2,8 +2,10 @@ package io.scanbot.example.sdk.barcode.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.databinding.ActivityDetailedItemDataBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
+import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.entity.AAMVA
 import io.scanbot.sdk.barcode.entity.BarcodeDocumentLibrary.wrap
@@ -24,6 +26,8 @@ class DetailedItemDataActivity : AppCompatActivity() {
         val binding = ActivityDetailedItemDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
+        applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         BarcodeResultRepository.selectedBarcodeItem?.let { item ->
             binding.docFormat.text = item.barcode.extractedDocument?.type?.fullName ?: ""

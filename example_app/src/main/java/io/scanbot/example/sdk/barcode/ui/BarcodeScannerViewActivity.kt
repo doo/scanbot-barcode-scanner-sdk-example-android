@@ -17,6 +17,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
+import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScannerResult
 import io.scanbot.sdk.barcode.setBarcodeFormats
@@ -42,6 +43,8 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_scanner_view)
+
+        applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         barcodeScannerView = findViewById(R.id.barcode_scanner_view)
         resultView = findViewById(R.id.result)
