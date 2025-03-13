@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
+import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScannerFrameHandler
@@ -41,6 +42,8 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeScannerFrameHandler.Resu
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_batch_qr_camera_view)
+
+        applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         cameraView = findViewById(R.id.camera)
         flash = findViewById(R.id.flash)

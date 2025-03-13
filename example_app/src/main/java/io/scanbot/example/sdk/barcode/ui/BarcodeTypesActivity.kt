@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.ui.adapter.BarcodeTypesAdapter
+import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 
 class BarcodeTypesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_types)
+
+        applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         val typesList = findViewById<RecyclerView>(R.id.barcode_types_list)
         typesList.setHasFixedSize(true)

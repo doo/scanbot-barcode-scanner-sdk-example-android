@@ -16,6 +16,7 @@ import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
+import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.BarcodeFormats
 import io.scanbot.sdk.barcode.BarcodeItem
@@ -54,6 +55,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
 
