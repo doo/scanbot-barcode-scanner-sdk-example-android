@@ -11,11 +11,12 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // Page URLs using this code:
 // TODO: add URLs here
 
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
+// @Tag("Configuring RTU UI v2 Barcode screen localization snippet")
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 
 fun configurationWithLocalizationSnippet() {
     // Create the default configuration object.
-    val config = BarcodeScannerConfiguration().apply {
+    val config = BarcodeScannerScreenConfiguration().apply {
         // Configure parameters (use explicit `this.` receiver for better code completion):
 
         // Configure localization parameters.
@@ -30,3 +31,4 @@ fun configurationWithLocalizationSnippet() {
         // Configure other parameters as needed.
     }
 }
+// @EndTag("Configuring RTU UI v2 Barcode screen localization snippet")

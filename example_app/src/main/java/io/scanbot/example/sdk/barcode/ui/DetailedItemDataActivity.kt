@@ -2,19 +2,22 @@ package io.scanbot.example.sdk.barcode.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import io.scanbot.barcodescanner.entity.AAMVA
-import io.scanbot.barcodescanner.entity.BarcodeDocumentLibrary.wrap
-import io.scanbot.barcodescanner.entity.BoardingPass
-import io.scanbot.barcodescanner.entity.DEMedicalPlan
-import io.scanbot.barcodescanner.entity.GS1
-import io.scanbot.barcodescanner.entity.IDCardPDF417
-import io.scanbot.barcodescanner.entity.MedicalCertificate
-import io.scanbot.barcodescanner.entity.SEPA
-import io.scanbot.barcodescanner.entity.SwissQR
-import io.scanbot.barcodescanner.entity.VCard
+import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.databinding.ActivityDetailedItemDataBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeItem
+import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
+import io.scanbot.sdk.barcode.BarcodeItem
+import io.scanbot.sdk.barcode.entity.AAMVA
+import io.scanbot.sdk.barcode.entity.BarcodeDocumentLibrary.wrap
+import io.scanbot.sdk.barcode.entity.BoardingPass
+import io.scanbot.sdk.barcode.entity.DEMedicalPlan
+import io.scanbot.sdk.barcode.entity.GS1
+import io.scanbot.sdk.barcode.entity.IDCardPDF417
+import io.scanbot.sdk.barcode.entity.MedicalCertificate
+import io.scanbot.sdk.barcode.entity.SEPA
+import io.scanbot.sdk.barcode.entity.SwissQR
+import io.scanbot.sdk.barcode.entity.VCard
+import io.scanbot.sdk.barcode.textWithExtension
 
 class DetailedItemDataActivity : AppCompatActivity() {
 
@@ -24,15 +27,17 @@ class DetailedItemDataActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
+        applyEdgeToEdge(this.findViewById(R.id.root_view))
+
         BarcodeResultRepository.selectedBarcodeItem?.let { item ->
-            binding.docFormat.text = item.parsedDocument?.type?.fullName ?: ""
-            binding.description.text = printParsedFormat(item)
+            binding.docFormat.text = item.barcode.extractedDocument?.type?.fullName ?: ""
+            binding.description.text = printParsedFormat(item.barcode)
         }
     }
 
     private fun printParsedFormat(item: BarcodeItem): String {
-        val formattedResult = item.parsedDocument?.wrap()
-                ?: return "${item.textWithExtension}\n\nBinary data:\n${item.rawBytes.toHexString()}" // for not supported by current barcode detector implementation
+        val formattedResult = item.extractedDocument?.wrap()
+                ?: return "${item.textWithExtension}\n\nBinary data:\n${item.rawBytes.toHexString()}" // for not supported by current barcode scanner implementation
 
         val barcodesResult = StringBuilder()
         when (formattedResult) {
