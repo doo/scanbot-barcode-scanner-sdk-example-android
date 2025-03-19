@@ -1,5 +1,6 @@
 
-![Scanbot SDK Logo](.images//ScanbotSDKLogo.png)
+![Scanbot SDK Logo](.images/ScanbotSDKLogo_darkmode.png#gh-dark-mode-only)
+![Scanbot SDK Logo](.images/ScanbotSDKLogo.png#gh-light-mode-only)
 
 # Example App for the Scanbot Android Barcode Scanner Library
 
@@ -8,6 +9,8 @@ This example app demonstrates integrating the Scanbot Android Barcode Scanner SD
 ## What is the Scanbot Barcode Scanner SDK?
 
 The Scanbot [Barcode Scanner SDK](https://scanbot.io/barcode-scanner-sdk/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) is a simple and intuitive SDK that allows you to turn Android devices into fast and reliable barcode scanners.
+
+The SDK utilizes your device's camera, which can be freely switched. You can also apply various filters to narrow down the results by barcode type or content, with regex pattern support to ensure you only capture the specific barcodes relevant to your application.
 
 It operates entirely offline on the user's device and takes only 0.04 seconds to scan barcodes. Scans are accurate even under challenging conditions, including damaged, small, or distant barcodes and low-light environments.
 
@@ -58,6 +61,12 @@ The Scanbot Barcode Scanner SDK supports all common 1D- or 2D barcode formats, s
 | Postal Symbologies | USPS Intelligent Mail (IMb), Royal Mail RM4SCC Barcode, Australia Post 4-State Customer Code, Japan Post 4-State Customer Code, KIX                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 💡 Please visit our [docs](https://docs.scanbot.io/barcode-scanner-sdk/android/supported-barcodes/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) for a complete overview of the supported barcode symbologies.
+
+### Data Parsers
+
+The Scanbot Barcode Scanner SDK supports a variety of data parsers that extract structured information from 2D barcodes such as QR Codes and Data Matrix. These include parsers for documents such as driving licences (AAMVA), boarding passes, medical certificates, SEPA forms, Swiss QR codes and vCard business cards. 
+
+💡 Please refer to our [documentation](https://docs.scanbot.io/barcode-scanner-sdk/android/supported-barcodes/#data-parsers) for a full list of supported data parsers.
 
 ## Additional information
 
