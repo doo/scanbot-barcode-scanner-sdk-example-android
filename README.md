@@ -1,8 +1,8 @@
 <p align="left">
-  <img src="LogoNormal.png#gh-light-mode-only" width="15%" />
+  <img src="ScanbotSDKLogo.png#gh-light-mode-only" width="15%" />
 </p>
 <p align="left">
-  <img src="LogoDarkmode.png#gh-dark-mode-only" width="15%" />
+  <img src="ScanbotSDKLogo_darkmode.png#gh-dark-mode-only" width="15%" />
 </p>
 
 # Example App for the Scanbot Android Barcode Scanner Library
