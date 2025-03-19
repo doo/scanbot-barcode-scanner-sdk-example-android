@@ -1,6 +1,6 @@
 
-![Scanbot SDK Logo](.images/ScanbotSDKLogo_darkmode.png#gh-dark-mode-only)
-![Scanbot SDK Logo](.images/ScanbotSDKLogo.png#gh-light-mode-only)
+<img src=".images/ScanbotSDKLogo.png" width="200" class="gh-light-mode-only">
+<img src=".images/ScanbotSDKLogo_darkmode.png" width="200" class="gh-dark-mode-only">
 
 # Example App for the Scanbot Android Barcode Scanner Library
 
