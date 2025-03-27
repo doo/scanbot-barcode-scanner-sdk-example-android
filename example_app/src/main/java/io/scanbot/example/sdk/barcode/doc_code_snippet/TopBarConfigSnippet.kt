@@ -11,14 +11,15 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // Page URLs using this code:
 // TODO: add URLs here
 
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
+// @Tag("Configuring RTU UI v2 top bar snippet")
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.ScanbotColor
 import io.scanbot.sdk.ui_v2.common.StatusBarMode
 import io.scanbot.sdk.ui_v2.common.TopBarMode
 
 fun topBarConfigSnippet() {
     // Create the default configuration object.
-    BarcodeScannerConfiguration().apply {
+    BarcodeScannerScreenConfiguration().apply {
         // Configure parameters (use explicit `this.` receiver for better code completion):
 
         // Configure the top bar.
@@ -39,3 +40,4 @@ fun topBarConfigSnippet() {
         // Configure other parameters as needed.
     }
 }
+// @EndTag("Configuring RTU UI v2 top bar snippet")

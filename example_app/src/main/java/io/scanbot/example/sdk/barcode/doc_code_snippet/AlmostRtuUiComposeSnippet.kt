@@ -11,6 +11,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // Page URLs using this code:
 // TODO: add URLs here
 
+// @Tag("RTU UI v2 Sub Component Barcode scanner snippet")
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -23,6 +24,7 @@ import androidx.core.view.WindowCompat
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerView
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
+import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.StatusBarMode
 import io.scanbot.sdk.ui_v2.common.activity.AutoCancelTimeout
 import io.scanbot.sdk.ui_v2.common.activity.CanceledByUser
@@ -45,7 +47,7 @@ class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
                 //In case if you already migrated to Compose UI - just use
                 // the code below in your Composable function.
                 val configuration = remember {
-                    BarcodeScannerConfiguration().apply {
+                    BarcodeScannerScreenConfiguration().apply {
                         // TODO: configure as needed
                     }
                 }
@@ -87,3 +89,4 @@ class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
         }
     }
 }
+// @EndTag("RTU UI v2 Sub Component Barcode scanner snippet")
