@@ -29,12 +29,13 @@ import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.camera.FrameHandlerResult
 import io.scanbot.sdk.camera.PictureCallback
 import io.scanbot.sdk.camera.ScanbotCameraView
+import io.scanbot.sdk.ui.camera.ScanbotCameraXView
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.toV2
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerUiResult
 
 class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler.ResultHandler {
 
-    private lateinit var cameraView: ScanbotCameraView
+    private lateinit var cameraView: ScanbotCameraXView
     private lateinit var resultView: ImageView
     private lateinit var flash: View
 
@@ -89,16 +90,10 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
 
     override fun onResume() {
         super.onResume()
-        cameraView.onResume()
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // Use onActivityResult to handle permission rejection
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CODE)
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        cameraView.onPause()
     }
 
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScannerResult?>) {
