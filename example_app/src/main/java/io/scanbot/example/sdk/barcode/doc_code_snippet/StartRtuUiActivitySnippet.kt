@@ -25,18 +25,7 @@ import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
 
 class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
 
-    private val barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
-        registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
-            // Barcode Scanner result callback:
-            // Get the first scanned barcode from the result object...
-            val barcodeItem = resultEntity.result?.items?.first()
-            // ... and process the result as needed, for example, display as a Toast:
-            Toast.makeText(
-                this,
-                "Scanned: ${barcodeItem?.barcode?.text} (${barcodeItem?.barcode?.format})",
-                Toast.LENGTH_LONG
-            ).show()
-        }
+    private lateinit var barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration>
 
     // Adapt the 'onCreate' method in your Activity (for example, MainActivity.kt):
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +37,19 @@ class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
             // optional: uncomment the next line if you have a license key
             // .license(this.application, LICENSE_KEY)
             .initialize(this.application)
+
+        barcodeScreenLauncher =
+            registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+                // Barcode Scanner result callback:
+                // Get the first scanned barcode from the result object...
+                val barcodeItem = resultEntity.result?.items?.first()
+                // ... and process the result as needed, for example, display as a Toast:
+                Toast.makeText(
+                    this,
+                    "Scanned: ${barcodeItem?.barcode?.text} (${barcodeItem?.barcode?.format})",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
 
         val config = BarcodeScannerScreenConfiguration().apply {
             // TODO: configure as needed
