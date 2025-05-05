@@ -43,9 +43,6 @@ class QuickStartSnippetActivity : AppCompatActivity() {
             // .license(this.application, LICENSE_KEY)
             .initialize(this.application)
 
-        val config = BarcodeScannerScreenConfiguration().apply {
-            // TODO: configure as needed
-        }
         barcodeScreenLauncher =
             registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
                 // Barcode Scanner result callback:
@@ -62,6 +59,9 @@ class QuickStartSnippetActivity : AppCompatActivity() {
         findViewById<AppCompatButton>(R.id.start_barcode_rtu_button).setOnClickListener {
             // @Tag("Launch RTU UI v2 activity")
             // Launch the barcode scanner:
+            val config = BarcodeScannerScreenConfiguration().apply {
+                // TODO: configure as needed
+            }
             barcodeScreenLauncher.launch(config)
             // @EndTag("Launch RTU UI v2 activity")
         }
