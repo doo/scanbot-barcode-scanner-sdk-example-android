@@ -22,23 +22,13 @@ import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDKInitializer
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
+
 // @EndTag("Add imports for RTU UI v2 activity")
 
 class QuickStartSnippetActivity : AppCompatActivity() {
 
     // @Tag("Register RTU UI v2 activity result launcher")
-    private val barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
-        registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
-            // Barcode Scanner result callback:
-            // Get the first scanned barcode from the result object...
-            val barcodeItem = resultEntity.result?.items?.first()
-            // ... and process the result as needed, for example, display as a Toast:
-            Toast.makeText(
-                this,
-                "Scanned: ${barcodeItem?.barcode?.text} (${barcodeItem?.barcode?.format})",
-                Toast.LENGTH_LONG
-            ).show()
-        }
+    private lateinit var barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration>
     // @EndTag("Register RTU UI v2 activity result launcher")
 
     // @Tag("Init Scanbot Barcode Scanner SDK")
@@ -57,7 +47,18 @@ class QuickStartSnippetActivity : AppCompatActivity() {
         val config = BarcodeScannerScreenConfiguration().apply {
             // TODO: configure as needed
         }
-
+        barcodeScreenLauncher =
+            registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+                // Barcode Scanner result callback:
+                // Get the first scanned barcode from the result object...
+                val barcodeItem = resultEntity.result?.items?.first()
+                // ... and process the result as needed, for example, display as a Toast:
+                Toast.makeText(
+                    this,
+                    "Scanned: ${barcodeItem?.barcode?.text} (${barcodeItem?.barcode?.format})",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         findViewById<AppCompatButton>(R.id.start_barcode_rtu_button).setOnClickListener {
             // @Tag("Launch RTU UI v2 activity")
             // Launch the barcode scanner:
