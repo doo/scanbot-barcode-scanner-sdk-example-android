@@ -42,7 +42,6 @@ class QuickStartSnippetActivity : AppCompatActivity() {
             // optional: uncomment the next line if you have a license key
             // .license(this.application, LICENSE_KEY)
             .initialize(this.application)
-        // @EndTag("Init Scanbot Barcode Scanner SDK")
 
         val config = BarcodeScannerScreenConfiguration().apply {
             // TODO: configure as needed
@@ -59,6 +58,7 @@ class QuickStartSnippetActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+        // @EndTag("Init Scanbot Barcode Scanner SDK")
         findViewById<AppCompatButton>(R.id.start_barcode_rtu_button).setOnClickListener {
             // @Tag("Launch RTU UI v2 activity")
             // Launch the barcode scanner:
