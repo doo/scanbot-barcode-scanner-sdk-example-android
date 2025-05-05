@@ -24,9 +24,6 @@ import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfigurat
 import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
 
 class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
-    // Late initilize of the `barcodeScreenLauncher` needed to be inited in the `onCreate` method AFTER Scanbot Sdk is initialized.
-    // Otherwise it will crash as sdk is not initialized yet.
-    private lateinit var barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration>
 
     // Adapt the 'onCreate' method in your Activity (for example, MainActivity.kt):
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +36,9 @@ class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
             // .license(this.application, LICENSE_KEY)
             .initialize(this.application)
 
-        barcodeScreenLauncher =
-            registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+        // The call to BarcodeScannerActivity.ResultContract() must be done after the SDK initialization
+        val barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
+        registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
                 // Barcode Scanner result callback:
                 // Get the first scanned barcode from the result object...
                 val barcodeItem = resultEntity.result?.items?.first()
