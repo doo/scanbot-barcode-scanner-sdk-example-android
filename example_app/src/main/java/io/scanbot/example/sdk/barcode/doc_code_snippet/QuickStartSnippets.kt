@@ -27,9 +27,7 @@ import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
 
 class QuickStartSnippetActivity : AppCompatActivity() {
 
-    // @Tag("Register RTU UI v2 activity result launcher")
-    private lateinit var barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration>
-    // @EndTag("Register RTU UI v2 activity result launcher")
+
 
     // Adapt the 'onCreate' method in your Activity (for example, MainActivity.kt):
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +41,8 @@ class QuickStartSnippetActivity : AppCompatActivity() {
             .initialize(this.application)
         // @EndTag("Init Scanbot Barcode Scanner SDK")
 
-        barcodeScreenLauncher =
+        // @Tag("Register RTU UI v2 activity result launcher")
+        val barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
             registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
                 // Barcode Scanner result callback:
                 // Get the first scanned barcode from the result object...
@@ -55,6 +54,7 @@ class QuickStartSnippetActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+        // @EndTag("Register RTU UI v2 activity result launcher")
 
         findViewById<AppCompatButton>(R.id.start_barcode_rtu_button).setOnClickListener {
             // @Tag("Launch RTU UI v2 activity")
