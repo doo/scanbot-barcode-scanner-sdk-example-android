@@ -28,6 +28,7 @@ import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfigurat
 import io.scanbot.sdk.ui_v2.common.StatusBarMode
 import io.scanbot.sdk.ui_v2.common.activity.AutoCancelTimeout
 import io.scanbot.sdk.ui_v2.common.activity.CanceledByUser
+import io.scanbot.sdk.ui_v2.common.activity.ForceClose
 import io.scanbot.sdk.ui_v2.common.activity.LicenseInvalid
 import io.scanbot.sdk.ui_v2.common.activity.SystemError
 
@@ -81,6 +82,7 @@ class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
                             AutoCancelTimeout -> Unit // just close screen (below)
                             CanceledByUser -> Unit // just close screen (below)
                             is SystemError -> Unit // handle system error here
+                            ForceClose -> Unit // just close screen (below)
                         }
                         finish()
                     }
