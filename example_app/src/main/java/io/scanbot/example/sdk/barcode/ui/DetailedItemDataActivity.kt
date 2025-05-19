@@ -12,6 +12,7 @@ import io.scanbot.sdk.barcode.entity.BarcodeDocumentLibrary.wrap
 import io.scanbot.sdk.barcode.entity.BoardingPass
 import io.scanbot.sdk.barcode.entity.DEMedicalPlan
 import io.scanbot.sdk.barcode.entity.GS1
+import io.scanbot.sdk.barcode.entity.HIBC
 import io.scanbot.sdk.barcode.entity.IDCardPDF417
 import io.scanbot.sdk.barcode.entity.MedicalCertificate
 import io.scanbot.sdk.barcode.entity.SEPA
@@ -112,6 +113,36 @@ class DetailedItemDataActivity : AppCompatActivity() {
             is AAMVA -> {
                 barcodesResult.append("\n")
                     .append("AAMVA Document\n")
+                formattedResult.document.fields.forEach { field ->
+                    barcodesResult.append(field.type.name).append(": ").append(field.value?.text)
+                        .append("\n")
+                }
+                formattedResult.document.children.forEach { subfile ->
+                    for (field in subfile.fields) {
+                        barcodesResult.append(field.type.name).append(": ").append(field.value?.text)
+                            .append("\n")
+                    }
+                }
+            }
+            
+            is HIBC -> {
+                barcodesResult.append("\n")
+                    .append("HIBC Document\n")
+                formattedResult.document.fields.forEach { field ->
+                    barcodesResult.append(field.type.name).append(": ").append(field.value?.text)
+                        .append("\n")
+                }
+                formattedResult.document.children.forEach { subfile ->
+                    for (field in subfile.fields) {
+                        barcodesResult.append(field.type.name).append(": ").append(field.value?.text)
+                            .append("\n")
+                    }
+                }
+            }
+
+            is GS1 -> {
+                barcodesResult.append("\n")
+                    .append("GS1 Document\n")
                 formattedResult.document.fields.forEach { field ->
                     barcodesResult.append(field.type.name).append(": ").append(field.value?.text)
                         .append("\n")
