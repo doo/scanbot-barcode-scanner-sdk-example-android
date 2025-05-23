@@ -50,7 +50,7 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
 
         // both calls initCamera and initScanningBehavior are required
         barcodeScannerView.apply {
-            initCamera(CameraUiSettings(false))
+            initCamera(CameraUiSettings(true))
             initScanningBehavior(barcodeScanner,
                 { result ->
                     if (result is FrameHandlerResult.Success) {
