@@ -28,7 +28,6 @@ import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.camera.FrameHandlerResult
-import io.scanbot.sdk.ui.camera.CameraUiSettings
 
 class BarcodeScannerViewActivity : AppCompatActivity() {
     private lateinit var barcodeScannerView: BarcodeScannerView
@@ -54,7 +53,7 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
             setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
         })
         barcodeScannerView.apply {
-            initCamera(CameraUiSettings(true))
+            initCamera()
             initScanningBehavior(barcodeScanner,
                 { result ->
                     if (result is FrameHandlerResult.Success) {
@@ -119,7 +118,13 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
         })
         barcodeScannerView.selectionOverlayController.setBarcodeItemViewBinder(object :
             BarcodePolygonsView.BarcodeItemViewBinder {
-            override fun bindView(view: View, barcodeItem: BarcodeItem, shouldHighlight: Boolean) {
+
+            override fun bindView(
+                view: View,
+                barcodeItem: BarcodeItem,
+                style: BarcodePolygonsView.BarcodeTextViewStyle,
+                shouldHighlight: Boolean
+            ) {
                 val textWithExtension = barcodeItem.textWithExtension
                 val progressView = view.findViewById<ProgressBar>(R.id.custom_ar_view_progress)
 
@@ -132,6 +137,13 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
                 progressView.isVisible = !resultIsReady
                 valueTextView.isVisible = resultIsReady
                 valueTextView.text = textWithExtension
+            }
+
+            override fun overrideString(
+                string: String,
+                barcodeItem: BarcodeItem
+            ): String {
+                TODO("Not yet implemented")
             }
         })
 
