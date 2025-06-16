@@ -24,7 +24,6 @@ import io.scanbot.sdk.camera.CameraModule
 import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.camera.FrameHandlerResult
 import io.scanbot.sdk.common.AspectRatio
-import io.scanbot.sdk.ui.camera.CameraUiSettings
 
 class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
 
@@ -50,7 +49,7 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
 
         // both calls initCamera and initScanningBehavior are required
         barcodeScannerView.apply {
-            initCamera(CameraUiSettings(true))
+            initCamera()
             initScanningBehavior(barcodeScanner,
                 { result ->
                     if (result is FrameHandlerResult.Success) {
