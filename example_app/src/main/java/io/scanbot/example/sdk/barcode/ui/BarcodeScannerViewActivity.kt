@@ -54,7 +54,8 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
         })
         barcodeScannerView.apply {
             initCamera()
-            initScanningBehavior(barcodeScanner,
+            initScanningBehavior(
+                barcodeScanner,
                 { result ->
                     if (result is FrameHandlerResult.Success) {
                         handleSuccess(result)
@@ -138,15 +139,17 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
                 valueTextView.isVisible = resultIsReady
                 valueTextView.text = textWithExtension
             }
-
+        })
+        barcodeScannerView.selectionOverlayController.setBarcodeStringDelegate(object :
+            BarcodePolygonsView.BarcodeStringDelegate {
             override fun overrideString(
                 string: String,
                 barcodeItem: BarcodeItem
             ): String {
-                TODO("Not yet implemented")
+                return string // change this if you want to override the string representation
             }
-        })
 
+        })
 
         flash = findViewById(R.id.flash)
         flash.setOnClickListener {
