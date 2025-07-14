@@ -47,7 +47,7 @@ fun barcodeScannerWithAdvancedConfigSnippet(context: Context) {
         addAdditionalQuietZone = false
     )
     configs.add(baseConfig)
-
+    // Add individual configurations for specific barcode formats
     val australiaPostConfig = BarcodeFormatAustraliaPostConfiguration(
         regexFilter = "",
         australiaPostCustomerFormat = AustraliaPostCustomerFormat.ALPHA_NUMERIC
@@ -112,4 +112,20 @@ fun barcodeFormatCommonConfigurationSnippet(context: Context) {
         addAdditionalQuietZone = false
     )
     // @EndTag("Configuring BarcodeFormatCommonConfiguration in Barcode Scanner")
+}
+
+fun barcodeFormatIndividualSimplifiedConfigurationSnippet(context: Context) {
+    // @Tag("Configuring individual symbologies in Barcode Scanner")
+    val baseConfig = BarcodeFormatCommonConfiguration.default().copy(
+        regexFilter = "",
+        minimum1DQuietZoneSize = 10,
+        stripCheckDigits = false,
+        minimumTextLength = 0,
+        maximumTextLength = 0,
+        gs1Handling = Gs1Handling.PARSE,
+        strictMode = true,
+        formats = listOf(BarcodeFormat.QR_CODE, BarcodeFormat.AZTEC, BarcodeFormat.CODE_128),
+        addAdditionalQuietZone = false
+    )
+    // @EndTag("Configuring individual symbologies in Barcode Scanner")
 }
