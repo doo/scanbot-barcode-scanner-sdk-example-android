@@ -23,8 +23,8 @@ import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.CameraModule
 import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.camera.FrameHandlerResult
-import io.scanbot.sdk.common.AspectRatio
-import io.scanbot.sdk.ui.camera.CameraUiSettings
+import io.scanbot.sdk.geometry.AspectRatio
+import io.scanbot.sdk.image.ImageRef
 
 class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
 
@@ -50,7 +50,7 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
 
         // both calls initCamera and initScanningBehavior are required
         barcodeScannerView.apply {
-            initCamera(CameraUiSettings(true))
+            initCamera()
             initScanningBehavior(barcodeScanner,
                 { result ->
                     if (result is FrameHandlerResult.Success) {
@@ -64,7 +64,7 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
                         // barcodeScannerView.viewController.useFlash(flashEnabled)
                     }
 
-                    override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
+                    override fun onPictureTaken(image: ImageRef, captureInfo: CaptureInfo) {
                         // process the full size images taken by BarcodeAutoSnappingController here
                         // to enable auto snapping use the following command:
                         // barcodeScannerView.viewController.autoSnappingEnabled = true

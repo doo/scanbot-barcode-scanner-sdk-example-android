@@ -28,7 +28,7 @@ import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.camera.FrameHandlerResult
-import io.scanbot.sdk.ui.camera.CameraUiSettings
+import io.scanbot.sdk.image.ImageRef
 
 class BarcodeScannerViewActivity : AppCompatActivity() {
     private lateinit var barcodeScannerView: BarcodeScannerView
@@ -54,7 +54,7 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
             setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
         })
         barcodeScannerView.apply {
-            initCamera(CameraUiSettings(true))
+            initCamera()
             initScanningBehavior(barcodeScanner,
                 { result ->
                     if (result is FrameHandlerResult.Success) {
@@ -75,7 +75,7 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
                         barcodeScannerView.viewController.useFlash(flashEnabled)
                     }
 
-                    override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
+                    override fun onPictureTaken(image: ImageRef, captureInfo: CaptureInfo) {
                         // we don't need full size pictures in this example
                     }
 

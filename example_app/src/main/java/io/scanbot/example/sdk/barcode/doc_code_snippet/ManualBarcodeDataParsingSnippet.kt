@@ -16,6 +16,6 @@ import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 
 fun manualBarcodeDataParsing(context: Context, barcodeString: String) {
     val scanbotSDK = ScanbotBarcodeScannerSDK(context);
-    scanbotSDK.createBarcodeDocumentParser().parseDocument(barcodeString)
+    scanbotSDK.createBarcodeDocumentParser().parse(barcodeString)
 }
 

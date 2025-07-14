@@ -4,10 +4,10 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import io.scanbot.example.*
 import io.scanbot.sap.*
-import io.scanbot.sap.Status.*
 import io.scanbot.sdk.*
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDKInitializer
+import io.scanbot.sdk.licensing.LicenseStatus
 import io.scanbot.sdk.util.log.*
 
 /*
@@ -26,10 +26,10 @@ fun checkLicenseStatusSnippet(activity: AppCompatActivity) {
     // Check the license status:
     val licenseInfo = ScanbotBarcodeScannerSDK(activity).licenseInfo
     LoggerProvider.logger.d("ExampleApplication", "License status: ${licenseInfo.status}")
-    LoggerProvider.logger.d("ExampleApplication", "License isValid: ${licenseInfo.isValid}")
+    LoggerProvider.logger.d("ExampleApplication", "License isValid: ${licenseInfo.isValid()}")
     LoggerProvider.logger.d("ExampleApplication", "License message: ${licenseInfo.licenseStatusMessage}")
 
-    if (licenseInfo.isValid) {
+    if (licenseInfo.isValid()) {
         // Making your call into ScanbotSDK API is now safe.
         // e.g. start document scanner
     }
@@ -40,18 +40,22 @@ fun handleLicenseStatusSnippet(application: Application) {
     // @Tag("Handle License Status")
     val licenseInfo = ScanbotBarcodeScannerSDKInitializer()
             .license(application, "YOUR_SCANBOT_SDK_LICENSE_KEY")
-            .licenceErrorHandler(IScanbotSDKLicenseErrorHandler { status, feature, message ->
+            .licenseErrorHandler(IScanbotSDKLicenseErrorHandler { status, feature, message ->
                 LoggerProvider.logger.d("ScanbotSDK", "license status:${status.name}, message: $message")
                 when (status) {
-                    StatusFailureNotSet,
-                    StatusFailureCorrupted,
-                    StatusFailureWrongOS,
-                    StatusFailureAppIDMismatch,
-                    StatusFailureExpired -> {
+                    LicenseStatus.FAILURE_NOT_SET,
+                    LicenseStatus.FAILURE_CORRUPTED,
+                    LicenseStatus.FAILURE_WRONG_OS,
+                    LicenseStatus.FAILURE_APP_ID_MISMATCH,
+                    LicenseStatus.FAILURE_EXPIRED,
+                    LicenseStatus.FAILURE_SERVER,
+                    LicenseStatus.FAILURE_VERSION,
+                    LicenseStatus.FAILURE_INACTIVE -> {
                         // license is completely invalid
                     }
-                    StatusOkay,
-                    StatusTrial -> {
+                    LicenseStatus.OKAY,
+                    LicenseStatus.TRIAL,
+                    LicenseStatus.OKAY_EXPIRING_SOON -> {
 
                     }
                 }

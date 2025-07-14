@@ -14,9 +14,11 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 import android.content.Context
 import android.graphics.Bitmap
 import android.widget.Toast
+import io.scanbot.sap.isValid
 import io.scanbot.sdk.barcode.BarcodeScanner
 import io.scanbot.sdk.barcode.BarcodeScannerResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
+import io.scanbot.sdk.image.ImageRef
 
 fun scanOnImageSnippet(context: Context) {
     // @Tag("Creating the Scanner")
@@ -31,9 +33,10 @@ fun processImageSnippet(
     barcodeDetector: BarcodeScanner,
     bitmap: Bitmap
 ) {
-    if (!sdk.licenseInfo.isValid) { return; }
+    if (!sdk.licenseInfo.isValid()) { return; }
 
-    val result = barcodeDetector.scanFromBitmap(bitmap, 0)
+    val imageFromBitmap = ImageRef.fromBitmap(bitmap)
+    val result = barcodeDetector.run(imageFromBitmap)
     // handle the detected barcode(s) from result
 }
 // @EndTag("Scanning from Bitmap")

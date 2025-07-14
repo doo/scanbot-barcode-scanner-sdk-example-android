@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import io.scanbot.common.getOrNull
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
@@ -29,6 +30,7 @@ import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.camera.FrameHandlerResult
 import io.scanbot.sdk.camera.PictureCallback
 import io.scanbot.sdk.camera.ScanbotCameraView
+import io.scanbot.sdk.image.ImageRef
 import io.scanbot.sdk.ui.camera.ScanbotCameraXView
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.toV2
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerUiResult
@@ -82,8 +84,8 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
             BarcodeAutoSnappingController.attach(cameraView, barcodeScannerFrameHandler!!)
         barcodeAutoSnappingController.setSensitivity(1f)
         cameraView.addPictureCallback(object : PictureCallback() {
-            override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
-                processPictureTaken(image, captureInfo.imageOrientation)
+            override fun onPictureTaken(image: ImageRef, captureInfo: CaptureInfo) {
+                processPictureTaken(image)
             }
         })
     }
@@ -109,16 +111,12 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
         }
     }
 
-    fun processPictureTaken(image: ByteArray, imageOrientation: Int) {
-        val bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-
-        val matrix = Matrix()
-        matrix.setRotate(imageOrientation.toFloat(), bitmap.width / 2f, bitmap.height / 2f)
-        val resultBitmap =
-            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
+    fun processPictureTaken(image: ImageRef) {
+        val bitmap = image.toBitmap().getOrNull()
+        image.close()
 
         resultView.post {
-            resultView.setImageBitmap(resultBitmap)
+            resultView.setImageBitmap(bitmap)
             cameraView.continuousFocus()
             cameraView.startPreview()
         }

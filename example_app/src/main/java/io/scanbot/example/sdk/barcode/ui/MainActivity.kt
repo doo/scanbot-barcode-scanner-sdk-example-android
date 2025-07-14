@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import io.scanbot.common.getOrNull
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.databinding.ActivityMainBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
@@ -17,7 +18,7 @@ import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
-import io.scanbot.sap.Status
+import io.scanbot.sap.isValid
 import io.scanbot.sdk.barcode.BarcodeFormats
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScanner
@@ -25,6 +26,9 @@ import io.scanbot.sdk.barcode.Gs1Handling
 import io.scanbot.sdk.barcode.setBarcodeFormats
 import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
+import io.scanbot.sdk.image.ImageRef
+import io.scanbot.sdk.image.PathImageLoadOptions
+import io.scanbot.sdk.licensing.LicenseStatus
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.BarcodeMappedDataExtension
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.getName
@@ -61,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
 
         binding.warningView.isVisible =
-            ScanbotBarcodeScannerSDK(this).licenseInfo.status == Status.StatusTrial
+            ScanbotBarcodeScannerSDK(this).licenseInfo.status == LicenseStatus.TRIAL
 
         binding.qrDemo.setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
@@ -255,14 +259,16 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
             if (activityResult.resultCode == Activity.RESULT_OK) {
                 val sdk = ScanbotBarcodeScannerSDK(this)
-                if (!sdk.licenseInfo.isValid) {
+                if (!sdk.licenseInfo.isValid()) {
                     showLicenseDialog()
                 } else {
                     processImageGalleryResult(activityResult.data!!)?.let { bitmap ->
                         barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
                             setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
                         })
-                        val result = barcodeScanner.scanFromBitmap(bitmap, 0)
+                        val imageFromBitmap = ImageRef.fromBitmap(bitmap)
+                        val result = barcodeScanner.run(imageFromBitmap).getOrNull()
+                        imageFromBitmap.close()
 
                         BarcodeResultRepository.barcodeResultBundle =
                             result?.let { v1Result ->
@@ -281,7 +287,7 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
             if (activityResult.resultCode == Activity.RESULT_OK) {
                 val sdk = ScanbotBarcodeScannerSDK(this)
-                if (!sdk.licenseInfo.isValid) {
+                if (!sdk.licenseInfo.isValid()) {
                     showLicenseDialog()
                 } else {
                     processPdfGalleryResult(activityResult.data!!)?.let { file ->
@@ -297,8 +303,10 @@ class MainActivity : AppCompatActivity() {
                             setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
                         })
                         images.map { uri ->
-                            val bitmap = BitmapFactory.decodeFile(uri.path)
-                            val result = barcodeScanner.scanFromBitmap(bitmap, 0)
+                            val result = uri.path?.let {
+                                val image = ImageRef.fromPath(it)
+                                barcodeScanner.run(image).getOrNull()
+                            }
                             // set the last scanned result as the final result
                             result?.barcodes ?: emptyList()
                         }.let {

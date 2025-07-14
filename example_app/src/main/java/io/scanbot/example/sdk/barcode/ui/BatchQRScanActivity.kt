@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.scanbot.common.getOrNull
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
@@ -160,7 +161,7 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
         } else {
             holder.image.visibility = View.VISIBLE
         }
-        holder.image.setImageBitmap(item.sourceImage?.toBitmap())
+        holder.image.setImageBitmap(item.sourceImage?.toBitmap()?.getOrNull())
     }
 
     override fun getItemCount(): Int = items.size

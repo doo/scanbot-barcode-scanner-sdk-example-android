@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
-import io.scanbot.sdk.barcode.document.BarcodeDocumentParser
+import io.scanbot.sdk.barcode.BarcodeDocumentParser
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 
 class BarcodeDocumentParserDemoActivity : AppCompatActivity() {
@@ -23,7 +23,7 @@ class BarcodeDocumentParserDemoActivity : AppCompatActivity() {
         val outputView = findViewById<TextView>(R.id.barcode_document_output)
         findViewById<Button>(R.id.barcode_document_button).setOnClickListener {
             val input = inputView.text.toString()
-            val parseDocument = barcodeDocumentParser.parseDocument(input)
+            val parseDocument = barcodeDocumentParser.parse(input)
             outputView.text = parseDocument.toString()
         }
     }
