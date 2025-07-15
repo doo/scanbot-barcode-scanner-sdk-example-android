@@ -173,3 +173,14 @@ fun barcodeRegexpConfigurationSnippet(context: Context) {
     })
     // @EndTag("Configuring regexp in Barcode Scanner")
 }
+
+fun barcodeTinyBarcodeConfigurationSnippet(context: Context) {
+    // @Tag("Configuring tiny barcodes in Barcode Scanner")
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+
+    barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+        // Example of adding a specific configuration for parsed documents
+        engineMode = BarcodeScannerEngineMode.NEXT_GEN_FAR_DISTANCE
+    })
+    // @EndTag("Configuring tiny barcodes in Barcode Scanner")
+}

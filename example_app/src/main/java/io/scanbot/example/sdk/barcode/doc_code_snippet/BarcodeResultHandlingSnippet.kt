@@ -113,10 +113,7 @@ fun handlingParsedDocumentsResult(bitmap: Bitmap, context: Context) {
                     // Handle other document types if needed
                 }
             }
-
         }
-
-
     }
     // @EndTag("Handling the parsed document result")
 }
