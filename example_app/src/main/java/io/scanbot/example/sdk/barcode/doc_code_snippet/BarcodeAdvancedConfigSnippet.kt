@@ -129,3 +129,21 @@ fun barcodeFormatIndividualSimplifiedConfigurationSnippet(context: Context) {
     )
     // @EndTag("Configuring individual symbologies in Barcode Scanner")
 }
+
+fun barcodeParsersConfigurationSnippet(context: Context) {
+    // @Tag("Configuring parsers in Barcode Scanner")
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+
+    var configs = mutableListOf<BarcodeFormatConfigurationBase>()
+
+    barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+        barcodeFormatConfigurations = configs
+        // Example of adding a specific configuration for parsed documents
+        extractedDocumentFormats = listOf( BarcodeDocumentFormat.AAMVA, BarcodeDocumentFormat.BOARDING_PASS, BarcodeDocumentFormat.DE_MEDICAL_PLAN, BarcodeDocumentFormat.MEDICAL_CERTIFICATE, BarcodeDocumentFormat.ID_CARD_PDF_417, BarcodeDocumentFormat.SEPA, BarcodeDocumentFormat.SWISS_QR, BarcodeDocumentFormat.VCARD, BarcodeDocumentFormat.GS1, BarcodeDocumentFormat.HIBC )
+        onlyAcceptDocuments = false
+        engineMode = BarcodeScannerEngineMode.NEXT_GEN
+        returnBarcodeImage = true
+    })
+    // @EndTag("Configuring parsers in Barcode Scanner")
+}
+
