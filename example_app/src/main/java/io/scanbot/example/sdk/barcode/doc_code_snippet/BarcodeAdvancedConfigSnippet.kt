@@ -12,6 +12,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // TODO: add URLs here
 
 import android.content.Context
+import android.graphics.Bitmap
 import io.scanbot.sdk.barcode.AustraliaPostCustomerFormat
 import io.scanbot.sdk.barcode.BarcodeDocumentFormat
 import io.scanbot.sdk.barcode.BarcodeFormat
@@ -173,3 +174,19 @@ fun barcodeRegexpConfigurationSnippet(context: Context) {
     // @EndTag("Configuring regexp in Barcode Scanner")
 }
 
+fun handlingResult(bitmap: Bitmap, context: Context) {
+    // @Tag("Handling the Result")
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+    val result = barcodeScanner.scanFromBitmap(bitmap, 0)
+    result?.barcodes?.forEach { barcodeItem ->
+        // Handle the detected barcode(s) from result
+        val barcodeText = barcodeItem.text
+        val barcodeFormat = barcodeItem.format
+        // The barcodeItem contains the scanned barcode data as ByteArray
+        val barcodeRawData = barcodeItem.rawBytes
+        // This is the image of the barcode that was scanned in the form of a ImageRef.(SDK's Internal representation of the image)
+        // Call sourceImage?.toBitmap() to get the image as a Bitmap
+        val barcodeImage = barcodeItem.sourceImage
+        // @EndTag("Handling the Result")
+    }
+}
