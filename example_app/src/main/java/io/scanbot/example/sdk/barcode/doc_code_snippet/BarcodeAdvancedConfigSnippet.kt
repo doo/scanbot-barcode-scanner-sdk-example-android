@@ -140,10 +140,36 @@ fun barcodeParsersConfigurationSnippet(context: Context) {
         barcodeFormatConfigurations = configs
         // Example of adding a specific configuration for parsed documents
         extractedDocumentFormats = listOf( BarcodeDocumentFormat.AAMVA, BarcodeDocumentFormat.BOARDING_PASS, BarcodeDocumentFormat.DE_MEDICAL_PLAN, BarcodeDocumentFormat.MEDICAL_CERTIFICATE, BarcodeDocumentFormat.ID_CARD_PDF_417, BarcodeDocumentFormat.SEPA, BarcodeDocumentFormat.SWISS_QR, BarcodeDocumentFormat.VCARD, BarcodeDocumentFormat.GS1, BarcodeDocumentFormat.HIBC )
-        onlyAcceptDocuments = false
+        onlyAcceptDocuments = true // Set to true if you want to only accept barcode with parsed documents
         engineMode = BarcodeScannerEngineMode.NEXT_GEN
-        returnBarcodeImage = true
     })
     // @EndTag("Configuring parsers in Barcode Scanner")
+}
+
+fun barcodeRegexpConfigurationSnippet(context: Context) {
+    // @Tag("Configuring regexp in Barcode Scanner")
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+
+    var configs = mutableListOf<BarcodeFormatConfigurationBase>()
+    val baseConfig = BarcodeFormatCommonConfiguration.default().copy(
+        // You can set a regex filter here to limit the barcodes that will be scanned
+        // Here is an example of a regex that matches only  barcodes contained numbers from 0 to 5
+        regexFilter = "\\b[0-5]+\\b",
+        minimum1DQuietZoneSize = 10,
+        stripCheckDigits = false,
+        minimumTextLength = 0,
+        maximumTextLength = 0,
+        gs1Handling = Gs1Handling.PARSE,
+        strictMode = true,
+        formats = BarcodeFormats.common,
+        addAdditionalQuietZone = false
+    )
+    configs.add(baseConfig)
+    barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+        barcodeFormatConfigurations = configs
+        // Example of adding a specific configuration for parsed documents
+        engineMode = BarcodeScannerEngineMode.NEXT_GEN
+    })
+    // @EndTag("Configuring regexp in Barcode Scanner")
 }
 
