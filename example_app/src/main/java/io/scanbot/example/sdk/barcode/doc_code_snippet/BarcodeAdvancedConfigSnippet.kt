@@ -187,6 +187,6 @@ fun handlingResult(bitmap: Bitmap, context: Context) {
         // This is the image of the barcode that was scanned in the form of a ImageRef.(SDK's Internal representation of the image)
         // Call sourceImage?.toBitmap() to get the image as a Bitmap
         val barcodeImage = barcodeItem.sourceImage
-        // @EndTag("Handling the Result")
     }
+    // @EndTag("Handling the Result")
 }
