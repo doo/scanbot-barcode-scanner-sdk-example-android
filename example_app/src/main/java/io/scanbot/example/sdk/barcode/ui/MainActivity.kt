@@ -6,6 +6,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +19,8 @@ import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
 import io.scanbot.example.sdk.barcode.model.BarcodeResultRepository
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
 import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
+import io.scanbot.example.sdk.barcode.ui.usecases.ExampleUtils
+import io.scanbot.example.sdk.barcode.ui.usecases.UseCasesActivity
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sap.Status
 import io.scanbot.sdk.barcode.BarcodeFormats
@@ -235,9 +240,22 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.usecases.setOnClickListener {
+            val intent = Intent(this@MainActivity, UseCasesActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.classicalBarcodeDocumentParser.setOnClickListener {
             val intent = Intent(this@MainActivity, BarcodeDocumentParserDemoActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.supportContactButton.setOnClickListener {
+            ExampleUtils.openBrowser(this@MainActivity, "https://docs.scanbot.io/support/")
+        }
+        binding.supportTrialLicenseButton.setOnClickListener {
+            // Use "io.scanbot.example.sdk.barcode.android" as an application ID to get a 7-day trial license key for this app.
+            ExampleUtils.openBrowser(this@MainActivity, "https://scanbot.io/trial/")
         }
     }
 

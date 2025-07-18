@@ -34,8 +34,6 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
     private lateinit var resultView: ImageView
     private lateinit var flash: View
 
-    private val resultsMap = hashMapOf<String, Long>()
-
     private var flashEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,46 +105,6 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
                 barcodeItem: BarcodeItem
             ): BarcodePolygonsView.BarcodeTextViewStyle {
                 return defaultStyle.copy(textColor = Color.BLACK)
-            }
-
-        })
-        barcodeScannerView.selectionOverlayController.setBarcodeItemViewFactory(object :
-            BarcodePolygonsView.BarcodeItemViewFactory {
-            override fun createView(): View {
-                val inflater = LayoutInflater.from(this@BarcodeScannerViewActivity)
-                return inflater.inflate(R.layout.custom_view_for_ar, barcodeScannerView, false)
-            }
-        })
-        barcodeScannerView.selectionOverlayController.setBarcodeItemViewBinder(object :
-            BarcodePolygonsView.BarcodeItemViewBinder {
-
-            override fun bindView(
-                view: View,
-                barcodeItem: BarcodeItem,
-                style: BarcodePolygonsView.BarcodeTextViewStyle,
-                shouldHighlight: Boolean
-            ) {
-                val textWithExtension = barcodeItem.textWithExtension
-                val progressView = view.findViewById<ProgressBar>(R.id.custom_ar_view_progress)
-
-                if (!resultsMap.containsKey(textWithExtension)) {
-                    // TODO: here we emulate loading info from the database/internet
-                    resultsMap[textWithExtension] = System.currentTimeMillis() + 2500
-                }
-                val valueTextView = view.findViewById<TextView>(R.id.custom_ar_view_value)
-                val resultIsReady = resultsMap[textWithExtension]!! < System.currentTimeMillis()
-                progressView.isVisible = !resultIsReady
-                valueTextView.isVisible = resultIsReady
-                valueTextView.text = textWithExtension
-            }
-        })
-        barcodeScannerView.selectionOverlayController.setBarcodeStringDelegate(object :
-            BarcodePolygonsView.BarcodeStringDelegate {
-            override fun overrideString(
-                string: String,
-                barcodeItem: BarcodeItem
-            ): String {
-                return string // change this if you want to override the string representation
             }
 
         })

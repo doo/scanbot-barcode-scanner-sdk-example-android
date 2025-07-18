@@ -64,11 +64,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="Classic Component"
-
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="Classic Component" />
 
             <View
                 android:layout_width="match_parent"
@@ -80,11 +77,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="Classic Component with AR Overlay"
-
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="Classic Component with AR Overlay" />
 
             <View
                 android:layout_width="match_parent"
@@ -96,11 +90,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="Scan and Count "
-
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="Scan and Count " />
 
             <View
                 android:layout_width="match_parent"
@@ -112,10 +103,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="Batch Barcode Classic Component"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="Batch Barcode Classic Component" />
 
             <View
                 android:layout_width="match_parent"
@@ -127,10 +116,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="Barcode Document Parser"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="Barcode Document Parser" />
 
             <View
                 android:layout_width="match_parent"
@@ -142,10 +129,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="RTU UI"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="RTU UI" />
 
             <View
                 android:layout_width="match_parent"
@@ -157,10 +142,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="RTU UI - with selection overlay"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="RTU UI - with selection overlay" />
 
             <View
                 android:layout_width="match_parent"
@@ -172,10 +155,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="RTU UI - batch barcode scanning"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="RTU UI - batch barcode scanning" />
 
             <View
                 android:layout_width="match_parent"
@@ -187,10 +168,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="RTU UI - multiple unique barcode scanning"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="RTU UI - multiple unique barcode scanning" />
 
             <View
                 android:layout_width="match_parent"
@@ -202,10 +181,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="RTU UI - find and pick barcode scanning"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="RTU UI - find and pick barcode scanning" />
 
             <View
                 android:layout_width="match_parent"
@@ -217,10 +194,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="Pick image from library"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="Pick image from library" />
 
             <View
                 android:layout_width="match_parent"
@@ -232,10 +207,8 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="Pick pdf from library"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="Pick pdf from library" />
 
             <View
                 android:layout_width="match_parent"
@@ -247,15 +220,75 @@
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical"
-                android:text="Set accepted barcodes"
-                android:textColor="@color/textColorPrimary" />
+                android:paddingStart="16dp"
+                android:text="Set accepted barcodes" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#50000000" />
+
+            <TextView
+                android:id="@+id/usecases"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:paddingStart="16dp"
+                android:text="Barcode Scanner Use Cases" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="?colorSecondaryVariant"
+                    app:contentPadding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="Having trouble with integrating?"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:textColor="@color/scanbot_brand" />
+
+                        <Button
+                            android:id="@+id/support_contact_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Contact support"
+                            android:textAllCaps="false"
+                            android:backgroundTint="@color/scanbot_brand"/>
+
+                        <TextView
+                            android:id="@+id/support_trial_license_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?selectableItemBackground"
+                            android:padding="8dp"
+                            android:text="Get your trial license now →"
+                            android:textAllCaps="false"
+                            android:textColor="@color/scanbot_brand" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
         </LinearLayout>
     </ScrollView>

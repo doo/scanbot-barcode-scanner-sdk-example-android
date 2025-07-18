@@ -9,4 +9,11 @@
     <color name="сolorWarningBackground">#c8193c</color>
     <color name="titleSeparatorColor">#204B4F52</color>
     <color name="textColorPrimary">#FFF</color>
+
+    <color name="scanbot_brand">#FFC8193C</color>
+    <color name="scanbot_brand_highlight">#FFDA2150</color>
+    <color name="scanbot_secondary">#FFFFEDED</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="ar_overlay_highlighted">#55BB77</color>
+    <color name="ar_overlay_not_highlighted">#FF3B30</color>
 </resources>

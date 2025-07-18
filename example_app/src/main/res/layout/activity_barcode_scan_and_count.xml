@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <io.scanbot.sdk.barcode.ui.BarcodeScanAndCountView
+        android:id="@+id/barcode_scanner_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/button_scan_and_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan and Count" />
+
+    <Button
+        android:id="@+id/button_continue_scanning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Continue scanning"
+        android:visibility="gone" />
+
+</LinearLayout>
