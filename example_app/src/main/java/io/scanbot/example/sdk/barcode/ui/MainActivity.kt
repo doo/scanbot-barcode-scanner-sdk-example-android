@@ -285,7 +285,7 @@ class MainActivity : AppCompatActivity() {
                         BarcodeResultRepository.barcodeResultBundle =
                             result?.let { v1Result ->
                                 val result = BarcodeScannerUiResult(
-                                    v1Result.barcodes.map { it.toV2(1) }
+                                   items = v1Result.barcodes.map { it.toV2(1) }
                                 )
                                 BarcodeResultBundle(result, null, null) }
 
@@ -321,7 +321,7 @@ class MainActivity : AppCompatActivity() {
                             result?.barcodes ?: emptyList()
                         }.let {
                             BarcodeResultRepository.barcodeResultBundle =
-                                BarcodeResultBundle(BarcodeScannerUiResult(it.flatten().map { it.toV2(1) }), null, null)
+                                BarcodeResultBundle(BarcodeScannerUiResult(items = it.flatten().map { it.toV2(1) }), null, null)
                         }
 
                         startActivity(Intent(this, BarcodeResultActivity::class.java))

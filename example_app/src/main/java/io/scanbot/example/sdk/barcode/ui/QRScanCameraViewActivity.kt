@@ -99,7 +99,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
     private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScannerResult?>) {
         result.value?.let {
             BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(
-                BarcodeScannerUiResult(it.barcodes.map { it.toV2(1) }),
+                BarcodeScannerUiResult(items = it.barcodes.map { it.toV2(1) }),
                 imagePath = null,
                 previewPath = null,
             )
