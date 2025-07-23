@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.ui.usecases.adapter.BarcodeItemAdapter
+import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.barcode.BarcodeScanner
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +34,7 @@ class DetectionOnTheImageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detection_on_the_image)
+        applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         // @Tag("Detecting barcodes on still images")
         scanbotBarcodeScannerSDK = ScanbotBarcodeScannerSDK(this)

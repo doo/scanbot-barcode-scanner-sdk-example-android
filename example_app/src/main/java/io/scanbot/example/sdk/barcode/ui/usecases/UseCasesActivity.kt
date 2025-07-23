@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.scanbot.example.sdk.barcode.R
+import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 
 class UseCasesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usecases)
+        applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         val items = listOf(
             ViewType.Header("Barcode Scanning Use Cases"),

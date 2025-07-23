@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import io.scanbot.example.sdk.barcode.R
+import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.ui.BarcodeScanAndCountView
 import io.scanbot.sdk.barcode.ui.IBarcodeScanCountViewCallback
@@ -22,6 +23,7 @@ class AR_ScanAndCountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_scan_and_count)
+        applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         barcodeScanAndCountView = findViewById(R.id.barcode_scanner_view)
 

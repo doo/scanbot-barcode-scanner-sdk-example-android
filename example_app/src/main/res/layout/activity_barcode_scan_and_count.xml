@@ -1,26 +1,32 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <io.scanbot.sdk.barcode.ui.BarcodeScanAndCountView
-        android:id="@+id/barcode_scanner_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_scan_and_count"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Scan and Count" />
+        <io.scanbot.sdk.barcode.ui.BarcodeScanAndCountView
+            android:id="@+id/barcode_scanner_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-    <Button
-        android:id="@+id/button_continue_scanning"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Continue scanning"
-        android:visibility="gone" />
+        <Button
+            android:id="@+id/button_scan_and_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan and Count" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button_continue_scanning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continue scanning"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</FrameLayout>
