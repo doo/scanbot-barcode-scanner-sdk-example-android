@@ -28,14 +28,11 @@ import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.camera.FrameHandlerResult
-import io.scanbot.sdk.ui.camera.CameraUiSettings
 
 class BarcodeScannerViewActivity : AppCompatActivity() {
     private lateinit var barcodeScannerView: BarcodeScannerView
     private lateinit var resultView: ImageView
     private lateinit var flash: View
-
-    private val resultsMap = hashMapOf<String, Long>()
 
     private var flashEnabled = false
 
@@ -54,8 +51,9 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
             setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
         })
         barcodeScannerView.apply {
-            initCamera(CameraUiSettings(true))
-            initScanningBehavior(barcodeScanner,
+            initCamera()
+            initScanningBehavior(
+                barcodeScanner,
                 { result ->
                     if (result is FrameHandlerResult.Success) {
                         handleSuccess(result)
@@ -110,31 +108,6 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
             }
 
         })
-        barcodeScannerView.selectionOverlayController.setBarcodeItemViewFactory(object :
-            BarcodePolygonsView.BarcodeItemViewFactory {
-            override fun createView(): View {
-                val inflater = LayoutInflater.from(this@BarcodeScannerViewActivity)
-                return inflater.inflate(R.layout.custom_view_for_ar, barcodeScannerView, false)
-            }
-        })
-        barcodeScannerView.selectionOverlayController.setBarcodeItemViewBinder(object :
-            BarcodePolygonsView.BarcodeItemViewBinder {
-            override fun bindView(view: View, barcodeItem: BarcodeItem, shouldHighlight: Boolean) {
-                val textWithExtension = barcodeItem.textWithExtension
-                val progressView = view.findViewById<ProgressBar>(R.id.custom_ar_view_progress)
-
-                if (!resultsMap.containsKey(textWithExtension)) {
-                    // TODO: here we emulate loading info from the database/internet
-                    resultsMap[textWithExtension] = System.currentTimeMillis() + 2500
-                }
-                val valueTextView = view.findViewById<TextView>(R.id.custom_ar_view_value)
-                val resultIsReady = resultsMap[textWithExtension]!! < System.currentTimeMillis()
-                progressView.isVisible = !resultIsReady
-                valueTextView.isVisible = resultIsReady
-                valueTextView.text = textWithExtension
-            }
-        })
-
 
         flash = findViewById(R.id.flash)
         flash.setOnClickListener {

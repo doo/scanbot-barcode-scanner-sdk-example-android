@@ -12,6 +12,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // TODO: add URLs here
 
 import android.content.Context
+import android.graphics.Bitmap
 import io.scanbot.sdk.barcode.AustraliaPostCustomerFormat
 import io.scanbot.sdk.barcode.BarcodeDocumentFormat
 import io.scanbot.sdk.barcode.BarcodeFormat
@@ -47,7 +48,7 @@ fun barcodeScannerWithAdvancedConfigSnippet(context: Context) {
         addAdditionalQuietZone = false
     )
     configs.add(baseConfig)
-
+    // Add individual configurations for specific barcode formats
     val australiaPostConfig = BarcodeFormatAustraliaPostConfiguration(
         regexFilter = "",
         australiaPostCustomerFormat = AustraliaPostCustomerFormat.ALPHA_NUMERIC
@@ -112,4 +113,74 @@ fun barcodeFormatCommonConfigurationSnippet(context: Context) {
         addAdditionalQuietZone = false
     )
     // @EndTag("Configuring BarcodeFormatCommonConfiguration in Barcode Scanner")
+}
+
+fun barcodeFormatIndividualSimplifiedConfigurationSnippet(context: Context) {
+    // @Tag("Configuring individual symbologies in Barcode Scanner")
+    val baseConfig = BarcodeFormatCommonConfiguration.default().copy(
+        regexFilter = "",
+        minimum1DQuietZoneSize = 10,
+        stripCheckDigits = false,
+        minimumTextLength = 0,
+        maximumTextLength = 0,
+        gs1Handling = Gs1Handling.PARSE,
+        strictMode = true,
+        formats = listOf(BarcodeFormat.QR_CODE, BarcodeFormat.AZTEC, BarcodeFormat.CODE_128),
+        addAdditionalQuietZone = false
+    )
+    // @EndTag("Configuring individual symbologies in Barcode Scanner")
+}
+
+fun barcodeParsersConfigurationSnippet(context: Context) {
+    // @Tag("Configuring parsers in Barcode Scanner")
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+
+    var configs = mutableListOf<BarcodeFormatConfigurationBase>()
+
+    barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+        barcodeFormatConfigurations = configs
+        // Example of adding a specific configuration for parsed documents
+        extractedDocumentFormats = listOf( BarcodeDocumentFormat.AAMVA, BarcodeDocumentFormat.BOARDING_PASS, BarcodeDocumentFormat.DE_MEDICAL_PLAN, BarcodeDocumentFormat.MEDICAL_CERTIFICATE, BarcodeDocumentFormat.ID_CARD_PDF_417, BarcodeDocumentFormat.SEPA, BarcodeDocumentFormat.SWISS_QR, BarcodeDocumentFormat.VCARD, BarcodeDocumentFormat.GS1, BarcodeDocumentFormat.HIBC )
+        onlyAcceptDocuments = true // Set to true if you want to only accept barcode with parsed documents
+        engineMode = BarcodeScannerEngineMode.NEXT_GEN
+    })
+    // @EndTag("Configuring parsers in Barcode Scanner")
+}
+
+fun barcodeRegexpConfigurationSnippet(context: Context) {
+    // @Tag("Configuring regexp in Barcode Scanner")
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+
+    var configs = mutableListOf<BarcodeFormatConfigurationBase>()
+    val baseConfig = BarcodeFormatCommonConfiguration.default().copy(
+        // You can set a regex filter here to limit the barcodes that will be scanned
+        // Here is an example of a regex that matches only  barcodes contained numbers from 0 to 5
+        regexFilter = "\\b[0-5]+\\b",
+        minimum1DQuietZoneSize = 10,
+        stripCheckDigits = false,
+        minimumTextLength = 0,
+        maximumTextLength = 0,
+        gs1Handling = Gs1Handling.PARSE,
+        strictMode = true,
+        formats = BarcodeFormats.common,
+        addAdditionalQuietZone = false
+    )
+    configs.add(baseConfig)
+    barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+        barcodeFormatConfigurations = configs
+        // Example of adding a specific configuration for parsed documents
+        engineMode = BarcodeScannerEngineMode.NEXT_GEN
+    })
+    // @EndTag("Configuring regexp in Barcode Scanner")
+}
+
+fun barcodeTinyBarcodeConfigurationSnippet(context: Context) {
+    // @Tag("Configuring tiny barcodes in Barcode Scanner")
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+
+    barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
+        // Example of adding a specific configuration for parsed documents
+        engineMode = BarcodeScannerEngineMode.NEXT_GEN_FAR_DISTANCE
+    })
+    // @EndTag("Configuring tiny barcodes in Barcode Scanner")
 }

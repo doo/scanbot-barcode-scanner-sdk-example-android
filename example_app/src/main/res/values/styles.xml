@@ -5,12 +5,20 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryVariant">@color/scanbot_brand_highlight</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/scanbot_brand</item>
+        <item name="colorSecondaryVariant">@color/scanbot_secondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@color/backgroundColor</item>
         <item name="alertDialogTheme">@style/Scanbot.Demo.Dialog</item>
+        <!-- Customize your theme here. -->
     </style>
-
 
     <style name="Scanbot.Demo.MaterialTwoButtonTeaser.Button" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">wrap_content</item>

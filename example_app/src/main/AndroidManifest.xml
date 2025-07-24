@@ -35,5 +35,37 @@
         <activity android:name=".ui.BarcodeDocumentParserDemoActivity" />
         <activity android:name=".ui.BarcodeScannerViewActivity" />
         <activity android:name=".ui.BarcodeScanAndCountViewActivity" />
+
+        <activity android:name=".ui.usecases.UseCasesActivity" />
+        <activity
+            android:name=".ui.usecases.SingleBarcodeActivity"
+            android:label="Scanning Single Barcodes" />
+        <activity
+            android:name=".ui.usecases.TinyBarcodeActivity"
+            android:label="Scanning Tiny Barcodes" />
+        <activity
+            android:name=".ui.usecases.DistantBarcodeActivity"
+            android:label="Scanning Distant Barcodes" />
+        <activity
+            android:name=".ui.usecases.MultipleBarcodeActivity"
+            android:label="Scanning Multiple Barcodes" />
+        <activity
+            android:name=".ui.usecases.BatchScanningActivity"
+            android:label="Batch Scanning" />
+        <activity
+            android:name=".ui.usecases.AR_MultiScanActivity"
+            android:label="AR-MultiScan" />
+        <activity
+            android:name=".ui.usecases.AR_SelectScanActivity"
+            android:label="AR-SelectScan" />
+        <activity
+            android:name=".ui.usecases.AR_FindAndPickActivity"
+            android:label="AR-FindAndPick" />
+        <activity
+            android:name=".ui.usecases.AR_ScanAndCountActivity"
+            android:label="AR-ScanAndCount" />
+        <activity
+            android:name=".ui.usecases.DetectionOnTheImageActivity"
+            android:label="Detecting Barcodes on Still Images" />
     </application>
 </manifest>
