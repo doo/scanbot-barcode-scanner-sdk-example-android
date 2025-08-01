@@ -69,7 +69,7 @@ The Scanbot Barcode Scanner SDK supports all common 1D- or 2D barcode formats, s
 
 The Scanbot Barcode Scanner SDK supports a variety of data parsers that extract structured information from 2D barcodes such as QR Codes and Data Matrix. These include parsers for documents such as driving licences (AAMVA), boarding passes, medical certificates, SEPA forms, Swiss QR codes and vCard business cards. 
 
-💡 Please refer to our [documentation](https://docs.scanbot.io/android/barcode-scanner-sdk/supported-barcode-symbologies/#supported-barcode-data-parsers?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites) for a full list of supported data parsers.
+💡 Please refer to our [documentation](https://docs.scanbot.io/android/barcode-scanner-sdk/supported-barcode-symbologies/?utm_source=github.com&utm_medium=referral&utm_campaign=dev_sites#supported-barcode-data-parsers) for a full list of supported data parsers.
 
 ## Additional information
 
