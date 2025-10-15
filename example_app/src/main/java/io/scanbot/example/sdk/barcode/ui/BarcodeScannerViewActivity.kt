@@ -104,7 +104,7 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
                 defaultStyle: BarcodePolygonsView.BarcodeTextViewStyle,
                 barcodeItem: BarcodeItem
             ): BarcodePolygonsView.BarcodeTextViewStyle {
-                return defaultStyle.copy(textColor = Color.BLACK)
+                return defaultStyle.copy(textColor = Color.WHITE)
             }
 
         })
