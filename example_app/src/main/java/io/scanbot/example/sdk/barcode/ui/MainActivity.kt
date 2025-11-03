@@ -240,6 +240,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.composeDemo.setOnClickListener {
+            val intent = Intent(this@MainActivity, BarcodeComposeClassic::class.java)
+            startActivity(intent)
+        }
+
         binding.usecases.setOnClickListener {
             val intent = Intent(this@MainActivity, UseCasesActivity::class.java)
             startActivity(intent)

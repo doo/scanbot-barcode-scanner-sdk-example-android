@@ -30,6 +30,7 @@
             android:label="@string/title_activity_detailed_item_data"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.QRScanCameraViewActivity" />
+        <activity android:name=".ui.BarcodeComposeClassic" />
         <activity android:name=".ui.BarcodeTypesActivity" />
         <activity android:name=".ui.BatchQRScanActivity" />
         <activity android:name=".ui.BarcodeDocumentParserDemoActivity" />

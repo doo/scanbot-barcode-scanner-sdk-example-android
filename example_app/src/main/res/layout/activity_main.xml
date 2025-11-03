@@ -73,6 +73,19 @@
                 android:background="#50000000" />
 
             <TextView
+                android:id="@+id/compose_demo"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:paddingStart="16dp"
+                android:text="Compose Classic Component" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+            <TextView
                 android:id="@+id/classical_ar_overlay_demo"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
