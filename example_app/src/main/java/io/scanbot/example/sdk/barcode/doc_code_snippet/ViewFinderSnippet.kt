@@ -19,7 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 // @Tag("Add imports for RTU UI v2 activity")
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDKInitializer
-import io.scanbot.sdk.common.AspectRatio
+import io.scanbot.sdk.geometry.AspectRatio
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.FinderStyle

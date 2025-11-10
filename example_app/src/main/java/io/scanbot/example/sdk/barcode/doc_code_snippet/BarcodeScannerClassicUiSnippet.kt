@@ -13,6 +13,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import io.scanbot.common.onSuccess
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.sdk.barcode.BarcodeFormats
 import io.scanbot.sdk.barcode.BarcodeItem
@@ -22,8 +23,8 @@ import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.CameraModule
 import io.scanbot.sdk.camera.CaptureInfo
-import io.scanbot.sdk.camera.FrameHandlerResult
-import io.scanbot.sdk.common.AspectRatio
+import io.scanbot.sdk.geometry.AspectRatio
+import io.scanbot.sdk.image.ImageRef
 
 class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
 
@@ -35,7 +36,7 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
 
         // @Tag("Barcode Classic UI view snippet")
         barcodeScannerView = findViewById<BarcodeScannerView>(R.id.barcode_scanner_view)!!
-        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
+        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
 
         // modify config as needed
         barcodeScanner.setConfiguration(
@@ -51,22 +52,25 @@ class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
         barcodeScannerView.apply {
             initCamera()
             initScanningBehavior(barcodeScanner,
-                { result ->
-                    if (result is FrameHandlerResult.Success) {
+                { result, frame ->
+                    result.onSuccess {
                         // process the scanned result here
                         // handleSuccess(result)
                     }
                     false
                 },
                 object : IBarcodeScannerViewCallback {
-                    override fun onCameraOpen() {
-                        // barcodeScannerView.viewController.useFlash(flashEnabled)
-                    }
-
-                    override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
+                    override fun onPictureTaken(
+                        image: ImageRef,
+                        captureInfo: CaptureInfo
+                    ) {
                         // process the full size images taken by BarcodeAutoSnappingController here
                         // to enable auto snapping use the following command:
                         // barcodeScannerView.viewController.autoSnappingEnabled = true
+                    }
+
+                    override fun onCameraOpen() {
+                        // barcodeScannerView.viewController.useFlash(flashEnabled)
                     }
 
                     override fun onSelectionOverlayBarcodeClicked(barcodeItem: BarcodeItem) {

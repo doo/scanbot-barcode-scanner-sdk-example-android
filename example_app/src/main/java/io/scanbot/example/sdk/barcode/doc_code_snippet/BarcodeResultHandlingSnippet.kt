@@ -24,11 +24,12 @@ import io.scanbot.sdk.barcode.entity.SEPA
 import io.scanbot.sdk.barcode.entity.SwissQR
 import io.scanbot.sdk.barcode.entity.VCard
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
+import io.scanbot.sdk.image.ImageRef
 
-fun handlingResult(bitmap: Bitmap, context: Context) {
+fun handlingResult(imageRef: ImageRef, context: Context) {
     // @Tag("Handling the Result")
-    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
-    val result = barcodeScanner.scanFromBitmap(bitmap, 0)
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner().getOrThrow()
+    val result = barcodeScanner.run(imageRef).getOrNull()
     result?.barcodes?.forEach { barcodeItem ->
         // Handle the detected barcode(s) from result
         val barcodeText = barcodeItem.text
@@ -42,10 +43,10 @@ fun handlingResult(bitmap: Bitmap, context: Context) {
     // @EndTag("Handling the Result")
 }
 
-fun handlingParsedDocumentsResult(bitmap: Bitmap, context: Context) {
+fun handlingParsedDocumentsResult(imageRef: ImageRef,  context: Context) {
     // @Tag("Handling the parsed document result")
-    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
-    val result = barcodeScanner.scanFromBitmap(bitmap, 0)
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner().getOrThrow()
+    val result = barcodeScanner.run(imageRef).getOrNull()
     result?.barcodes?.forEach { barcodeItem ->
         barcodeItem.extractedDocument?.let { document ->
             when (document.type.name) {

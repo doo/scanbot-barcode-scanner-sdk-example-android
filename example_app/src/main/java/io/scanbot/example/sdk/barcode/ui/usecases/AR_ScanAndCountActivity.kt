@@ -27,7 +27,7 @@ class AR_ScanAndCountActivity : AppCompatActivity() {
 
         barcodeScanAndCountView = findViewById(R.id.barcode_scanner_view)
 
-        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
+        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
         barcodeScanner.setConfiguration(
             barcodeScanner.copyCurrentConfiguration().apply {
                 // Specify the barcode format you want to scan
@@ -46,14 +46,14 @@ class AR_ScanAndCountActivity : AppCompatActivity() {
                 }
 
                 override fun onScanAndCountFinished(barcodes: List<BarcodeItem>) {
-// IMPORTANT FOR THIS EXAMPLE:
+                    // IMPORTANT FOR THIS EXAMPLE:
                     // Counted barcodes from all scans (Barcode -> Count)
                     val barcodesFromAllScans = barcodeScanAndCountView.countedBarcodes
                     Toast.makeText(context, "Found barcodes now: ${barcodes.size}\n" +
                             "Total different barcodes: ${barcodesFromAllScans.size}", Toast.LENGTH_LONG).show()
                     // You may process the calculated barcodes here
                     // For example, you may show them in a list
-// END OF IMPORTANT FOR THIS EXAMPLE
+                    // END OF IMPORTANT FOR THIS EXAMPLE
                 }
 
                 override fun onScanAndCountStarted() {

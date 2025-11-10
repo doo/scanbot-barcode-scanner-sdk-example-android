@@ -1,9 +1,11 @@
 package io.scanbot.example.sdk.barcode.ui
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -22,7 +24,8 @@ import io.scanbot.example.sdk.barcode.ui.dialog.ErrorFragment
 import io.scanbot.example.sdk.barcode.ui.usecases.ExampleUtils
 import io.scanbot.example.sdk.barcode.ui.usecases.UseCasesActivity
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
-import io.scanbot.sap.Status
+import io.scanbot.sdk.barcode.BarcodeFormatCommonConfiguration
+import io.scanbot.sdk.barcode.BarcodeFormatGs1CompositeConfiguration
 import io.scanbot.sdk.barcode.BarcodeFormats
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScanner
@@ -30,6 +33,8 @@ import io.scanbot.sdk.barcode.Gs1Handling
 import io.scanbot.sdk.barcode.setBarcodeFormats
 import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
+import io.scanbot.sdk.image.ImageRef
+import io.scanbot.sdk.licensing.LicenseStatus
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.BarcodeMappedDataExtension
 import io.scanbot.sdk.ui_v2.barcode.common.mappers.getName
@@ -63,10 +68,10 @@ class MainActivity : AppCompatActivity() {
 
         applyEdgeToEdge(this.findViewById(R.id.root_view))
 
-        barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
+        barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
 
         binding.warningView.isVisible =
-            ScanbotBarcodeScannerSDK(this).licenseInfo.status == Status.StatusTrial
+            ScanbotBarcodeScannerSDK(this).licenseInfo.status == LicenseStatus.TRIAL
 
         binding.qrDemo.setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
@@ -91,8 +96,10 @@ class MainActivity : AppCompatActivity() {
         binding.rtuUi.setOnClickListener {
             val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
                 this.scannerConfiguration.apply {
-                    this.barcodeFormats = BarcodeTypeRepository.selectedTypes.toList()
-                    this.gs1Handling = Gs1Handling.DECODE_FULL
+                    this.barcodeFormatConfigurations = listOf(
+                        BarcodeFormatCommonConfiguration(formats = BarcodeTypeRepository.selectedTypes.toList()),
+                        BarcodeFormatGs1CompositeConfiguration(gs1Handling = Gs1Handling.DECODE_FULL)
+                    )
                 }
                 this.useCase = SingleScanningMode().apply {
 //                    this.confirmationSheetEnabled = false
@@ -104,9 +111,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.rtuUiSelectionOverlay.setOnClickListener {
             val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
-               this.useCase = BarcodeUseCase.singleScanningMode().apply {
-                   this.arOverlay.visible = true
-               }
+                this.useCase = BarcodeUseCase.singleScanningMode().apply {
+                    this.arOverlay.visible = true
+                }
             }
             // tweak other behaviour as needed
             barcodeResultLauncher.launch(barcodeCameraConfiguration)
@@ -115,7 +122,8 @@ class MainActivity : AppCompatActivity() {
         binding.rtuUiBatchMode.setOnClickListener {
             val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
                 this.scannerConfiguration.apply {
-                    this.barcodeFormats = BarcodeTypeRepository.selectedTypes.toList()
+                    this.barcodeFormatConfigurations =
+                        listOf(BarcodeFormatCommonConfiguration(formats = BarcodeTypeRepository.selectedTypes.toList()))
                 }
                 this.useCase = MultipleScanningMode().apply {
                     this.mode = MultipleBarcodesScanningMode.COUNTING
@@ -203,7 +211,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 // Set an array of accepted barcode types.
-                this.scannerConfiguration.barcodeFormats = BarcodeFormats.common
+                this.scannerConfiguration.barcodeFormatConfigurations =
+                    listOf(BarcodeFormatCommonConfiguration(formats = BarcodeFormats.common))
 
                 this.userGuidance.title.text =
                     "Please align the QR-/Barcode in the frame above to scan it."
@@ -277,17 +286,19 @@ class MainActivity : AppCompatActivity() {
                     showLicenseDialog()
                 } else {
                     processImageGalleryResult(activityResult.data!!)?.let { bitmap ->
-                        barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
-                            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
-                        })
-                        val result = barcodeScanner.scanFromBitmap(bitmap, 0)
+                        barcodeScanner.setConfiguration(
+                            barcodeScanner.copyCurrentConfiguration().apply {
+                                setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
+                            })
+                        val result = barcodeScanner.run(bitmap).getOrNull()
 
                         BarcodeResultRepository.barcodeResultBundle =
-                            result?.let { v1Result ->
+                            result?.let { scannerResult ->
                                 val result = BarcodeScannerUiResult(
-                                   items = v1Result.barcodes.map { it.toV2(1) }
+                                    items = scannerResult.barcodes.map { it.toV2(1) }
                                 )
-                                BarcodeResultBundle(result, null, null) }
+                                BarcodeResultBundle(result, null, null)
+                            }
 
                         startActivity(Intent(this, BarcodeResultActivity::class.java))
                     }
@@ -311,17 +322,22 @@ class MainActivity : AppCompatActivity() {
                         val images =
                             pdfImagesExtractor.imageUrlsFromPdf(file, outputDir, prefix = "image")
 
-                        barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
-                            setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
-                        })
+                        barcodeScanner.setConfiguration(
+                            barcodeScanner.copyCurrentConfiguration().apply {
+                                setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
+                            })
                         images.map { uri ->
-                            val bitmap = BitmapFactory.decodeFile(uri.path)
-                            val result = barcodeScanner.scanFromBitmap(bitmap, 0)
+                            val image = imageRefFromContent(uri, contentResolver)
+                                ?: return@map emptyList<BarcodeItem>()
+                            val result = barcodeScanner.run(image).getOrNull()
                             // set the last scanned result as the final result
                             result?.barcodes ?: emptyList()
                         }.let {
                             BarcodeResultRepository.barcodeResultBundle =
-                                BarcodeResultBundle(BarcodeScannerUiResult(items = it.flatten().map { it.toV2(1) }), null, null)
+                                BarcodeResultBundle(
+                                    BarcodeScannerUiResult(
+                                        items = it.flatten().map { it.toV2(1) }), null, null
+                                )
                         }
 
                         startActivity(Intent(this, BarcodeResultActivity::class.java))
@@ -337,16 +353,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun processImageGalleryResult(data: Intent): Bitmap? {
+    private fun processImageGalleryResult(data: Intent): ImageRef? {
         val imageUri = data.data
-        var bitmap: Bitmap? = null
+        var image: ImageRef? = null
         if (imageUri != null) {
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                image = imageRefFromContent(imageUri, contentResolver)
+
             } catch (e: IOException) {
+
             }
         }
-        return bitmap
+        return image
+    }
+
+    private fun imageRefFromContent(
+        imageUri: Uri,
+        contentResolver: ContentResolver,
+    ): ImageRef? {
+        var image: ImageRef? = null
+        contentResolver.openInputStream(imageUri)?.use {
+            image = ImageRef.fromInputStream(it)
+        }
+        return image
     }
 
     private fun processPdfGalleryResult(data: Intent): File? {
@@ -366,3 +395,4 @@ class MainActivity : AppCompatActivity() {
         return null
     }
 }
+

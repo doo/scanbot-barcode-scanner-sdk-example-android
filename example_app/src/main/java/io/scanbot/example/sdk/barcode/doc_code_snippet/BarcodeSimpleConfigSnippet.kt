@@ -19,7 +19,7 @@ import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 
 fun barcodeScannerWithSimpleConfigSnippet(context: Context) {
     // @Tag("Simple configuring Barcode Scanner")
-    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner().getOrThrow()
 
     barcodeScanner.setConfiguration(
         barcodeScanner.copyCurrentConfiguration().apply {

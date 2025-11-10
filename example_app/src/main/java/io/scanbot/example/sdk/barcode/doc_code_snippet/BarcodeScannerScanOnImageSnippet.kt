@@ -17,6 +17,7 @@ import android.widget.Toast
 import io.scanbot.sdk.barcode.BarcodeScanner
 import io.scanbot.sdk.barcode.BarcodeScannerResult
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
+import io.scanbot.sdk.image.ImageRef
 
 fun scanOnImageSnippet(context: Context) {
     // @Tag("Creating the Scanner")
@@ -29,11 +30,11 @@ fun scanOnImageSnippet(context: Context) {
 fun processImageSnippet(
     sdk: ScanbotBarcodeScannerSDK,
     barcodeDetector: BarcodeScanner,
-    bitmap: Bitmap
+    imageRef: ImageRef
 ) {
     if (!sdk.licenseInfo.isValid) { return; }
 
-    val result = barcodeDetector.scanFromBitmap(bitmap, 0)
+    val result = barcodeDetector.run(imageRef).getOrThrow()
     // handle the detected barcode(s) from result
 }
 // @EndTag("Scanning from Bitmap")

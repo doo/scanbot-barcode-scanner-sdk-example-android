@@ -11,7 +11,7 @@ fun scanAndCountClassicUiSnippet(barcodeCounterView: BarcodeScanAndCountView, co
     // @Tag("Scan And Count Classic UI")
     barcodeCounterView.initCamera()
     val scanbotSDK = ScanbotBarcodeScannerSDK(context)
-    val barcodeDetector = scanbotSDK.createBarcodeScanner()
+    val barcodeDetector = scanbotSDK.createBarcodeScanner().getOrThrow()
 
     barcodeCounterView.initScanningBehavior(
         barcodeDetector,

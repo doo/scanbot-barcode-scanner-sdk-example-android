@@ -32,7 +32,7 @@ import java.util.EnumSet
 
 fun barcodeScannerWithAdvancedConfigSnippet(context: Context) {
     // @Tag("Advanced configuring Barcode Scanner")
-    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner().getOrThrow()
 
     var configs = mutableListOf<BarcodeFormatConfigurationBase>()
 
@@ -133,7 +133,7 @@ fun barcodeFormatIndividualSimplifiedConfigurationSnippet(context: Context) {
 
 fun barcodeParsersConfigurationSnippet(context: Context) {
     // @Tag("Configuring parsers in Barcode Scanner")
-    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner().getOrThrow()
 
     var configs = mutableListOf<BarcodeFormatConfigurationBase>()
 
@@ -149,7 +149,7 @@ fun barcodeParsersConfigurationSnippet(context: Context) {
 
 fun barcodeRegexpConfigurationSnippet(context: Context) {
     // @Tag("Configuring regexp in Barcode Scanner")
-    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner().getOrThrow()
 
     var configs = mutableListOf<BarcodeFormatConfigurationBase>()
     val baseConfig = BarcodeFormatCommonConfiguration.default().copy(
@@ -176,7 +176,7 @@ fun barcodeRegexpConfigurationSnippet(context: Context) {
 
 fun barcodeTinyBarcodeConfigurationSnippet(context: Context) {
     // @Tag("Configuring tiny barcodes in Barcode Scanner")
-    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner()
+    val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner().getOrThrow()
 
     barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
         // Example of adding a specific configuration for parsed documents

@@ -2,7 +2,6 @@ package io.scanbot.example.sdk.barcode
 
 import android.app.Application
 import io.scanbot.sap.IScanbotSDKLicenseErrorHandler
-import io.scanbot.sap.SdkFeature
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDKInitializer
 import io.scanbot.sdk.pdf.PdfImagesExtractor
@@ -26,11 +25,9 @@ class ExampleApplication : Application() {
             .withLogging(true)
             // TODO 2/2: Enable the Scanbot Barcode SDK license key
             //.license(this, licenseKey)
-            .licenceErrorHandler(IScanbotSDKLicenseErrorHandler { status, feature, statusMessage ->
+            .licenseErrorHandler (IScanbotSDKLicenseErrorHandler { status, feature, statusMessage ->
                 LoggerProvider.logger.d("ExampleApplication", "+++> License status: ${status.name}. Status message: $statusMessage")
-                if (feature != SdkFeature.NoSdkFeature) {
-                    LoggerProvider.logger.d("ExampleApplication", "+++> Feature not available: ${feature.name}")
-                }
+                LoggerProvider.logger.d("ExampleApplication", "+++> Feature not available: ${feature.name}")
             })
             .pdfImagesExtractorType(PdfImagesExtractor.Type.PDFIUM) // select PDFium or default android pdf library to extract barcode image
             // Uncomment to switch back to the legacy camera approach in Ready-To-Use UI screens
@@ -43,7 +40,7 @@ class ExampleApplication : Application() {
         val licenseInfo = ScanbotBarcodeScannerSDK(this).licenseInfo
         LoggerProvider.logger.d("ExampleApplication", "License status: ${licenseInfo.status}")
         LoggerProvider.logger.d("ExampleApplication", "License isValid: ${licenseInfo.isValid}")
-        LoggerProvider.logger.d("ExampleApplication", "License expirationDate: ${licenseInfo.expirationDate}")
+        LoggerProvider.logger.d("ExampleApplication", "License expirationDate: ${licenseInfo.expirationDateString}")
     }
 }
 
