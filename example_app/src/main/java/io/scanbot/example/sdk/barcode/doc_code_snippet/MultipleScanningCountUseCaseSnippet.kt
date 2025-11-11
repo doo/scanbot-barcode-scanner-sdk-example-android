@@ -21,7 +21,7 @@ import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleScanningMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.SheetMode
 import io.scanbot.sdk.ui_v2.common.ScanbotColor
 
-fun multipleScanningUseCaseSnippet() {
+fun multipleScanningCountUseCaseSnippet() {
     // Create the default configuration object.
     val config = BarcodeScannerScreenConfiguration().apply {
         // Configure parameters (use explicit `this.` receiver for better code completion):
@@ -29,7 +29,7 @@ fun multipleScanningUseCaseSnippet() {
         // Initialize the use case for multiple scanning.
         this.useCase = MultipleScanningMode().apply {
             // Set the counting mode.
-            this.mode = MultipleBarcodesScanningMode.UNIQUE
+            this.mode = MultipleBarcodesScanningMode.COUNTING
 
             // Set the sheet mode for the barcodes preview.
             this.sheet.mode = SheetMode.COLLAPSED_SHEET
