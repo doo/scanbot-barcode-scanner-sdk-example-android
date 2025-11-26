@@ -55,7 +55,7 @@ class StartRtuUiActivitySnippetActivity : AppCompatActivity() {
                 }.onFailure {
                     // Optional activity closing cause handling to understand the reason scanner result is not provided
                     when (it) {
-                        is io.scanbot.common.Result.InvalidLicenseError -> {
+                        is Result.InvalidLicenseError -> {
                             // indicate that the Scanbot SDK license is invalid
                         }
 
