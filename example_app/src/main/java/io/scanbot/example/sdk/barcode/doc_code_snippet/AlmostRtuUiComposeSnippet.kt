@@ -21,16 +21,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.WindowCompat
+import io.scanbot.common.Result
+import io.scanbot.common.onFailure
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerView
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.StatusBarMode
-import io.scanbot.sdk.ui_v2.common.activity.AutoCancelTimeout
-import io.scanbot.sdk.ui_v2.common.activity.CanceledByUser
-import io.scanbot.sdk.ui_v2.common.activity.ForceClose
-import io.scanbot.sdk.ui_v2.common.activity.LicenseInvalid
-import io.scanbot.sdk.ui_v2.common.activity.SystemError
 
 class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
 
@@ -73,16 +70,19 @@ class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
                         // TODO: present barcode result as needed.
                     },
                     onBarcodeScannerClosed = {
+                        // Optional activity closing cause handling to understand the reason scanner result is not provided
                         when (it) {
-                            LicenseInvalid -> Toast.makeText(
-                                context,
-                                "License has expired!",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            AutoCancelTimeout -> Unit // just close screen (below)
-                            CanceledByUser -> Unit // just close screen (below)
-                            is SystemError -> Unit // handle system error here
-                            ForceClose -> Unit // just close screen (below)
+                            is Result.InvalidLicenseError -> {
+                                // indicate that the Scanbot SDK license is invalid
+                            }
+
+                            is Result.OperationCanceledError -> {
+                                // Indicates that the cancel button was tapped. or screen is closed by other reason.
+                            }
+
+                            else -> {
+                                // Handle other errors
+                            }
                         }
                         finish()
                     }

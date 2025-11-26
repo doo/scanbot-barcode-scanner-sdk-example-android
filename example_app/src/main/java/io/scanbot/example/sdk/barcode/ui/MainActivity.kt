@@ -15,6 +15,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import io.scanbot.common.Result
+import io.scanbot.common.onFailure
+import io.scanbot.common.onSuccess
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.databinding.ActivityMainBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
@@ -269,13 +272,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val barcodeResultLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
-        registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+        registerForActivityResult(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+            resultEntity.onSuccess { result ->
+                BarcodeResultRepository.barcodeResultBundle =
+                    BarcodeResultBundle(result)
 
-            BarcodeResultRepository.barcodeResultBundle =
-                BarcodeResultBundle(resultEntity.result!!)
+                val intent = Intent(this@MainActivity, BarcodeResultActivity::class.java)
+                startActivity(intent)
+            }.onFailure {
+                // Optional activity closing cause handling to understand the reason scanner result is not provided
+                when (it) {
+                    is Result.InvalidLicenseError -> {
+                        // indicate that the Scanbot SDK license is invalid
+                    }
 
-            val intent = Intent(this, BarcodeResultActivity::class.java)
-            startActivity(intent)
+                    is Result.OperationCanceledError -> {
+                        // Indicates that the cancel button was tapped. or screen is closed by other reason.
+                    }
+
+                    else -> {
+                        // Handle other errors
+                    }
+                }
+            }
+
         }
 
     private val importImageResultLauncher: ActivityResultLauncher<Intent> =
