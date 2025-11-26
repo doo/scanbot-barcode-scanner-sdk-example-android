@@ -94,6 +94,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
 
     override fun onResume() {
         super.onResume()
+        barcodeScannerFrameHandler?.isEnabled = true
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
@@ -109,6 +110,9 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
     }
 
     private fun handleSuccess(result: BarcodeScannerResult) {
+        if (result.barcodes.isEmpty()) {
+            return
+        }
         BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(
             BarcodeScannerUiResult(items = result.barcodes.map { it.toV2(1) }),
             imagePath = null,
@@ -141,6 +145,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
     ): Boolean {
         result.onSuccess {
             handleSuccess(it)
+            barcodeScannerFrameHandler?.isEnabled = false
         }.onFailure {
             when (it) {
                 is Result.InvalidLicenseError -> {
