@@ -45,14 +45,14 @@ class ViewFinderSnippet : AppCompatActivity() {
         // @Tag("Register RTU UI v2 activity result launcher")
         // The call to BarcodeScannerActivity.ResultContract() must be done after the SDK initialization
         val barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
-            registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+            registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { result ->
                 // Barcode Scanner result callback:
                 // Get the first scanned barcode from the result object...
-                val barcodeItem = resultEntity.result?.items?.first()
+                val barcodeItem = result.items.first()
                 // ... and process the result as needed, for example, display as a Toast:
                 Toast.makeText(
                     this,
-                    "Scanned: ${barcodeItem?.barcode?.text} (${barcodeItem?.barcode?.format})",
+                    "Scanned: ${barcodeItem.barcode?.text} (${barcodeItem.barcode.format})",
                     Toast.LENGTH_LONG
                 ).show()
             }

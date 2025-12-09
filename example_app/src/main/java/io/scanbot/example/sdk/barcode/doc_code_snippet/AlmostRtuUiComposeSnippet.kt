@@ -15,22 +15,17 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.WindowCompat
+import io.scanbot.common.onCancellation
+import io.scanbot.common.onFailure
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerView
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.StatusBarMode
-import io.scanbot.sdk.ui_v2.common.activity.AutoCancelTimeout
-import io.scanbot.sdk.ui_v2.common.activity.CanceledByUser
-import io.scanbot.sdk.ui_v2.common.activity.ForceClose
-import io.scanbot.sdk.ui_v2.common.activity.LicenseInvalid
-import io.scanbot.sdk.ui_v2.common.activity.SystemError
 
 class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
 
@@ -73,16 +68,10 @@ class AlmostRtuUiBarcodeScannerActivity : AppCompatActivity() {
                         // TODO: present barcode result as needed.
                     },
                     onBarcodeScannerClosed = {
-                        when (it) {
-                            LicenseInvalid -> Toast.makeText(
-                                context,
-                                "License has expired!",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            AutoCancelTimeout -> Unit // just close screen (below)
-                            CanceledByUser -> Unit // just close screen (below)
-                            is SystemError -> Unit // handle system error here
-                            ForceClose -> Unit // just close screen (below)
+                        it.onCancellation {
+                            // normal cancellation handling (e.g., user pressed back button)
+                        }.onFailure {
+                            //some internal code error happened and screen is closed
                         }
                         finish()
                     }
