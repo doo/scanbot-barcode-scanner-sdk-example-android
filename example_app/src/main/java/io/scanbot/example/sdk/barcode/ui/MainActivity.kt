@@ -15,6 +15,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import io.scanbot.common.Result
+import io.scanbot.common.onCancellation
+import io.scanbot.common.onFailure
+import io.scanbot.common.onSuccess
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.databinding.ActivityMainBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
@@ -269,13 +273,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val barcodeResultLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
-        registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+        registerForActivityResult(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+            resultEntity.onSuccess {
+                BarcodeResultRepository.barcodeResultBundle =
+                    BarcodeResultBundle(it)
 
-            BarcodeResultRepository.barcodeResultBundle =
-                BarcodeResultBundle(resultEntity)
+                val intent = Intent(this@MainActivity, BarcodeResultActivity::class.java)
+                startActivity(intent)
+            }.onCancellation {
+                // Indicates that the cancel button was tapped. or screen is closed by other reason.
+            }.onFailure {
+                when (it) {
+                    is Result.InvalidLicenseError -> {
+                        // indicate that the Scanbot SDK license is invalid
+                    }
 
-            val intent = Intent(this, BarcodeResultActivity::class.java)
-            startActivity(intent)
+                    else -> {
+                        // Handle other errors
+                    }
+                }
+            }
+
         }
 
     private val importImageResultLauncher: ActivityResultLauncher<Intent> =
