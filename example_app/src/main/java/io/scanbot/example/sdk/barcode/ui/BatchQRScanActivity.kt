@@ -101,6 +101,9 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeScannerFrameHandler.Resu
     }
 
     private fun handleSuccess(result: BarcodeScannerResult) {
+        if(result.barcodes.isEmpty()) {
+            return
+        }
         cameraView.post {
             resultAdapter.addBarcodeItems(result.barcodes)
         }

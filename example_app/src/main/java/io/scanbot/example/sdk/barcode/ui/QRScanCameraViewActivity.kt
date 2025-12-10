@@ -113,6 +113,7 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
         if (result.barcodes.isEmpty()) {
             return
         }
+        barcodeScannerFrameHandler?.isEnabled = false
         BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(
             BarcodeScannerUiResult(items = result.barcodes.map { it.toV2(1) }),
             imagePath = null,
@@ -145,7 +146,6 @@ class QRScanCameraViewActivity : AppCompatActivity(), BarcodeScannerFrameHandler
     ): Boolean {
         result.onSuccess {
             handleSuccess(it)
-            barcodeScannerFrameHandler?.isEnabled = false
         }.onFailure {
             when (it) {
                 is Result.InvalidLicenseError -> {

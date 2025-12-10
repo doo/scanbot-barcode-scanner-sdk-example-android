@@ -146,6 +146,9 @@ class BarcodeScannerViewActivity : AppCompatActivity() {
     }
 
     private fun handleSuccess(result: BarcodeScannerResult) {
+        if(result.barcodes.isEmpty()) {
+            return
+        }
         // TODO: uncomment if you wish to proceed to the result screen automatically
         // BarcodeResultRepository.barcodeResultBundle = BarcodeResultBundle(it)
         // val intent = Intent(this, BarcodeResultActivity::class.java)
