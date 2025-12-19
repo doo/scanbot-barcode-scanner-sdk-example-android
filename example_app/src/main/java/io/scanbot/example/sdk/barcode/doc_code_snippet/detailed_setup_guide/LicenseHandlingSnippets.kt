@@ -31,7 +31,7 @@ fun checkLicenseStatusSnippet(activity: AppCompatActivity) {
 
     if (licenseInfo.isValid) {
         // Making your call into ScanbotSDK API is now safe.
-        // e.g. start document scanner
+        // e.g. start barcode scanner
     }
     // @EndTag("Check License Status")
 }
