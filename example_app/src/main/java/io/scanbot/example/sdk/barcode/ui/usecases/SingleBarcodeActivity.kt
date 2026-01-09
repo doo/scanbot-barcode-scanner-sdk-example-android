@@ -83,6 +83,10 @@ class SingleBarcodeActivity : AppCompatActivity() {
     }
 
     private fun handleSuccess(result: BarcodeScannerResult) {
+        if (result.barcodes.isEmpty()) {
+            return
+        }
+
         barcodeScannerView.viewController.isFrameProcessingEnabled = false
         runOnUiThread {
             ExampleUtils.showBarcodeResult(

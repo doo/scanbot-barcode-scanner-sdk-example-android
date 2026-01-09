@@ -75,17 +75,20 @@ class DistantBarcodeActivity : AppCompatActivity() {
     }
 
     private fun handleSuccess(result: BarcodeScannerResult) {
-            barcodeScannerView.viewController.isFrameProcessingEnabled = false
-            runOnUiThread {
-                ExampleUtils.showBarcodeResult(
-                    this@DistantBarcodeActivity, result
-                ) { barcodeScannerView.viewController.isFrameProcessingEnabled = true }
-            }
-            // You may also finish the scanning and proceed to the separate result screen
-            // val barcodeItems = it.barcodeItems
-            // val intent = Intent()
-            // intent.putExtra("BARCODES_ARG", barcodeItems.toTypedArray())
-            // finish()
+        if (result.barcodes.isEmpty()) {
+            return
+        }
+        barcodeScannerView.viewController.isFrameProcessingEnabled = false
+        runOnUiThread {
+            ExampleUtils.showBarcodeResult(
+                this@DistantBarcodeActivity, result
+            ) { barcodeScannerView.viewController.isFrameProcessingEnabled = true }
+        }
+        // You may also finish the scanning and proceed to the separate result screen
+        // val barcodeItems = it.barcodeItems
+        // val intent = Intent()
+        // intent.putExtra("BARCODES_ARG", barcodeItems.toTypedArray())
+        // finish()
     }
 
     override fun onResume() {
