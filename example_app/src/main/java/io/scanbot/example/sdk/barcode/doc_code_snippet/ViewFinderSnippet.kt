@@ -17,9 +17,13 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import io.scanbot.common.Result
+import io.scanbot.common.onCancellation
+import io.scanbot.common.onFailure
+import io.scanbot.common.onSuccess
 // @Tag("Add imports for RTU UI v2 activity")
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDKInitializer
-import io.scanbot.sdk.common.AspectRatio
+import io.scanbot.sdk.geometry.AspectRatio
 import io.scanbot.sdk.ui_v2.barcode.BarcodeScannerActivity
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.common.FinderStyle
@@ -45,16 +49,31 @@ class ViewFinderSnippet : AppCompatActivity() {
         // @Tag("Register RTU UI v2 activity result launcher")
         // The call to BarcodeScannerActivity.ResultContract() must be done after the SDK initialization
         val barcodeScreenLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
-            registerForActivityResultOk(BarcodeScannerActivity.ResultContract()) { resultEntity ->
-                // Barcode Scanner result callback:
-                // Get the first scanned barcode from the result object...
-                val barcodeItem = resultEntity.result?.items?.first()
-                // ... and process the result as needed, for example, display as a Toast:
-                Toast.makeText(
-                    this,
-                    "Scanned: ${barcodeItem?.barcode?.text} (${barcodeItem?.barcode?.format})",
-                    Toast.LENGTH_LONG
-                ).show()
+            registerForActivityResult(BarcodeScannerActivity.ResultContract()) { resultEntity ->
+                resultEntity.onSuccess { result ->
+                    // Barcode Scanner result callback:
+                    // Get the first scanned barcode from the result object...
+                    val barcodeItem = result.items.first()
+                    // ... and process the result as needed, for example, display as a Toast:
+                    Toast.makeText(
+                        this@ViewFinderSnippet,
+                        "Scanned: ${barcodeItem?.barcode?.text} (${barcodeItem?.barcode?.format})",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }.onCancellation {
+                    // Indicates that the cancel button was tapped. Or screen is closed by other reason.
+                }.onFailure {
+                    // Optional activity closing cause handling to understand the reason scanner result is not provided
+                    when (it) {
+                        is Result.InvalidLicenseError -> {
+                            // indicate that the Scanbot SDK license is invalid
+                        }
+
+                        else -> {
+                            // Handle other errors
+                        }
+                    }
+                }
             }
         // @EndTag("Register RTU UI v2 activity result launcher")
 

@@ -15,17 +15,20 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.scanbot.common.Result
+import io.scanbot.common.onFailure
+import io.scanbot.common.onSuccess
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.model.BarcodeTypeRepository
+import io.scanbot.example.sdk.barcode.ui.usecases.ExampleUtils
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
-import io.scanbot.sdk.SdkLicenseError
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScannerFrameHandler
 import io.scanbot.sdk.barcode.BarcodeScannerResult
 import io.scanbot.sdk.barcode.setBarcodeFormats
 import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
-import io.scanbot.sdk.camera.FrameHandlerResult
+import io.scanbot.sdk.camera.FrameHandler
 import io.scanbot.sdk.camera.ScanbotCameraView
 import io.scanbot.sdk.ui.camera.ScanbotCameraXView
 
@@ -62,7 +65,7 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeScannerFrameHandler.Resu
             }, 300)
         }
 
-        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
+        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
 
         barcodeScannerFrameHandler = BarcodeScannerFrameHandler.attach(
             cameraView,
@@ -97,24 +100,27 @@ class BatchQRScanActivity : AppCompatActivity(), BarcodeScannerFrameHandler.Resu
         super.onPause()
     }
 
-    private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScannerResult?>) {
-        result.value?.let {
-            cameraView.post {
-                resultAdapter.addBarcodeItems(it.barcodes)
-            }
+    private fun handleSuccess(result: BarcodeScannerResult) {
+        if(result.barcodes.isEmpty()) {
+            return
+        }
+        cameraView.post {
+            resultAdapter.addBarcodeItems(result.barcodes)
         }
     }
 
-    override fun handle(result: FrameHandlerResult<BarcodeScannerResult?, SdkLicenseError>): Boolean {
-        if (result is FrameHandlerResult.Success) {
-            handleSuccess(result)
-        } else {
-            cameraView.post {
-                Toast.makeText(
-                    this,
-                    "License has expired!",
-                    Toast.LENGTH_LONG
-                ).show()
+    override fun handle(result: Result<BarcodeScannerResult>, frame: FrameHandler.Frame): Boolean {
+        result.onSuccess {
+            handleSuccess(it)
+        }.onFailure {
+            when (it) {
+                is Result.InvalidLicenseError -> {
+                    ExampleUtils.showLicenseExpiredToastAndExit(this@BatchQRScanActivity)
+                }
+
+                else -> {
+                    // handle other errors
+                }
             }
         }
         return false
@@ -160,7 +166,7 @@ class ResultAdapter(val layoutInflater: LayoutInflater) :
         } else {
             holder.image.visibility = View.VISIBLE
         }
-        holder.image.setImageBitmap(item.sourceImage?.toBitmap())
+        holder.image.setImageBitmap(item.sourceImage?.toBitmap()?.getOrNull())
     }
 
     override fun getItemCount(): Int = items.size

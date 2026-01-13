@@ -27,7 +27,7 @@ class BarcodeItemAdapter : RecyclerView.Adapter<BarcodeItemAdapter.BarcodeViewHo
         val item = items.get(position)
         holder.text.text = item.textWithExtension
         holder.barcodeType.text = item.format.name
-        holder.image.setImageBitmap(item.sourceImage?.toBitmap())
+        holder.image.setImageBitmap(item.sourceImage?.toBitmap()?.getOrNull())
     }
 
     fun addBarcodeItems(items: List<BarcodeItem>) {

@@ -49,7 +49,7 @@ class BarcodeScanAndCountViewActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.nextButton)
         snapResult = findViewById(R.id.snapped_message)
 
-        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
+        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
         barcodeScanner.setConfiguration(barcodeScanner.copyCurrentConfiguration().apply {
             setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
         })

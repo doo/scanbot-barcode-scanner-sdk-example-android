@@ -8,6 +8,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.scanbot.common.onFailure
+import io.scanbot.common.onSuccess
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.ui.usecases.adapter.BarcodeItemAdapter
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
@@ -17,12 +19,12 @@ import io.scanbot.sdk.barcode.ui.BarcodeScannerView
 import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.CaptureInfo
-import io.scanbot.sdk.camera.FrameHandlerResult
+import io.scanbot.sdk.image.ImageRef
 
 class MultipleBarcodeActivity : AppCompatActivity() {
     private lateinit var barcodeScannerView: BarcodeScannerView
 
-// IMPORTANT FOR THIS EXAMPLE:
+    // IMPORTANT FOR THIS EXAMPLE:
     private val resultAdapter by lazy { BarcodeItemAdapter() }
     private lateinit var resultView: RecyclerView
 // END OF IMPORTANT FOR THIS EXAMPLE:
@@ -34,7 +36,7 @@ class MultipleBarcodeActivity : AppCompatActivity() {
 
         barcodeScannerView = findViewById(R.id.barcode_scanner_view)
 
-        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
+        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
         barcodeScanner.setConfiguration(
             barcodeScanner.copyCurrentConfiguration().apply {
                 // Specify the barcode format you want to scan
@@ -44,18 +46,28 @@ class MultipleBarcodeActivity : AppCompatActivity() {
 
         barcodeScannerView.apply {
             initCamera()
-            initScanningBehavior(barcodeScanner, { result ->
-                if (result is FrameHandlerResult.Success) {
-                    handleSuccess(result)
-                } else {
-                    ExampleUtils.showLicenseExpiredToastAndExit(this@MultipleBarcodeActivity)
+            initScanningBehavior(barcodeScanner, { result, frame ->
+                result.onSuccess {
+                    handleSuccess(it)
+                }.onFailure {
+                    when (it) {
+                        is io.scanbot.common.Result.InvalidLicenseError -> {
+                            io.scanbot.example.sdk.barcode.ui.usecases.ExampleUtils.showLicenseExpiredToastAndExit(
+                                this@MultipleBarcodeActivity
+                            )
+                        }
+
+                        else -> {
+                            // handle other errors
+                        }
+                    }
                 }
                 false
             }, object : IBarcodeScannerViewCallback {
                 override fun onCameraOpen() {
                 }
 
-                override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
+                override fun onPictureTaken(image: ImageRef, captureInfo: CaptureInfo) {
                     // we don't need full size pictures in this example
                 }
 
@@ -79,13 +91,11 @@ class MultipleBarcodeActivity : AppCompatActivity() {
     }
 
     // @Tag("Handle results")
-    private fun handleSuccess(result: FrameHandlerResult.Success<BarcodeScannerResult?>) {
-        result.value?.let {
-            // We need to add the barcode items to the adapter on the main thread
-            barcodeScannerView.post {
-                resultAdapter.addBarcodeItems(it.barcodes)
-                resultView.scrollToPosition(0)
-            }
+    private fun handleSuccess(result: BarcodeScannerResult) {
+        // We need to add the barcode items to the adapter on the main thread
+        barcodeScannerView.post {
+            resultAdapter.addBarcodeItems(result.barcodes)
+            resultView.scrollToPosition(0)
         }
     }
     // @EndTag("Handle results")
@@ -94,9 +104,17 @@ class MultipleBarcodeActivity : AppCompatActivity() {
         super.onResume()
         barcodeScannerView.viewController.onResume()
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             // Use onActivityResult to handle permission rejection
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CODE)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_PERMISSION_CODE
+            )
         }
     }
 

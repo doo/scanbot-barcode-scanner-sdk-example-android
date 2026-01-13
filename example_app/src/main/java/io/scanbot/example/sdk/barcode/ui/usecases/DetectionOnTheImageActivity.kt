@@ -19,6 +19,7 @@ import io.scanbot.example.sdk.barcode.ui.usecases.adapter.BarcodeItemAdapter
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.barcode.BarcodeScanner
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
+import io.scanbot.sdk.image.ImageRef
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -40,7 +41,7 @@ class DetectionOnTheImageActivity : AppCompatActivity() {
         scanbotBarcodeScannerSDK = ScanbotBarcodeScannerSDK(this)
 
         // Create a barcode scanner instance
-        val barcodeScanner = scanbotBarcodeScannerSDK.createBarcodeScanner()
+        val barcodeScanner = scanbotBarcodeScannerSDK.createBarcodeScanner().getOrThrow()
         barcodeScanner.setConfiguration(
             barcodeScanner.copyCurrentConfiguration().apply {
                 // Specify the barcode format you want to scan
@@ -60,7 +61,7 @@ class DetectionOnTheImageActivity : AppCompatActivity() {
             // Process the selected image on a background thread
             lifecycleScope.launch(Dispatchers.Default) {
                 resultEntity?.let { bitmap ->
-                    processImage(barcodeScanner, bitmap)
+                    processImage(barcodeScanner, ImageRef.fromBitmap(bitmap))
                 }
             }
         }
@@ -74,13 +75,13 @@ class DetectionOnTheImageActivity : AppCompatActivity() {
     // @Tag("Import and process image")
     private fun processImage(
         barcodeScanner: BarcodeScanner,
-        bitmap: Bitmap
+        imageRef: ImageRef
     ) {
         if (!scanbotBarcodeScannerSDK.licenseInfo.isValid) {
             ExampleUtils.showLicenseExpiredToastAndExit(this@DetectionOnTheImageActivity)
             return
         }
-        barcodeScanner.scanFromBitmap(bitmap, 0)?.let {
+        barcodeScanner.run(imageRef).getOrNull()?.let { // Can be handled better with onSuccess/onFailure. See ResultApi examples
             runOnUiThread {
                 resultAdapter.setBarcodeItems(it.barcodes)
             }

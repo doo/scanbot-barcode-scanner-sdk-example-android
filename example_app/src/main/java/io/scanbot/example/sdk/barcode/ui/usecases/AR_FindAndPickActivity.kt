@@ -6,6 +6,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import io.scanbot.common.Result
+import io.scanbot.common.onFailure
+import io.scanbot.common.onSuccess
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.barcode.BarcodeFormat
@@ -16,7 +19,7 @@ import io.scanbot.sdk.barcode.ui.BarcodeScannerView
 import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.camera.CaptureInfo
-import io.scanbot.sdk.camera.FrameHandlerResult
+import io.scanbot.sdk.image.ImageRef
 
 class AR_FindAndPickActivity : AppCompatActivity() {
     private lateinit var barcodeScannerView: BarcodeScannerView
@@ -28,7 +31,7 @@ class AR_FindAndPickActivity : AppCompatActivity() {
 
         barcodeScannerView = findViewById(R.id.barcode_scanner_view)
 
-        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner()
+        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
         barcodeScanner.setConfiguration(
             barcodeScanner.copyCurrentConfiguration().apply {
                 // Specify the barcode format you want to scan
@@ -38,20 +41,28 @@ class AR_FindAndPickActivity : AppCompatActivity() {
 
         barcodeScannerView.apply {
             initCamera()
-            initScanningBehavior(barcodeScanner, { result ->
-                if (result is FrameHandlerResult.Success) {
-// IMPORTANT FOR THIS EXAMPLE:
+            initScanningBehavior(barcodeScanner, { result, frame ->
+                result.onSuccess {
+                    // IMPORTANT FOR THIS EXAMPLE:
                     // We keep this part empty as we process barcodes only when the barcode was tapped on AR overlay layer
 // END OF IMPORTANT FOR THIS EXAMPLE:
-                } else {
-                    ExampleUtils.showLicenseExpiredToastAndExit(this@AR_FindAndPickActivity)
+                }.onFailure {
+                    when (it) {
+                        is Result.InvalidLicenseError -> {
+                            ExampleUtils.showLicenseExpiredToastAndExit(this@AR_FindAndPickActivity)
+                        }
+
+                        else -> {
+                            // handle other errors
+                        }
+                    }
                 }
                 false
             }, object : IBarcodeScannerViewCallback {
                 override fun onCameraOpen() {
                 }
 
-                override fun onPictureTaken(image: ByteArray, captureInfo: CaptureInfo) {
+                override fun onPictureTaken(image: ImageRef, captureInfo: CaptureInfo) {
                     // we don't need full size pictures in this example
                 }
 

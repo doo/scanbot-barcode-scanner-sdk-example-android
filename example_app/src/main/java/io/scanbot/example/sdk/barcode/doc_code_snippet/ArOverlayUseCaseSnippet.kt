@@ -12,6 +12,7 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // TODO: add URLs here
 
 // @Tag("Configuring RTU UI v2 Barcode AR overlay snippet")
+import io.scanbot.sdk.barcode.BarcodeFormatCommonConfiguration
 import io.scanbot.sdk.barcode.BarcodeFormats
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
@@ -39,7 +40,7 @@ fun arOverlayUseCaseSnippet() {
         }
 
         // Set an array of accepted barcode types.
-        this.scannerConfiguration.barcodeFormats = BarcodeFormats.common
+        this.scannerConfiguration.barcodeFormatConfigurations = listOf(BarcodeFormatCommonConfiguration(formats = BarcodeFormats.common))
 
         // Configure other parameters as needed.
     }

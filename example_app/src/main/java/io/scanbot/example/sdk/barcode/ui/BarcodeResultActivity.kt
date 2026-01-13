@@ -55,7 +55,7 @@ class BarcodeResultActivity : AppCompatActivity() {
                 itemViewBinding.docText.text = item.barcode.textWithExtension
                 if (item.barcode.sourceImage != null) {
                     itemViewBinding.image.visibility = View.VISIBLE
-                    itemViewBinding.image.setImageBitmap(item.barcode.sourceImage?.toBitmap())
+                    itemViewBinding.image.setImageBitmap(item.barcode.sourceImage?.toBitmap()?.getOrNull())
                 }
                 itemViewBinding.root.setOnClickListener {
                     val intent = Intent(this, DetailedItemDataActivity::class.java)

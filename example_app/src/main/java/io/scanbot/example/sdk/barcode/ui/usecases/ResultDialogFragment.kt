@@ -48,7 +48,7 @@ class ResultDialogFragment : BottomSheetDialogFragment() {
 
         arguments?.let { args ->
             args.getParcelable<BarcodeItem>(ARG_BARCODE_ITEM)?.let { barcodeItem ->
-                imageView.setImageBitmap(barcodeItem.sourceImage?.toBitmap())
+                imageView.setImageBitmap(barcodeItem.sourceImage?.toBitmap()?.getOrNull())
                 textView.text = barcodeItem.text
             }
         }

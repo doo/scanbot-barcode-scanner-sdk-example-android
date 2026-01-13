@@ -2,11 +2,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id( "org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
     namespace = "io.scanbot.example.sdk.barcode"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.scanbot.example.sdk.barcode.android"
@@ -54,7 +55,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
 
-    def sdkVersion = "7.1.2"
+    def sdkVersion = "8.0.0"
 
     implementation("io.scanbot:scanbot-barcode-scanner-sdk:$sdkVersion")
     implementation("io.scanbot:rtu-ui-v2-barcode:$sdkVersion")
