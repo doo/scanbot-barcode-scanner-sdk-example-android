@@ -102,15 +102,7 @@ fun barcodeScannerWithAdvancedConfigSnippet(context: Context) {
 fun barcodeFormatCommonConfigurationSnippet(context: Context) {
     // @Tag("Configuring BarcodeFormatCommonConfiguration in Barcode Scanner")
     val baseConfig = BarcodeFormatCommonConfiguration.default().copy(
-        regexFilter = "",
-        minimum1DQuietZoneSize = 10,
-        stripCheckDigits = false,
-        minimumTextLength = 0,
-        maximumTextLength = 0,
-        gs1Handling = Gs1Handling.PARSE,
-        strictMode = true,
         formats = BarcodeFormats.common,
-        addAdditionalQuietZone = false
     )
     // @EndTag("Configuring BarcodeFormatCommonConfiguration in Barcode Scanner")
 }
@@ -118,15 +110,7 @@ fun barcodeFormatCommonConfigurationSnippet(context: Context) {
 fun barcodeFormatIndividualSimplifiedConfigurationSnippet(context: Context) {
     // @Tag("Configuring individual symbologies in Barcode Scanner")
     val baseConfig = BarcodeFormatCommonConfiguration.default().copy(
-        regexFilter = "",
-        minimum1DQuietZoneSize = 10,
-        stripCheckDigits = false,
-        minimumTextLength = 0,
-        maximumTextLength = 0,
-        gs1Handling = Gs1Handling.PARSE,
-        strictMode = true,
         formats = listOf(BarcodeFormat.QR_CODE, BarcodeFormat.AZTEC, BarcodeFormat.CODE_128),
-        addAdditionalQuietZone = false
     )
     // @EndTag("Configuring individual symbologies in Barcode Scanner")
 }
