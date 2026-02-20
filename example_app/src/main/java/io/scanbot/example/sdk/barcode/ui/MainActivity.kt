@@ -3,14 +3,8 @@ package io.scanbot.example.sdk.barcode.ui
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +13,7 @@ import io.scanbot.common.Result
 import io.scanbot.common.onCancellation
 import io.scanbot.common.onFailure
 import io.scanbot.common.onSuccess
+import io.scanbot.example.sdk.barcode.ui.compose.ComposeExampleActivity
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.databinding.ActivityMainBinding
 import io.scanbot.example.sdk.barcode.model.BarcodeResultBundle
@@ -57,7 +52,6 @@ import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleScanningMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.SheetMode
 import io.scanbot.sdk.ui_v2.barcode.configuration.SingleScanningMode
 import io.scanbot.sdk.ui_v2.common.ScanbotColor
-import io.scanbot.sdk.ui_v2.common.activity.registerForActivityResultOk
 import java.io.File
 import java.io.IOException
 
@@ -79,6 +73,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.qrDemo.setOnClickListener {
             val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.composeDemo.setOnClickListener {
+            val intent = Intent(applicationContext, ComposeExampleActivity::class.java)
             startActivity(intent)
         }
 
