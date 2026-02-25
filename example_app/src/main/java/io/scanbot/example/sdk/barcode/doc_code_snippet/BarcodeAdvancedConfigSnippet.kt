@@ -132,7 +132,7 @@ fun barcodeParsersConfigurationSnippet(context: Context) {
 }
 
 fun barcodeRegexpConfigurationSnippet(context: Context) {
-    // @Tag("Configuring regexp in Barcode Scanner")
+    // @Tag("Configuring regex in Barcode Scanner")
     val barcodeScanner = ScanbotBarcodeScannerSDK(context).createBarcodeScanner().getOrThrow()
 
     var configs = mutableListOf<BarcodeFormatConfigurationBase>()
@@ -155,7 +155,7 @@ fun barcodeRegexpConfigurationSnippet(context: Context) {
         // Example of adding a specific configuration for parsed documents
         engineMode = BarcodeScannerEngineMode.NEXT_GEN
     })
-    // @EndTag("Configuring regexp in Barcode Scanner")
+    // @EndTag("Configuring regex in Barcode Scanner")
 }
 
 fun barcodeTinyBarcodeConfigurationSnippet(context: Context) {
