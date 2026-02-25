@@ -65,7 +65,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:paddingStart="16dp"
-                android:text="Classic Component" />
+                android:text="Custom UI View Based" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#50000000" />
+
+
+            <TextView
+                android:id="@+id/compose_demo"
+                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:paddingStart="16dp"
+                android:text="Custom UI Compose" />
 
             <View
                 android:layout_width="match_parent"

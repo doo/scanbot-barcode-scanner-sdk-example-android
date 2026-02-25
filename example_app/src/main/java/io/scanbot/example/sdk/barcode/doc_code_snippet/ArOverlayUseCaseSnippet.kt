@@ -14,7 +14,6 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet
 // @Tag("Configuring RTU UI v2 Barcode AR overlay snippet")
 import io.scanbot.sdk.barcode.BarcodeFormatCommonConfiguration
 import io.scanbot.sdk.barcode.BarcodeFormats
-import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.BarcodeScannerScreenConfiguration
 import io.scanbot.sdk.ui_v2.barcode.configuration.CollapsedVisibleHeight
 import io.scanbot.sdk.ui_v2.barcode.configuration.MultipleBarcodesScanningMode
