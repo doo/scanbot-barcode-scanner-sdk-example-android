@@ -72,7 +72,7 @@ fun BarcodeScannerSnippet() {
                 })
         },
         onBarcodeScanningResult = { result ->
-            // See https://docs.scanbot.io/android/data-capture-modules/detailed-setup-guide/result-api/ for details of result handling
+            // See https://docs.scanbot.io/android/barcode-scanner-sdk/detailed-setup-guide/result-api/ for details of result handling
             result.onSuccess { data ->
                 // Handle scanned barcodes here (for example, show a dialog or navigate to another screen)
                 Log.d(
