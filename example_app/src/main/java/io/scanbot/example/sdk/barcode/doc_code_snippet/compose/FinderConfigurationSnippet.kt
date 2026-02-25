@@ -22,9 +22,9 @@ import io.scanbot.sdk.ui_v2.common.components.FinderConfiguration
 @Composable
 fun FinderConfigurationSnippet() {
     FinderConfiguration(
-        // align the viewfinder to the top free space of the Camera Preview. Means that it will be close to the preview edge minus the previewInsets
+        // Align the viewfinder to the top free space of the Camera Preview. Means that it will be close to the preview edge minus the previewInsets
         verticalAlignment = Alignment.Top,
-        // align the viewfinder to the free horizontal space of the Camera Preview
+        // Align the viewfinder to the free horizontal space of the Camera Preview
         horizontalAlignment = Alignment.CenterHorizontally,
         // Insets from the edges of the camera preview to the viewfinder.
         previewInsets = PaddingValues(
@@ -41,11 +41,11 @@ fun FinderConfigurationSnippet() {
         strokeColor = Color.White,
         // Viewfinder stroke width here:
         strokeWidth = 2.dp,
-        // radius for rounded corners of the viewfinder window:
+        // Radius for rounded corners of the viewfinder window:
         cornerRadius = 8.dp,
-        // Limit the maximum width of the viewfinder window on the preview. This parameter work with aspect ratio to define the final size of the viewfinder.
+        // Limit the maximum width of the viewfinder window in the preview. This parameter works with aspect ratio to define the final size of the viewfinder.
         //preferredMaxWidth = 300.dp,
-        // Limit the maximum height of the viewfinder window on the preview. This parameter work with aspect ratio to define the final size of the viewfinder.
+        // Limit the maximum height of the viewfinder window in the preview. This parameter works with aspect ratio to define the final size of the viewfinder.
         //preferredMaxHeight = 52.dp,
         // Composable area that is inserted inside the viewfinder window:
         finderContent = {
@@ -66,7 +66,7 @@ fun FinderConfigurationSnippet() {
 
             }
         },
-        // Composable area that are inserted between  the viewfinder window and the top edge of the camera view:
+        // Composable area that is inserted between the viewfinder window and the top edge of the camera view:
         topContent = {
             Text(
                 "Custom Top Content",
@@ -76,7 +76,7 @@ fun FinderConfigurationSnippet() {
                     .fillMaxWidth()
             )
         },
-        // Composable area that are inserted between  the viewfinder window and the bottom edge of the camera view:
+        // Composable area that is inserted between the viewfinder window and the bottom edge of the camera view:
         bottomContent = {
             // You may add custom components and other elements here:
             Text(
@@ -88,7 +88,7 @@ fun FinderConfigurationSnippet() {
             )
         },
         bottomLayer = {
-            // Draw something between the viewfinder  and camera preview layers
+            // Draw something between the viewfinder and camera preview layers
         },
         topLayer = {
             // Draw something above the viewfinder layer if needed

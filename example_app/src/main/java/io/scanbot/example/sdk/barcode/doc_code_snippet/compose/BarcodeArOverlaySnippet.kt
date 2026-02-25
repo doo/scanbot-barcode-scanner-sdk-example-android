@@ -18,7 +18,7 @@ import io.scanbot.sdk.ui_v2.barcode.components.ar_tracking.*
 import kotlinx.coroutines.flow.SharedFlow
 
 
-// @Tag("Customisable barcode AR view")
+// @Tag("Customizable barcode AR view")
 @Composable
 fun BarcodeArOverlaySnippet(
     barcodesFlow: SharedFlow<Pair<BarcodeScannerResult, FrameHandler.Frame>?>,
@@ -92,4 +92,4 @@ fun BarcodeArOverlaySnippet(
         },
     )
 }
-// @EndTag("Customisable barcode AR view")
+// @EndTag("Customizable barcode AR view")

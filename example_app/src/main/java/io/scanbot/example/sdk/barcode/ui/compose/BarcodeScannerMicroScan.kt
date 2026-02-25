@@ -88,7 +88,7 @@ fun BarcodeScannerMicroScan(navController: NavHostController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1.0f),
-                    // THIS IS IMPORTANT FOR MICR0 SCAN USECASE
+                    // THIS IS IMPORTANT FOR MICRO SCAN USECASE
                     minFocusDistanceLock = true,
                     finderConfiguration = FinderConfiguration(
                         verticalAlignment = Alignment.Top,
