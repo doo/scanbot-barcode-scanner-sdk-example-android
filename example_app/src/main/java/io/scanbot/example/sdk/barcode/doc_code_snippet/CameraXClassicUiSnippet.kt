@@ -25,27 +25,27 @@ class CameraXClassicUiSnippetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.doc_snippet_activity_classic_ui_camera_x)
 
-        // @Tag("Barcode Classic UI orientation lock snippet")
+        // @Tag("Barcode Custom UI orientation lock snippet")
         cameraView = findViewById<ScanbotCameraXView>(R.id.camera)!!
 
         // Lock the orientation of the Activity as well as the orientation of the taken picture to portrait:
         cameraView.lockToPortrait(true);
-        // @EndTag("Barcode Classic UI orientation lock snippet")
+        // @EndTag("Barcode Custom UI orientation lock snippet")
 
-        // @Tag("Barcode Classic UI configure shutter sound snippet")
+        // @Tag("Barcode Custom UI configure shutter sound snippet")
         cameraView.setCameraOpenCallback {
             cameraView.postDelayed({
                 cameraView.setShutterSound(false)
             }, 700)
         }
-        // @EndTag("Barcode Classic UI configure shutter sound snippet")
+        // @EndTag("Barcode Custom UI configure shutter sound snippet")
 
-        // @Tag("Barcode Classic UI configure focusing snippet")
+        // @Tag("Barcode Custom UI configure focusing snippet")
         cameraView.setCameraOpenCallback {
             cameraView.postDelayed({
                 cameraView.continuousFocus()
             }, 700)
         }
-        // @EndTag("Barcode Classic UI configure focusing snippet")
+        // @EndTag("Barcode Custom UI configure focusing snippet")
     }
 }
