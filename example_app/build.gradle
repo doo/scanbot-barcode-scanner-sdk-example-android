@@ -59,7 +59,7 @@ dependencies {
 
     implementation("io.scanbot:scanbot-barcode-scanner-sdk:$sdkVersion")
     implementation("io.scanbot:rtu-ui-v2-barcode:$sdkVersion")
-    implementation("io.scanbot:barcode-sdk-pdfium:$sdkVersion")
+   // implementation("io.scanbot:barcode-sdk-pdfium:$sdkVersion") // uncomment if you want to use PDF extraction features powered with pdfium
 
     implementation("com.google.android.material:material:1.11.0")
 }

@@ -29,7 +29,7 @@ class ExampleApplication : Application() {
                 LoggerProvider.logger.d("ExampleApplication", "+++> License status: ${status.name}. Status message: $statusMessage")
                 LoggerProvider.logger.d("ExampleApplication", "+++> Feature not available: ${feature.name}")
             })
-            .pdfImagesExtractorType(PdfImagesExtractor.Type.PDFIUM) // select PDFium or default android pdf library to extract barcode image
+            //.pdfImagesExtractorType(PdfImagesExtractor.Type.PDFIUM) // select PDFium or default android pdf library to extract barcode image
             // Uncomment to switch back to the legacy camera approach in Ready-To-Use UI screens
             // .useCameraXRtuUi(false)
             //.sdkFilesDirectory(this, getExternalFilesDir(null)!!)
