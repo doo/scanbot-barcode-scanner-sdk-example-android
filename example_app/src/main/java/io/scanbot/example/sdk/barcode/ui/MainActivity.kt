@@ -66,209 +66,210 @@ class MainActivity : AppCompatActivity() {
 
         applyEdgeToEdge(this.findViewById(R.id.root_view))
 
-        barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
+        ScanbotBarcodeScannerSDK(this).createBarcodeScanner().onSuccess { barcodeScanner ->
+            this@MainActivity.barcodeScanner = barcodeScanner
+            binding.warningView.isVisible =
+                ScanbotBarcodeScannerSDK(this@MainActivity).licenseInfo.status == LicenseStatus.TRIAL
 
-        binding.warningView.isVisible =
-            ScanbotBarcodeScannerSDK(this).licenseInfo.status == LicenseStatus.TRIAL
-
-        binding.qrDemo.setOnClickListener {
-            val intent = Intent(applicationContext, QRScanCameraViewActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.composeDemo.setOnClickListener {
-            val intent = Intent(applicationContext, ComposeExampleActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.classicalArOverlayDemo.setOnClickListener {
-            val intent = Intent(applicationContext, BarcodeScannerViewActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.classicalScanCountDemo.setOnClickListener {
-            val intent = Intent(applicationContext, BarcodeScanAndCountViewActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.classicalBatch.setOnClickListener {
-            val intent = Intent(applicationContext, BatchQRScanActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.rtuUi.setOnClickListener {
-            val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
-                this.scannerConfiguration.apply {
-                    this.barcodeFormatConfigurations = listOf(
-                        BarcodeFormatCommonConfiguration(formats = BarcodeTypeRepository.selectedTypes.toList()),
-                        BarcodeFormatGs1CompositeConfiguration(gs1Handling = Gs1Handling.DECODE_FULL)
-                    )
-                }
-                this.useCase = SingleScanningMode().apply {
-//                    this.confirmationSheetEnabled = false
-                    // tweak other behaviour as needed
-                }
+            binding.composeDemo.setOnClickListener {
+                val intent = Intent(applicationContext, ComposeExampleActivity::class.java)
+                startActivity(intent)
             }
-            barcodeResultLauncher.launch(barcodeCameraConfiguration)
-        }
 
-        binding.rtuUiSelectionOverlay.setOnClickListener {
-            val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
-                this.useCase = BarcodeUseCase.singleScanningMode().apply {
-                    this.arOverlay.visible = true
-                }
+            binding.customScanCountDemo.setOnClickListener {
+                val intent = Intent(applicationContext, BarcodeScanAndCountViewActivity::class.java)
+                startActivity(intent)
             }
-            // tweak other behaviour as needed
-            barcodeResultLauncher.launch(barcodeCameraConfiguration)
-        }
 
-        binding.rtuUiBatchMode.setOnClickListener {
-            val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
-                this.scannerConfiguration.apply {
-                    this.barcodeFormatConfigurations =
-                        listOf(BarcodeFormatCommonConfiguration(formats = BarcodeTypeRepository.selectedTypes.toList()))
+            binding.rtuUi.setOnClickListener {
+                val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
+                    this.scannerConfiguration.apply {
+                        this.barcodeFormatConfigurations = listOf(
+                            BarcodeFormatCommonConfiguration(formats = BarcodeTypeRepository.selectedTypes.toList()),
+                            BarcodeFormatGs1CompositeConfiguration(gs1Handling = Gs1Handling.DECODE_FULL)
+                        )
+                    }
+                    this.useCase = SingleScanningMode().apply {
+                        //this.confirmationSheetEnabled = false
+                        // tweak other behaviour as needed
+                    }
                 }
-                this.useCase = MultipleScanningMode().apply {
-                    this.mode = MultipleBarcodesScanningMode.COUNTING
+                barcodeResultLauncher.launch(barcodeCameraConfiguration)
+            }
+
+            binding.rtuUiSelectionOverlay.setOnClickListener {
+                val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
+                    this.useCase = BarcodeUseCase.singleScanningMode().apply {
+                        this.arOverlay.visible = true
+                    }
                 }
                 // tweak other behaviour as needed
+                barcodeResultLauncher.launch(barcodeCameraConfiguration)
             }
 
-            barcodeResultLauncher.launch(barcodeCameraConfiguration)
-        }
+            binding.rtuUiBatchMode.setOnClickListener {
+                val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
+                    this.scannerConfiguration.apply {
+                        this.barcodeFormatConfigurations =
+                            listOf(BarcodeFormatCommonConfiguration(formats = BarcodeTypeRepository.selectedTypes.toList()))
+                    }
+                    this.useCase = MultipleScanningMode().apply {
+                        this.mode = MultipleBarcodesScanningMode.COUNTING
+                    }
+                    // tweak other behaviour as needed
+                }
 
-        binding.rtuUiMultipleUnique.setOnClickListener {
-            val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
-                class CustomBarcodeItemMapper : BarcodeItemMapper {
+                barcodeResultLauncher.launch(barcodeCameraConfiguration)
+            }
 
-                    // NOTE: callback implementation class must be static (in case of Java)
-                    // or non-inner (in case of Kotlin), have default (empty) constructor
-                    // and must not touch fields or methods of enclosing class/method
-                    override fun mapBarcodeItem(
-                        barcodeItem: BarcodeItem,
-                        onResult: BarcodeMappingResultCallback,
-                        onError: BarcodeMappingErrorCallback
-                    ) {
-                        // TODO: use barcodeItem appropriately here as needed
-                        onResult.onResult(
-                            BarcodeMappedData(
-                                title = barcodeItem.textWithExtension,
-                                subtitle = barcodeItem.format?.getName() ?: "Unknown",
-                                barcodeImage = BarcodeMappedDataExtension.barcodeFormatKey
+            binding.rtuUiMultipleUnique.setOnClickListener {
+                val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
+                    class CustomBarcodeItemMapper : BarcodeItemMapper {
+
+                        // NOTE: callback implementation class must be static (in case of Java)
+                        // or non-inner (in case of Kotlin), have default (empty) constructor
+                        // and must not touch fields or methods of enclosing class/method
+                        override fun mapBarcodeItem(
+                            barcodeItem: BarcodeItem,
+                            onResult: BarcodeMappingResultCallback,
+                            onError: BarcodeMappingErrorCallback
+                        ) {
+                            // TODO: use barcodeItem appropriately here as needed
+                            onResult.onResult(
+                                BarcodeMappedData(
+                                    title = barcodeItem.textWithExtension,
+                                    subtitle = barcodeItem.format?.getName() ?: "Unknown",
+                                    barcodeImage = BarcodeMappedDataExtension.barcodeFormatKey
+                                )
+                            )
+                        }
+                    }
+
+                    this.useCase = MultipleScanningMode().apply {
+                        this.mode = MultipleBarcodesScanningMode.UNIQUE
+                        this.sheetContent.manualCountChangeEnabled = false
+                        this.sheet.mode = SheetMode.COLLAPSED_SHEET
+                        this.arOverlay.visible = true
+                        this.arOverlay.automaticSelectionEnabled = false
+                        this.barcodeInfoMapping.barcodeItemMapper = CustomBarcodeItemMapper()
+                    }
+
+                    this.userGuidance.title.text =
+                        "Please align the QR-/Barcode in the frame above to scan it."
+
+
+                }
+
+                barcodeResultLauncher.launch(barcodeCameraConfiguration)
+            }
+
+            binding.rtuUiFindAndPick.setOnClickListener {
+                val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
+
+                    this.useCase = BarcodeUseCase.findAndPickScanningMode().apply {
+
+                        this.sheet.mode = SheetMode.COLLAPSED_SHEET
+                        this.sheet.collapsedVisibleHeight = CollapsedVisibleHeight.LARGE
+                        this.arOverlay.automaticSelectionEnabled = false
+
+                        this.allowPartialScan = false
+
+                        this.countingRepeatDelay = 1000
+
+                        this.sheetContent.manualCountChangeEnabled = true
+                        this.sheetContent.submitButton.text = "Submit"
+                        this.sheetContent.submitButton.foreground.color = ScanbotColor("#000000")
+
+                        // Configure other parameters, pertaining to findAndPick-scanning mode as needed.
+                        // Set the expected barcodes.
+                        expectedBarcodes = listOf(
+                            ExpectedBarcode(
+                                barcodeValue = "123456",
+                                title = "numeric barcode",
+                                image = "",
+                                count = 4
+                            ),
+                            ExpectedBarcode(
+                                barcodeValue = "SCANBOT",
+                                title = "value barcode",
+                                image = "",
+                                count = 3
                             )
                         )
                     }
+
+                    // Set an array of accepted barcode types.
+                    this.scannerConfiguration.barcodeFormatConfigurations =
+                        listOf(BarcodeFormatCommonConfiguration(formats = BarcodeFormats.common))
+
+                    this.userGuidance.title.text =
+                        "Please align the QR-/Barcode in the frame above to scan it."
+
                 }
 
-                this.useCase = MultipleScanningMode().apply {
-                    this.mode = MultipleBarcodesScanningMode.UNIQUE
-                    this.sheetContent.manualCountChangeEnabled = false
-                    this.sheet.mode = SheetMode.COLLAPSED_SHEET
-                    this.arOverlay.visible = true
-                    this.arOverlay.automaticSelectionEnabled = false
-                    this.barcodeInfoMapping.barcodeItemMapper = CustomBarcodeItemMapper()
-                }
-
-                this.userGuidance.title.text =
-                    "Please align the QR-/Barcode in the frame above to scan it."
-
-
+                barcodeResultLauncher.launch(barcodeCameraConfiguration)
             }
 
-            barcodeResultLauncher.launch(barcodeCameraConfiguration)
-        }
-
-        binding.rtuUiFindAndPick.setOnClickListener {
-            val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
-
-                this.useCase = BarcodeUseCase.findAndPickScanningMode().apply {
-
-                    this.sheet.mode = SheetMode.COLLAPSED_SHEET
-                    this.sheet.collapsedVisibleHeight = CollapsedVisibleHeight.LARGE
-                    this.arOverlay.automaticSelectionEnabled = false
-
-                    this.allowPartialScan = false
-
-                    this.countingRepeatDelay = 1000
-
-                    this.sheetContent.manualCountChangeEnabled = true
-                    this.sheetContent.submitButton.text = "Submit"
-                    this.sheetContent.submitButton.foreground.color = ScanbotColor("#000000")
-
-                    // Configure other parameters, pertaining to findAndPick-scanning mode as needed.
-                    // Set the expected barcodes.
-                    expectedBarcodes = listOf(
-                        ExpectedBarcode(
-                            barcodeValue = "123456",
-                            title = "numeric barcode",
-                            image = "",
-                            count = 4
-                        ),
-                        ExpectedBarcode(
-                            barcodeValue = "SCANBOT",
-                            title = "value barcode",
-                            image = "",
-                            count = 3
-                        )
-                    )
-                }
-
-                // Set an array of accepted barcode types.
-                this.scannerConfiguration.barcodeFormatConfigurations =
-                    listOf(BarcodeFormatCommonConfiguration(formats = BarcodeFormats.common))
-
-                this.userGuidance.title.text =
-                    "Please align the QR-/Barcode in the frame above to scan it."
-
+            binding.rtuUiImport.setOnClickListener {
+                // select an image from photo library and run barcode scanning on it:
+                val imageIntent = Intent()
+                imageIntent.type = "image/*"
+                imageIntent.action = Intent.ACTION_GET_CONTENT
+                imageIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, false)
+                imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+                val wrappedIntent =
+                    Intent.createChooser(imageIntent, getString(R.string.share_title))
+                importImageResultLauncher.launch(wrappedIntent)
             }
 
-            barcodeResultLauncher.launch(barcodeCameraConfiguration)
+            binding.rtuUiImportPdf.setOnClickListener {
+                // select an image from photo library and run barcode scanning on it:
+                val imageIntent = Intent()
+                imageIntent.type = "application/pdf"
+                imageIntent.action = Intent.ACTION_GET_CONTENT
+                imageIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, false)
+                imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+                val wrappedIntent =
+                    Intent.createChooser(imageIntent, getString(R.string.share_title))
+                importPdfResultLauncher.launch(wrappedIntent)
+            }
+
+            binding.settings.setOnClickListener {
+                val intent = Intent(this@MainActivity, BarcodeTypesActivity::class.java)
+                startActivity(intent)
+            }
+
+            binding.usecases.setOnClickListener {
+                val intent = Intent(this@MainActivity, UseCasesActivity::class.java)
+                startActivity(intent)
+            }
+
+            binding.classicalBarcodeDocumentParser.setOnClickListener {
+                val intent =
+                    Intent(this@MainActivity, BarcodeDocumentParserDemoActivity::class.java)
+                startActivity(intent)
+            }
+
+            binding.supportContactButton.setOnClickListener {
+                ExampleUtils.openBrowser(this@MainActivity, "https://docs.scanbot.io/support/")
+            }
+            binding.supportTrialLicenseButton.setOnClickListener {
+                // Use "io.scanbot.example.sdk.barcode.android" as an application ID to get a 7-day trial license key for this app.
+                ExampleUtils.openBrowser(this@MainActivity, "https://scanbot.io/trial/")
+            }
+        }.onFailure {
+            when (it) {
+                is Result.InvalidLicenseError -> {
+                    showLicenseDialog()
+                }
+
+                else -> {
+                    // Handle other errors
+                }
+            }
         }
 
-        binding.rtuUiImport.setOnClickListener {
-            // select an image from photo library and run barcode scanning on it:
-            val imageIntent = Intent()
-            imageIntent.type = "image/*"
-            imageIntent.action = Intent.ACTION_GET_CONTENT
-            imageIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, false)
-            imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
-            val wrappedIntent = Intent.createChooser(imageIntent, getString(R.string.share_title))
-            importImageResultLauncher.launch(wrappedIntent)
-        }
 
-        binding.rtuUiImportPdf.setOnClickListener {
-            // select an image from photo library and run barcode scanning on it:
-            val imageIntent = Intent()
-            imageIntent.type = "application/pdf"
-            imageIntent.action = Intent.ACTION_GET_CONTENT
-            imageIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, false)
-            imageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
-            val wrappedIntent = Intent.createChooser(imageIntent, getString(R.string.share_title))
-            importPdfResultLauncher.launch(wrappedIntent)
-        }
-
-        binding.settings.setOnClickListener {
-            val intent = Intent(this@MainActivity, BarcodeTypesActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.usecases.setOnClickListener {
-            val intent = Intent(this@MainActivity, UseCasesActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.classicalBarcodeDocumentParser.setOnClickListener {
-            val intent = Intent(this@MainActivity, BarcodeDocumentParserDemoActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.supportContactButton.setOnClickListener {
-            ExampleUtils.openBrowser(this@MainActivity, "https://docs.scanbot.io/support/")
-        }
-        binding.supportTrialLicenseButton.setOnClickListener {
-            // Use "io.scanbot.example.sdk.barcode.android" as an application ID to get a 7-day trial license key for this app.
-            ExampleUtils.openBrowser(this@MainActivity, "https://scanbot.io/trial/")
-        }
     }
 
     private val barcodeResultLauncher: ActivityResultLauncher<BarcodeScannerScreenConfiguration> =
@@ -284,7 +285,7 @@ class MainActivity : AppCompatActivity() {
             }.onFailure {
                 when (it) {
                     is Result.InvalidLicenseError -> {
-                        // indicate that the Scanbot SDK license is invalid
+                        showLicenseDialog()
                     }
 
                     else -> {

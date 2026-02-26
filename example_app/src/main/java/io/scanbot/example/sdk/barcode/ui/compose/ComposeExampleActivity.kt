@@ -161,7 +161,7 @@ fun MenuScreen(navController: NavHostController) {
     ) {
         item() {
             Text(
-                "Scanbot SDK Compose Customisable UI Demo",
+                "Scanbot SDK Compose Custom UI Demo",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
@@ -182,14 +182,6 @@ fun MenuScreen(navController: NavHostController) {
             }
         }
 
-        item() {
-            Text(
-                "Scanners Examples".uppercase(),
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.titleLarge.copy(fontFamily = FontFamily.Monospace),
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-        }
         items(menuItems) { (title, route, description) ->
             Box(
                 modifier = Modifier

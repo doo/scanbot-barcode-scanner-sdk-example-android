@@ -45,7 +45,7 @@ class AR_FindAndPickActivity : AppCompatActivity() {
                 result.onSuccess {
                     // IMPORTANT FOR THIS EXAMPLE:
                     // We keep this part empty as we process barcodes only when the barcode was tapped on AR overlay layer
-// END OF IMPORTANT FOR THIS EXAMPLE:
+                    // END OF IMPORTANT FOR THIS EXAMPLE:
                 }.onFailure {
                     when (it) {
                         is Result.InvalidLicenseError -> {

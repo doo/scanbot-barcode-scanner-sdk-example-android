@@ -26,13 +26,13 @@ import io.scanbot.sdk.camera.CaptureInfo
 import io.scanbot.sdk.geometry.AspectRatio
 import io.scanbot.sdk.image.ImageRef
 
-class BarcodeScannerClassicUiSnippetActivity : AppCompatActivity() {
+class BarcodeScannerCustomUiSnippetActivity : AppCompatActivity() {
 
     private lateinit var barcodeScannerView: BarcodeScannerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.doc_snippet_activity_classic_ui)
+        setContentView(R.layout.doc_snippet_activity_custom_ui)
 
         // @Tag("Barcode Custom UI view snippet")
         barcodeScannerView = findViewById<BarcodeScannerView>(R.id.barcode_scanner_view)!!
