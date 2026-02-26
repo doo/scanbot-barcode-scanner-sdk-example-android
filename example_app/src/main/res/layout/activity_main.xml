@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:paddingStart="16dp"
-                android:text="Barcode Scanner Use Cases" />
+                android:text="Custom UI View-based" />
 
             <View
                 android:layout_width="match_parent"
@@ -183,7 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:paddingStart="16dp"
-                android:text="Pick image from library" />
+                android:text="Detecting Barcodes on Still Images" />
 
             <View
                 android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:paddingStart="16dp"
-                android:text="Pick pdf from library" />
+                android:text="Detecting Barcodes on PDFs" />
 
             <View
                 android:layout_width="match_parent"
