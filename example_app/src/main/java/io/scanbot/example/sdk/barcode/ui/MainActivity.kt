@@ -76,11 +76,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
-            binding.customScanCountDemo.setOnClickListener {
-                val intent = Intent(applicationContext, BarcodeScanAndCountViewActivity::class.java)
-                startActivity(intent)
-            }
-
             binding.rtuUi.setOnClickListener {
                 val barcodeCameraConfiguration = BarcodeScannerScreenConfiguration().apply {
                     this.scannerConfiguration.apply {
