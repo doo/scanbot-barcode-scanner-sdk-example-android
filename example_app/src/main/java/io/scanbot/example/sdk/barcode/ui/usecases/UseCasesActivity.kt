@@ -15,7 +15,7 @@ class UseCasesActivity : AppCompatActivity() {
         applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         val items = listOf(
-            ViewType.Header("Barcode Scanning Use Cases"),
+            ViewType.Header("Custom UI View Based"),
             ViewType.Option(UseCase.SINGLE_BARCODE, "Scanning Single Barcodes"),
             ViewType.Option(UseCase.MULTIPLE_BARCODE, "Scanning Multiple Barcodes"),
             ViewType.Option(UseCase.BATCH_SCANNING, "Batch Scanning"),
