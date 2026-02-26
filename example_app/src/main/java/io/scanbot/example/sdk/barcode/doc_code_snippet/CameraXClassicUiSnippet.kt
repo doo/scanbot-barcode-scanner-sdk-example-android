@@ -17,7 +17,7 @@ import io.scanbot.example.sdk.barcode.R
 import io.scanbot.sdk.ui.camera.ScanbotCameraXView
 
 
-class CameraXClassicUiSnippetActivity : AppCompatActivity() {
+class CameraXCustomUiSnippetActivity : AppCompatActivity() {
 
     private lateinit var cameraView: ScanbotCameraXView
 

@@ -35,6 +35,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import io.scanbot.example.sdk.barcode.ui.compose.theme.ScanbotSdkAndroidTheme
 import io.scanbot.example.sdk.barcode.ui.compose.theme.sbBrandColor
+import io.scanbot.example.sdk.barcode.ui.usecases.UseCase
+import io.scanbot.example.sdk.barcode.ui.usecases.ViewType
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.licensing.LicenseStatus
 import java.net.URLDecoder
@@ -122,31 +124,32 @@ fun MenuScreen(navController: NavHostController) {
 
     val menuItems = listOf(
         Triple(
-            "Barcode Single Mode",
+            "Scanning Single Barcode",
             Screen.BarcodeScannerSingle.route,
             "Barcode scanner with AR overlay"
         ),
         Triple(
-            "Barcodes Multi Mode",
+            "Scanning Multiple Barcodes",
             Screen.BarcodeScannerMulti.route,
             "Barcode multi scan mode without finder"
         ),
         Triple(
-            "Barcodes Batch Mode",
+            "Batch Scanning",
             Screen.BarcodeScannerBatch.route,
             "Barcode batch scan mode"
         ),
         Triple(
-            "Barcodes Micro Barcode Mode",
+            "Scanning Tiny Barcodes",
             Screen.BarcodeScannerMicro.route,
             "Barcode micro barcode scan mode"
         ),
         Triple(
-            "Barcodes Distant Barcode Mode",
+            "Scanning Distant Barcodes",
             Screen.BarcodeScannerDistant.route,
             "Barcode distant barcode scan mode"
-        ), Triple(
-            "Barcodes Find and Pick Mode",
+        ),
+        Triple(
+            "Find and Pick Barcodes",
             Screen.BarcodeFindAndPick.route,
             "Find Specific barcode and pick it"
         ),
@@ -161,7 +164,7 @@ fun MenuScreen(navController: NavHostController) {
     ) {
         item() {
             Text(
-                "Scanbot SDK Compose Customisable UI Demo",
+                "Scanbot SDK Compose Custom UI Demo",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
@@ -182,14 +185,6 @@ fun MenuScreen(navController: NavHostController) {
             }
         }
 
-        item() {
-            Text(
-                "Scanners Examples".uppercase(),
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.titleLarge.copy(fontFamily = FontFamily.Monospace),
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-        }
         items(menuItems) { (title, route, description) ->
             Box(
                 modifier = Modifier

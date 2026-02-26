@@ -15,13 +15,12 @@ class UseCasesActivity : AppCompatActivity() {
         applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         val items = listOf(
-            ViewType.Header("Barcode Scanning Use Cases"),
+            ViewType.Header("Custom UI View Based"),
             ViewType.Option(UseCase.SINGLE_BARCODE, "Scanning Single Barcodes"),
             ViewType.Option(UseCase.MULTIPLE_BARCODE, "Scanning Multiple Barcodes"),
             ViewType.Option(UseCase.BATCH_SCANNING, "Batch Scanning"),
             ViewType.Option(UseCase.TINY_BARCODE, "Scanning Tiny Barcodes"),
             ViewType.Option(UseCase.DISTANT_BARCODE, "Scanning Distant Barcodes"),
-            ViewType.Option(UseCase.DETECTION_ON_THE_IMAGE, "Detecting Barcodes on Still Images"),
             ViewType.Header("Barcode AR Overlay Use Cases"),
             ViewType.Option(UseCase.AR_MULTI_SCAN, "AR-MultiScan"),
             ViewType.Option(UseCase.AR_SELECT_SCAN, "AR-SelectScan"),

@@ -59,19 +59,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/qr_demo"
-                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:paddingStart="16dp"
-                android:text="Custom UI View Based" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#50000000" />
-
 
             <TextView
                 android:id="@+id/compose_demo"
@@ -87,38 +74,12 @@
                 android:background="#50000000" />
 
             <TextView
-                android:id="@+id/classical_ar_overlay_demo"
+                android:id="@+id/usecases"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:paddingStart="16dp"
-                android:text="Classic Component with AR Overlay" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#50000000" />
-
-            <TextView
-                android:id="@+id/classical_scan_count_demo"
-                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:paddingStart="16dp"
-                android:text="Scan and Count " />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#50000000" />
-
-            <TextView
-                android:id="@+id/classical_batch"
-                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:paddingStart="16dp"
-                android:text="Batch Barcode Classic Component" />
+                android:text="Custom UI View-based" />
 
             <View
                 android:layout_width="match_parent"
@@ -209,7 +170,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:paddingStart="16dp"
-                android:text="Pick image from library" />
+                android:text="Detecting Barcodes on Still Images" />
 
             <View
                 android:layout_width="match_parent"
@@ -222,7 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:paddingStart="16dp"
-                android:text="Pick pdf from library" />
+                android:text="Detecting Barcodes on PDFs" />
 
             <View
                 android:layout_width="match_parent"
@@ -242,18 +203,6 @@
                 android:layout_height="1dp"
                 android:background="#50000000" />
 
-            <TextView
-                android:id="@+id/usecases"
-                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:paddingStart="16dp"
-                android:text="Barcode Scanner Use Cases" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#50000000" />
 
             <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -286,9 +235,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
+                            android:backgroundTint="@color/scanbot_brand"
                             android:text="Contact support"
-                            android:textAllCaps="false"
-                            android:backgroundTint="@color/scanbot_brand"/>
+                            android:textAllCaps="false" />
 
                         <TextView
                             android:id="@+id/support_trial_license_button"
