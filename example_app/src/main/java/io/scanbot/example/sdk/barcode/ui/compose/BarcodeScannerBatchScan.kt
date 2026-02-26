@@ -96,6 +96,7 @@ fun BarcodeScannerBatchScan(navController: NavHostController) {
                     barcodeScanningEnabled = barcodeScanningEnabled.value,
                     torchEnabled = torchEnabled.value,
                     zoomLevel = zoom.floatValue,
+                    barcodeScannerConfiguration = BarcodeScannerConfiguration(returnBarcodeImage = true),
                     finderConfiguration = FinderConfiguration(
                         aspectRatio = AspectRatio(2.0, 1.0),
                         overlayColor = Color(0x5500FF00),

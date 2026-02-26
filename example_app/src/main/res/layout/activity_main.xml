@@ -87,19 +87,6 @@
                 android:background="#50000000" />
 
             <TextView
-                android:id="@+id/custom_scan_count_demo"
-                style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:paddingStart="16dp"
-                android:text="Scan and Count " />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#50000000" />
-
-            <TextView
                 android:id="@+id/classical_barcode_document_parser"
                 style="@style/Scanbot.Demo.MaterialTwoButtonTeaser.Button"
                 android:layout_width="match_parent"
