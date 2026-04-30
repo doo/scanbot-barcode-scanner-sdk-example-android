@@ -102,7 +102,6 @@ class MultipleBarcodeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        barcodeScannerView.viewController.onResume()
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -116,11 +115,6 @@ class MultipleBarcodeActivity : AppCompatActivity() {
                 REQUEST_PERMISSION_CODE
             )
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        barcodeScannerView.viewController.onPause()
     }
 
     companion object {

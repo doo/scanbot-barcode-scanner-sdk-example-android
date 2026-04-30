@@ -332,25 +332,29 @@ class MainActivity : AppCompatActivity() {
                         outputDir.listFiles()?.forEach { it.delete() }
 
                         val pdfImagesExtractor = sdk.createPdfImagesExtractor()
-                        val images =
-                            pdfImagesExtractor.imageUrlsFromPdf(file, outputDir, prefix = "image")
+                        val result =
+                            pdfImagesExtractor.extract(file, outputDir, prefix = "image")
 
                         barcodeScanner.setConfiguration(
                             barcodeScanner.copyCurrentConfiguration().apply {
                                 setBarcodeFormats(BarcodeTypeRepository.selectedTypes.toList())
                             })
-                        images.map { uri ->
-                            val image = imageRefFromContent(uri, contentResolver)
-                                ?: return@map emptyList<BarcodeItem>()
-                            val result = barcodeScanner.run(image).getOrNull()
-                            // set the last scanned result as the final result
-                            result?.barcodes ?: emptyList()
-                        }.let {
-                            BarcodeResultRepository.barcodeResultBundle =
-                                BarcodeResultBundle(
-                                    BarcodeScannerUiResult(
-                                        items = it.flatten().map { it.toV2(1) }), null, null
-                                )
+                        result.onFailure {
+                            // handle error
+                        }.onSuccess { imageFiles ->
+                            imageFiles.map { uri ->
+                                val image = imageRefFromContent(uri, contentResolver)
+                                    ?: return@map emptyList<BarcodeItem>()
+                                val result = barcodeScanner.run(image).getOrNull()
+                                // set the last scanned result as the final result
+                                result?.barcodes ?: emptyList()
+                            }.let {
+                                BarcodeResultRepository.barcodeResultBundle =
+                                    BarcodeResultBundle(
+                                        BarcodeScannerUiResult(
+                                            items = it.flatten().map { it.toV2(1) }), null, null
+                                    )
+                            }
                         }
 
                         startActivity(Intent(this, BarcodeResultActivity::class.java))
