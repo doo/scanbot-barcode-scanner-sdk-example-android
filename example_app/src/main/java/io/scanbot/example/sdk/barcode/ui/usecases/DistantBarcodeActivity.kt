@@ -21,7 +21,7 @@ import io.scanbot.sdk.image.ImageRef
 
 class DistantBarcodeActivity : AppCompatActivity() {
     private lateinit var barcodeScannerView: BarcodeScannerView
-    private val flashEnabled: Boolean = false
+    private var flashEnabled: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_scanner_view)
@@ -30,6 +30,7 @@ class DistantBarcodeActivity : AppCompatActivity() {
         barcodeScannerView = findViewById(R.id.barcode_scanner_view)
         val flashButton = findViewById<Button>(R.id.flash)
         flashButton.setOnClickListener {
+            flashEnabled = !flashEnabled
             barcodeScannerView.viewController.useFlash(flashEnabled)
         }
         val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
