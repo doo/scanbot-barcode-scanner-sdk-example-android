@@ -1976,7 +1976,7 @@ defined by AIM ITS/04-023 International Technical Standard - Extended Channel In
 
 magic-enum
 
-Version v0.8.1
+Version v0.9.7
 (https://github.com/Neargye/magic_enum)
 
 MIT License
