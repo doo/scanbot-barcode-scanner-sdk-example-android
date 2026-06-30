@@ -1,4 +1,4 @@
-Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 8.1.0
+Open Source libraries used in the Scanbot Barcode Scanner SDK for Android version 9.0.0
 
 CWAC-Camera
 
@@ -1976,7 +1976,7 @@ defined by AIM ITS/04-023 International Technical Standard - Extended Channel In
 
 magic-enum
 
-Version v0.8.1
+Version v0.9.7
 (https://github.com/Neargye/magic_enum)
 
 MIT License

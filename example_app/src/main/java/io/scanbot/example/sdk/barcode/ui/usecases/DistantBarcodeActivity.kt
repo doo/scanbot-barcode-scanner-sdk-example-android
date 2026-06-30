@@ -3,6 +3,7 @@ package io.scanbot.example.sdk.barcode.ui.usecases
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,14 +21,18 @@ import io.scanbot.sdk.image.ImageRef
 
 class DistantBarcodeActivity : AppCompatActivity() {
     private lateinit var barcodeScannerView: BarcodeScannerView
-
+    private var flashEnabled: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_scanner_view)
         applyEdgeToEdge(this.findViewById(R.id.root_view))
 
         barcodeScannerView = findViewById(R.id.barcode_scanner_view)
-
+        val flashButton = findViewById<Button>(R.id.flash)
+        flashButton.setOnClickListener {
+            flashEnabled = !flashEnabled
+            barcodeScannerView.viewController.useFlash(flashEnabled)
+        }
         val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
         barcodeScanner.setConfiguration(
             barcodeScanner.copyCurrentConfiguration().apply {
@@ -93,7 +98,6 @@ class DistantBarcodeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        barcodeScannerView.viewController.onResume()
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -107,11 +111,6 @@ class DistantBarcodeActivity : AppCompatActivity() {
                 REQUEST_PERMISSION_CODE
             )
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        barcodeScannerView.viewController.onPause()
     }
 
     companion object {

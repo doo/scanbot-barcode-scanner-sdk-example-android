@@ -99,7 +99,6 @@ class BatchScanningActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        barcodeScannerView.viewController.onResume()
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -113,11 +112,6 @@ class BatchScanningActivity : AppCompatActivity() {
                 REQUEST_PERMISSION_CODE
             )
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        barcodeScannerView.viewController.onPause()
     }
 
     companion object {

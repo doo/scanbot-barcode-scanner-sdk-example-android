@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "io.scanbot.example.sdk.barcode.android"
         targetSdk = 35
-        minSdk = 21
+        minSdk = 23
 
         versionCode = 1
         versionName = "1.0"
@@ -55,7 +55,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
 
-    def sdkVersion = "8.1.0"
+    def sdkVersion = "9.0.0"
 
     implementation("io.scanbot:scanbot-barcode-scanner-sdk:$sdkVersion")
     implementation("io.scanbot:rtu-ui-v2-barcode:$sdkVersion")

@@ -31,56 +31,58 @@ class SingleBarcodeActivity : AppCompatActivity() {
 
         barcodeScannerView = findViewById(R.id.barcode_scanner_view)
 
-        val barcodeScanner = ScanbotBarcodeScannerSDK(this).createBarcodeScanner().getOrThrow()
-        barcodeScanner.setConfiguration(
-            barcodeScanner.copyCurrentConfiguration().apply {
-                // Specify the barcode format you want to scan
-                // setBarcodeFormats(listOf(BarcodeFormat.QR_CODE))
-            }
-        )
+        ScanbotBarcodeScannerSDK(this).createBarcodeScanner().onSuccess { barcodeScanner ->
+            barcodeScanner.setConfiguration(
+                barcodeScanner.copyCurrentConfiguration().apply {
+                    // Specify the barcode format you want to scan
+                    // setBarcodeFormats(listOf(BarcodeFormat.QR_CODE))
+                }
+            )
+            // @Tag("Scanning single barcode")
+            barcodeScannerView.apply {
+                initCamera()
+                initScanningBehavior(barcodeScanner, { result, frame ->
+                    result.onSuccess {
+                        handleSuccess(it)
+                    }.onFailure {
+                        when (it) {
+                            is io.scanbot.common.Result.InvalidLicenseError -> {
+                                io.scanbot.example.sdk.barcode.ui.usecases.ExampleUtils.showLicenseExpiredToastAndExit(
+                                    this@SingleBarcodeActivity
+                                )
+                            }
 
-        // @Tag("Scanning single barcode")
-        barcodeScannerView.apply {
-            initCamera()
-            initScanningBehavior(barcodeScanner, { result, frame ->
-                result.onSuccess {
-                    handleSuccess(it)
-                }.onFailure {
-                    when (it) {
-                        is io.scanbot.common.Result.InvalidLicenseError -> {
-                            io.scanbot.example.sdk.barcode.ui.usecases.ExampleUtils.showLicenseExpiredToastAndExit(
-                                this@SingleBarcodeActivity
-                            )
-                        }
-
-                        else -> {
-                            // handle other errors
+                            else -> {
+                                // handle other errors
+                            }
                         }
                     }
-                }
-                false
-            }, object : IBarcodeScannerViewCallback {
-                override fun onCameraOpen() {
-                    barcodeScannerView.viewController.useFlash(flashEnabled)
-                }
+                    false
+                }, object : IBarcodeScannerViewCallback {
+                    override fun onCameraOpen() {
+                        barcodeScannerView.viewController.useFlash(flashEnabled)
+                    }
 
-                override fun onPictureTaken(image: ImageRef, captureInfo: CaptureInfo) {
-                    // we don't need full size pictures in this example
-                }
+                    override fun onPictureTaken(image: ImageRef, captureInfo: CaptureInfo) {
+                        // we don't need full size pictures in this example
+                    }
 
-                override fun onSelectionOverlayBarcodeClicked(barcodeItem: BarcodeItem) {
-                    // handle the barcode item here
-                }
-            })
+                    override fun onSelectionOverlayBarcodeClicked(barcodeItem: BarcodeItem) {
+                        // handle the barcode item here
+                    }
+                })
+            }
+            // @EndTag("Scanning single barcode")
+        }.onFailure {
+            // handle error
         }
-        // @EndTag("Scanning single barcode")
-
         val flash: Button = findViewById(R.id.flash)
         flash.setOnClickListener {
             flashEnabled = !flashEnabled
             barcodeScannerView.viewController.useFlash(flashEnabled)
         }
     }
+
 
     private fun handleSuccess(result: BarcodeScannerResult) {
         if (result.barcodes.isEmpty()) {
@@ -102,7 +104,6 @@ class SingleBarcodeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        barcodeScannerView.viewController.onResume()
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -116,11 +117,6 @@ class SingleBarcodeActivity : AppCompatActivity() {
                 REQUEST_PERMISSION_CODE
             )
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        barcodeScannerView.viewController.onPause()
     }
 
     companion object {

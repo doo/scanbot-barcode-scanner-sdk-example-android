@@ -152,17 +152,11 @@ class AR_SelectScanActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        barcodeScannerView.viewController.onResume()
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // Use onActivityResult to handle permission rejection
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSION_CODE)
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        barcodeScannerView.viewController.onPause()
     }
 
     companion object {

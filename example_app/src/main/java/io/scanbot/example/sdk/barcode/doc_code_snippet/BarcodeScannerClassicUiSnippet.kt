@@ -102,16 +102,4 @@ class BarcodeScannerCustomUiSnippetActivity : AppCompatActivity() {
         barcodeScannerView.viewController.takePicture(acquireFocus = false)
         // @EndTag("Barcode Custom UI configure camera behaviour snippet")
     }
-
-    // @Tag("Barcode Custom UI onResume onPause snippet")
-    override fun onResume() {
-        super.onResume()
-        barcodeScannerView.viewController.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        barcodeScannerView.viewController.onPause()
-    }
-    // @EndTag("Barcode Custom UI onResume onPause snippet")
 }
