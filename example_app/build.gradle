@@ -55,7 +55,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
 
-    def sdkVersion = "9.0.0.543-SNAPSHOT"
+    def sdkVersion = "9.0.0"
 
     implementation("io.scanbot:scanbot-barcode-scanner-sdk:$sdkVersion")
     implementation("io.scanbot:rtu-ui-v2-barcode:$sdkVersion")
