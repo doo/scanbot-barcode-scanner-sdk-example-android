@@ -71,7 +71,7 @@ fun barcodeScannerWithAdvancedConfigSnippet(context: Context) {
         stripCheckDigits = false,
         minimumTextLength = 0,
         maximumTextLength = 0,
-        checksum = true
+        useCheckDigits = true
     )
     configs.add(code11Config)
 
