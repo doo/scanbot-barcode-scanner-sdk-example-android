@@ -55,7 +55,8 @@ class AlmostRtuUiBarcodeScannerActivity : ComponentActivity() {
                     WindowCompat.setDecorFitsSystemWindows(window, false)
                 }
             })
-
+            //.before running the BarcodeScannerView, please make sure that Scanbot Barcode SDK is initialized and the license is valid.
+            // https://docs.scanbot.io/android/barcode-scanner-sdk/detailed-setup-guide/initializing-the-sdk/
             BarcodeScannerView(
                 configuration = configuration,
                 onBarcodeScanned = { result ->
