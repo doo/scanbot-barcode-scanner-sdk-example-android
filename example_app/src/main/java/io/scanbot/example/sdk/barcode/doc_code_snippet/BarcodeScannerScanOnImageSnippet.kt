@@ -22,7 +22,7 @@ import io.scanbot.sdk.image.ImageRef
 fun scanOnImageSnippet(context: Context) {
     // @Tag("Creating the Scanner")
     val sdk = ScanbotBarcodeScannerSDK(context)
-    val barcodeScanner = sdk.createBarcodeScanner()
+    val barcodeScanner = sdk.createBarcodeScanner().getOrNull()
     // @EndTag("Creating the Scanner")
 }
 
