@@ -17,7 +17,6 @@ import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.textWithExtension
 import io.scanbot.sdk.barcode.ui.BarcodeOverlayTextFormat
-import io.scanbot.sdk.barcode.ui.BarcodePolygonsView
 import io.scanbot.sdk.barcode.ui.BarcodeScannerView
 import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
@@ -102,46 +101,28 @@ class AR_SelectScanActivity : AppCompatActivity() {
         // Set the colors for AR overlay for highlighted barcodes
         val highlightedColor = ContextCompat.getColor(this, R.color.ar_overlay_highlighted)
 
-        barcodeScannerView.selectionOverlayController.setBarcodeAppearanceDelegate(object :
-            BarcodePolygonsView.BarcodeAppearanceDelegate {
-            override fun getPolygonStyle(
-                defaultStyle: BarcodePolygonsView.BarcodePolygonStyle,
-                barcodeItem: BarcodeItem
-            ): BarcodePolygonsView.BarcodePolygonStyle {
-                return defaultStyle.copy(
+        barcodeScannerView.selectionOverlayController.setBarcodeAppearanceDelegate { barcodeItem, proposedAppearance ->
+            proposedAppearance.copy(
+                polygonStyle = proposedAppearance.polygonStyle.copy(
                     strokeHighlightedColor = highlightedColor,
                     strokeColor = notHighlightedColor,
-                )
-            }
-
-            override fun getTextViewStyle(
-                defaultStyle: BarcodePolygonsView.BarcodeTextViewStyle,
-                barcodeItem: BarcodeItem
-            ): BarcodePolygonsView.BarcodeTextViewStyle {
-                return defaultStyle.copy(
+                ),
+                textStyle = proposedAppearance.textStyle.copy(
                     // Show text with barcode type
                     textFormat = BarcodeOverlayTextFormat.CODE,
                     textContainerHighlightedColor = highlightedColor,
                     textContainerColor = notHighlightedColor,
-                )
-            }
-        })
-
+                ),
+                // We highlight only the barcodes that were already added to the list
+                shouldHighlight = resultAdapter.getItems()
+                    .any {
+                        it.textWithExtension == barcodeItem.textWithExtension
+                                && it.format == barcodeItem.format
+                    },
+            )
+        }
         // Required for the AR overlay to work faster
         barcodeScannerView.viewController.barcodeScanningInterval = 0
-
-        // Set the delegate to highlight the barcodes that were already added to the list
-        barcodeScannerView.selectionOverlayController.setBarcodeHighlightedDelegate(
-            object : BarcodePolygonsView.BarcodeHighlightDelegate {
-                override fun shouldHighlight(barcodeItem: BarcodeItem): Boolean {
-                    // We highlight only the barcodes that were already added to the list
-                    return resultAdapter.getItems()
-                        .any {
-                            it.textWithExtension == barcodeItem.textWithExtension
-                                    && it.format == barcodeItem.format
-                        }
-                }
-            })
         // @EndTag("AR-SelectScan")
 
         resultView = findViewById(R.id.barcode_recycler_view)

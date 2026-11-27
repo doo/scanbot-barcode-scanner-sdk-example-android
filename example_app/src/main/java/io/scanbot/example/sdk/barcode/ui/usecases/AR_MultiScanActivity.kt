@@ -17,7 +17,6 @@ import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.BarcodeScannerResult
 import io.scanbot.sdk.barcode.ui.BarcodeOverlayTextFormat
-import io.scanbot.sdk.barcode.ui.BarcodePolygonsView
 import io.scanbot.sdk.barcode.ui.BarcodeScannerView
 import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
@@ -84,29 +83,19 @@ class AR_MultiScanActivity : AppCompatActivity() {
         // Set the color of the highlighted barcode contours
         val highlightedColor = ContextCompat.getColor(this, R.color.ar_overlay_highlighted)
 
-        barcodeScannerView.selectionOverlayController.setBarcodeAppearanceDelegate(object :
-            BarcodePolygonsView.BarcodeAppearanceDelegate {
-            override fun getPolygonStyle(
-                defaultStyle: BarcodePolygonsView.BarcodePolygonStyle,
-                barcodeItem: BarcodeItem
-            ): BarcodePolygonsView.BarcodePolygonStyle {
-                return defaultStyle.copy(
+        barcodeScannerView.selectionOverlayController.setBarcodeAppearanceDelegate { barcodeItem, proposedAppearance ->
+            proposedAppearance.copy(
+                polygonStyle = proposedAppearance.polygonStyle.copy(
                     // Set the color of the highlighted barcode contours
                     strokeColor = highlightedColor,
                     fillColor = highlightedColor,
-                )
-            }
-
-            override fun getTextViewStyle(
-                defaultStyle: BarcodePolygonsView.BarcodeTextViewStyle,
-                barcodeItem: BarcodeItem
-            ): BarcodePolygonsView.BarcodeTextViewStyle {
-                return defaultStyle.copy(
+                ),
+                textStyle = proposedAppearance.textStyle.copy(
                     // Hide the text box under the barcode
                     textFormat = BarcodeOverlayTextFormat.NONE,
-                )
-            }
-        })
+                ),
+            )
+        }
         // @EndTag("AR-MultiScan")
 
         resultView = findViewById(R.id.barcode_recycler_view)

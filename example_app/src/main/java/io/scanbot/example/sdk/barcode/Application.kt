@@ -24,7 +24,7 @@ class ExampleApplication : Application() {
         ScanbotBarcodeScannerSDKInitializer()
             .withLogging(true)
             // TODO 2/2: Enable the Scanbot Barcode SDK license key
-            //.license(this, licenseKey)
+            //.license(licenseKey)
             .licenseErrorHandler (IScanbotSDKLicenseErrorHandler { status, feature, statusMessage ->
                 LoggerProvider.logger.d("ExampleApplication", "+++> License status: ${status.name}. Status message: $statusMessage")
                 LoggerProvider.logger.d("ExampleApplication", "+++> Feature not available: ${feature.name}")
@@ -32,7 +32,7 @@ class ExampleApplication : Application() {
             //.pdfImagesExtractorType(PdfImagesExtractor.Type.PDFIUM) // select PDFium or default android pdf library to extract barcode image
             // Uncomment to switch back to the legacy camera approach in Ready-To-Use UI screens
             // .useCameraXRtuUi(false)
-            //.sdkFilesDirectory(this, getExternalFilesDir(null)!!)
+            //.sdkFilesDirectory(getExternalFilesDir(null)!!)
             .initialize(this)
 
         LoggerProvider.logger.d("ExampleApplication", "Scanbot Barcode Scanner SDK was initialized")

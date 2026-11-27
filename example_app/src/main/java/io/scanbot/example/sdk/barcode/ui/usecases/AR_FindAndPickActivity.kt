@@ -12,9 +12,7 @@ import io.scanbot.common.onSuccess
 import io.scanbot.example.sdk.barcode.R
 import io.scanbot.example.sdk.barcode.ui.util.applyEdgeToEdge
 import io.scanbot.sdk.barcode.BarcodeFormat
-import io.scanbot.sdk.barcode.BarcodeItem
 import io.scanbot.sdk.barcode.ui.BarcodeOverlayTextFormat
-import io.scanbot.sdk.barcode.ui.BarcodePolygonsView
 import io.scanbot.sdk.barcode.ui.BarcodeScannerView
 import io.scanbot.sdk.barcode.ui.IBarcodeScannerViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
@@ -86,41 +84,23 @@ class AR_FindAndPickActivity : AppCompatActivity() {
 
         // Set the color of the AR overlay
         val highlightedColor = ContextCompat.getColor(this, R.color.ar_overlay_highlighted)
-        barcodeScannerView.selectionOverlayController.setBarcodeAppearanceDelegate(object :
-            BarcodePolygonsView.BarcodeAppearanceDelegate {
-            override fun getPolygonStyle(
-                defaultStyle: BarcodePolygonsView.BarcodePolygonStyle,
-                barcodeItem: BarcodeItem
-            ): BarcodePolygonsView.BarcodePolygonStyle {
-                return defaultStyle.copy(
+        barcodeScannerView.selectionOverlayController.setBarcodeAppearanceDelegate { barcodeItem, proposedAppearance ->
+            proposedAppearance.copy(
+                polygonStyle = proposedAppearance.polygonStyle.copy(
                     strokeHighlightedColor = highlightedColor,
-                )
-            }
-
-            override fun getTextViewStyle(
-                defaultStyle: BarcodePolygonsView.BarcodeTextViewStyle,
-                barcodeItem: BarcodeItem
-            ): BarcodePolygonsView.BarcodeTextViewStyle {
-                return defaultStyle.copy(
+                ),
+                textStyle = proposedAppearance.textStyle.copy(
                     // Hide the text box under the barcode
                     textFormat = BarcodeOverlayTextFormat.NONE,
-                )
-            }
-        })
-
-        // Set the delegate to highlight only the barcodes you need
-        barcodeScannerView.selectionOverlayController.setBarcodeHighlightedDelegate(
-            object : BarcodePolygonsView.BarcodeHighlightDelegate {
-                override fun shouldHighlight(barcodeItem: BarcodeItem): Boolean {
-                    // We highlight only QR codes, you can change this logic
-                    return barcodeItem.format == BarcodeFormat.QR_CODE
-                    // for example:
-                    // return barcodeItem.text.endsWith("5")
-                    // or
-                    // return barcodeItem.text == expectedText (which you can get from the user)
-                }
-            }
-        )
+                ),
+                // Highlight only the barcodes you need.
+                // We highlight only QR codes, you can change this logic, for example:
+                // barcodeItem.text.endsWith("5")
+                // or
+                // barcodeItem.text == expectedText (which you can get from the user)
+                shouldHighlight = barcodeItem.format == BarcodeFormat.QR_CODE,
+            )
+        }
         // @EndTag("AR-FindAndPick")
     }
 

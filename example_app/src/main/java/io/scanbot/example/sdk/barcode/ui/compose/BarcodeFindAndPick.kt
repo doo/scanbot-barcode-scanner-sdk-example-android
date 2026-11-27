@@ -96,10 +96,9 @@ fun BarcodeFindAndPick(navController: NavHostController) {
                             )
                         }
                     },
-                    arPolygonView = { barcodesFlow ->
+                    arPolygonView = {
                         // Configure AR overlay polygon appearance inside CustomBarcodesArView if needed
                         ScanbotBarcodesArOverlay(
-                            barcodesFlow,
                             getData = { barcodeItem -> barcodeItem.textWithExtension },
                             getPolygonStyle = { defaultStyle, barcodeItem ->
                                 // Customize polygon style here.
@@ -116,7 +115,7 @@ fun BarcodeFindAndPick(navController: NavHostController) {
                                     strokeHighlightedColor = Color.Green,
                                     fillColor = Color.Red.copy(alpha = 0.3f),
                                     fillHighlightedColor = Color.Green.copy(alpha = 0.3f),
-                                    shouldDrawShadows = false
+                                    shouldDrawShadows = false,
                                 )
                             },
                             shouldHighlight = { barcodeItem ->

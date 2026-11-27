@@ -12,21 +12,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import io.scanbot.sdk.barcode.*
-import io.scanbot.sdk.camera.*
-import io.scanbot.sdk.ui_v2.barcode.components.ar_tracking.*
-import kotlinx.coroutines.flow.SharedFlow
-
+import io.scanbot.sdk.barcode.textWithExtension
+import io.scanbot.sdk.ui_v2.barcode.components.ar_tracking.ScanbotBarcodesArOverlay
 
 // @Tag("Customizable barcode AR view")
+// Place this composable into the `arPolygonView` slot of `BarcodeScannerCustomUI`:
+// it receives the scanned barcodes from there implicitly.
 @Composable
-fun BarcodeArOverlaySnippet(
-    barcodesFlow: SharedFlow<Pair<BarcodeScannerResult, FrameHandler.Frame>?>,
-) {
+fun BarcodeArOverlaySnippet() {
     val density = LocalDensity.current
 
     ScanbotBarcodesArOverlay(
-        barcodesFlow,
         getData = { barcodeItem -> barcodeItem.textWithExtension },
         shouldHighlight = { barcodeItem ->
             // Here you can implement any custom logic to decide whether to highlight a barcode with second style or not.
