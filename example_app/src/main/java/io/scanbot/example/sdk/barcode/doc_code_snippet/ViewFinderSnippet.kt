@@ -42,7 +42,7 @@ class ViewFinderSnippet : AppCompatActivity() {
         // Initialize the SDK here:
         ScanbotBarcodeScannerSDKInitializer()
             // optional: uncomment the next line if you have a license key
-            // .license(this.application, LICENSE_KEY)
+            // .license(LICENSE_KEY)
             .initialize(this.application)
         // @EndTag("Init Scanbot Barcode Scanner SDK")
 

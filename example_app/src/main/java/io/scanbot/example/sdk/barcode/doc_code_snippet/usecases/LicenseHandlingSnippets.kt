@@ -26,7 +26,7 @@ fun checkingLicenseStatusSnippet(context: Context) {
 
 fun licenseErrorHandlingSnippet(application: Application) {
     val licenseInfo = ScanbotBarcodeScannerSDKInitializer()
-        .license(application, "YOUR_SCANBOT_SDK_LICENSE_KEY")
+        .license("YOUR_SCANBOT_SDK_LICENSE_KEY")
         .licenseErrorHandler { status, feature, message ->
             LoggerProvider.logger.d(
                 "ScanbotSDK",

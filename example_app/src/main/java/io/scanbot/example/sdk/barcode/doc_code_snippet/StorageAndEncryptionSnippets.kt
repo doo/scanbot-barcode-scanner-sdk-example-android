@@ -5,7 +5,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDKInitializer
-import io.scanbot.sdk.persistence.fileio.AESEncryptedFileIOProcessor
+import io.scanbot.sdk.persistence.fileio.AesGcmEncryptedFileIoProcessor
+import io.scanbot.sdk.persistence.fileio.AesGcmKeyProvider
 import java.io.File
 
 fun initSDKSnippet(application: Application) {
@@ -15,7 +16,7 @@ fun initSDKSnippet(application: Application) {
     customStorageDir.mkdirs()
 
     ScanbotBarcodeScannerSDKInitializer()
-        .sdkFilesDirectory(application, customStorageDir)
+        .sdkFilesDirectory(customStorageDir)
         // ...
         .initialize(application)
     // @EndTag("Initialize SDK")
@@ -31,9 +32,16 @@ fun enableEncryptionInSDKInitializerSnippet(application: Application) {
 
 fun enableAesEncryptionSnippet(application: Application) {
     // @Tag("Enable AES Encryption")
-    ScanbotBarcodeScannerSDKInitializer()
-        .useFileEncryption(true, AESEncryptedFileIOProcessor("any_user_password", AESEncryptedFileIOProcessor.AESEncrypterMode.AES256))
-        .initialize(application)
+    val ENCRYPTION_KEY = "DEMO_ONLY_REPLACE_WITH_32B_KEY!!" // WARNING: demo key only! Must be exactly 32 bytes for AES256 (16 bytes for AES128).
+    val encryptionMode = AesGcmEncryptedFileIoProcessor.AESGCMEncrypterMode.AES256
+    val stubKeyProvider = object : AesGcmKeyProvider {
+        override fun getAesKeyForContext(file: String, keyMode: AesGcmEncryptedFileIoProcessor.AESGCMEncrypterMode): ByteArray =
+            ENCRYPTION_KEY.toByteArray()
+    }
+    ScanbotBarcodeScannerSDKInitializer().useFileEncryption(
+        enableFileEncryption = true,
+        fileIOProcessor = AesGcmEncryptedFileIoProcessor(stubKeyProvider, encryptionMode)
+    ).initialize(application)
     // @EndTag("Enable AES Encryption")
 }
 

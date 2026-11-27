@@ -21,16 +21,16 @@ fun actionBarConfigSnippet() {
         // Configure parameters (use explicit `this.` receiver for better code completion):
 
         // Configure the action bar.
-        // Hide/unhide the flash button.
-        this.actionBar.flashButton.visible = true
+        // Hide/unhide the torch button.
+        this.actionBar.torchButton.visible = true
 
-        // Configure the inactive state of the flash button.
-        this.actionBar.flashButton.backgroundColor = ScanbotColor("#7A000000")
-        this.actionBar.flashButton.foregroundColor = ScanbotColor("#FFFFFF")
+        // Configure the inactive state of the torch button.
+        this.actionBar.torchButton.backgroundColor = ScanbotColor("#7A000000")
+        this.actionBar.torchButton.foregroundColor = ScanbotColor("#FFFFFF")
 
-        // Configure the active state of the flash button.
-        this.actionBar.flashButton.activeBackgroundColor = ScanbotColor("#FFCE5C")
-        this.actionBar.flashButton.activeForegroundColor = ScanbotColor("#000000")
+        // Configure the active state of the torch button.
+        this.actionBar.torchButton.activeBackgroundColor = ScanbotColor("#FFCE5C")
+        this.actionBar.torchButton.activeForegroundColor = ScanbotColor("#000000")
 
         // Hide/unhide the zoom button.
         this.actionBar.zoomButton.visible = true

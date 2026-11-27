@@ -95,8 +95,8 @@ fun BarcodeScannerMultiScan(navController: NavHostController) {
                     zoomLevel = zoom.floatValue,
                     finderConfiguration = null,
                     barcodeScannerConfiguration = BarcodeScannerConfiguration(returnBarcodeImage = true),
-                    arPolygonView = { dataFlow ->
-                        CustomBarcodesArView(dataFlow, { barcode ->
+                    arPolygonView = {
+                        CustomBarcodesArView({ barcode ->
                             if (scannedBarcodes.none { it.textWithExtension == barcode.textWithExtension }) {
                                 scannedBarcodes.add(barcode)
                             } else {

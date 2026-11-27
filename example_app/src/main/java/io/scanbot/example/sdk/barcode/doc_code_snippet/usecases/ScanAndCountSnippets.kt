@@ -2,7 +2,6 @@ package io.scanbot.example.sdk.barcode.doc_code_snippet.usecases
 
 import android.content.Context
 import io.scanbot.sdk.barcode.BarcodeItem
-import io.scanbot.sdk.barcode.ui.BarcodePolygonsStaticView
 import io.scanbot.sdk.barcode.ui.BarcodeScanAndCountView
 import io.scanbot.sdk.barcode.ui.IBarcodeScanCountViewCallback
 import io.scanbot.sdk.barcode_scanner.ScanbotBarcodeScannerSDK
@@ -52,20 +51,16 @@ fun appearanceConfigurationSnippet(
     cornerRadius: Float
 ) {
     // @Tag("Set appearance configuration")
-    barcodeCounterView.counterOverlayController.setBarcodeAppearanceDelegate(object :
-        BarcodePolygonsStaticView.BarcodeAppearanceDelegate {
-        override fun getPolygonStyle(
-            defaultStyle: BarcodePolygonsStaticView.BarcodePolygonStyle,
-            barcodeItem: BarcodeItem
-        ): BarcodePolygonsStaticView.BarcodePolygonStyle {
-            return defaultStyle.copy(
+    barcodeCounterView.counterOverlayController.setBarcodeAppearanceDelegate { barcodeItem, proposedAppearance ->
+        proposedAppearance.copy(
+            polygonStyle = proposedAppearance.polygonStyle.copy(
                 drawPolygon = drawPolygon,
                 strokeWidth = strokeWidth,
                 strokeColor = strokeColor,
                 fillColor = fillColor,
                 cornerRadius = cornerRadius,
-            )
-        }
-    })
+            ),
+        )
+    }
     // @EndTag("Set appearance configuration")
 }

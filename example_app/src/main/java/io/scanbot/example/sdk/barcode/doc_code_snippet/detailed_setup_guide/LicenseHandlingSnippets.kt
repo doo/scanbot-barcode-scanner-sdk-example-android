@@ -39,7 +39,7 @@ fun checkLicenseStatusSnippet(activity: AppCompatActivity) {
 fun handleLicenseStatusSnippet(application: Application) {
     // @Tag("Handle License Status")
     val licenseInfo = ScanbotBarcodeScannerSDKInitializer()
-            .license(application, "YOUR_SCANBOT_SDK_LICENSE_KEY")
+            .license("YOUR_SCANBOT_SDK_LICENSE_KEY")
             .licenseErrorHandler { status, feature, message ->
                 LoggerProvider.logger.d(
                     "ScanbotSDK",
